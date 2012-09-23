@@ -1,0 +1,264 @@
+#N canvas 132 59 502 639 10;
+#X obj 42 509 r \$0-in;
+#X obj 42 539 haptic_drum_demo~;
+#X obj 42 569 s \$0-out;
+#X obj 10 30 hsl 128 15 0 0.5 0 0 \$0-haptic-drum-demo/Link-damping
+\$0-haptic-drum-demo/Link-damping Link-damping -2 -6 0 10 -262144 -1
+-1 0 1;
+#X obj 160 30 nbx 5 14 0 0.5 0 0 \$0-haptic-drum-demo/Link-damping
+\$0-haptic-drum-demo/Link-damping empty 0 -6 0 10 -262144 -1 -1 0 256
+;
+#X obj 10 60 hsl 128 15 0 50 0 0 \$0-haptic-drum-demo/Link-stiffness
+\$0-haptic-drum-demo/Link-stiffness Link-stiffness -2 -6 0 10 -262144
+-1 -1 0 1;
+#X obj 160 60 nbx 5 14 0 50 0 0 \$0-haptic-drum-demo/Link-stiffness
+\$0-haptic-drum-demo/Link-stiffness empty 0 -6 0 10 -262144 -1 -1 0
+256;
+#X obj 10 90 hsl 128 15 0.001 0.1 0 0 \$0-haptic-drum-demo/Bottom-left-Pulse-length
+\$0-haptic-drum-demo/Bottom-left-Pulse-length Bottom-left-Pulse-length
+-2 -6 0 10 -262144 -1 -1 1411 1;
+#X obj 160 90 nbx 5 14 0.001 0.1 0 0 \$0-haptic-drum-demo/Bottom-left-Pulse-length
+\$0-haptic-drum-demo/Bottom-left-Pulse-length empty 0 -6 0 10 -262144
+-1 -1 0.012 256;
+#X obj 10 120 hsl 128 15 0 5 0 0 \$0-haptic-drum-demo/Bottom-left-Pulse-strength
+\$0-haptic-drum-demo/Bottom-left-Pulse-strength Bottom-left-Pulse-strength
+-2 -6 0 10 -262144 -1 -1 1270 1;
+#X obj 160 120 nbx 5 14 0 5 0 0 \$0-haptic-drum-demo/Bottom-left-Pulse-strength
+\$0-haptic-drum-demo/Bottom-left-Pulse-strength empty 0 -6 0 10 -262144
+-1 -1 0.5 256;
+#X obj 10 150 hsl 128 15 0.001 0.1 0 0 \$0-haptic-drum-demo/Bottom-right-Pulse-length
+\$0-haptic-drum-demo/Bottom-right-Pulse-length Bottom-right-Pulse-length
+-2 -6 0 10 -262144 -1 -1 1411 1;
+#X obj 160 150 nbx 5 14 0.001 0.1 0 0 \$0-haptic-drum-demo/Bottom-right-Pulse-length
+\$0-haptic-drum-demo/Bottom-right-Pulse-length empty 0 -6 0 10 -262144
+-1 -1 0.012 256;
+#X obj 10 180 hsl 128 15 0 5 0 0 \$0-haptic-drum-demo/Bottom-right-Pulse-strength
+\$0-haptic-drum-demo/Bottom-right-Pulse-strength Bottom-right-Pulse-strength
+-2 -6 0 10 -262144 -1 -1 1270 1;
+#X obj 160 180 nbx 5 14 0 5 0 0 \$0-haptic-drum-demo/Bottom-right-Pulse-strength
+\$0-haptic-drum-demo/Bottom-right-Pulse-strength empty 0 -6 0 10 -262144
+-1 -1 0.5 256;
+#X obj 10 210 hsl 128 15 0.001 0.1 0 0 \$0-haptic-drum-demo/Top-left-Pulse-length
+\$0-haptic-drum-demo/Top-left-Pulse-length Top-left-Pulse-length -2
+-6 0 10 -262144 -1 -1 1411 1;
+#X obj 160 210 nbx 5 14 0.001 0.1 0 0 \$0-haptic-drum-demo/Top-left-Pulse-length
+\$0-haptic-drum-demo/Top-left-Pulse-length empty 0 -6 0 10 -262144
+-1 -1 0.012 256;
+#X obj 10 240 hsl 128 15 0 5 0 0 \$0-haptic-drum-demo/Top-left-Pulse-strength
+\$0-haptic-drum-demo/Top-left-Pulse-strength Top-left-Pulse-strength
+-2 -6 0 10 -262144 -1 -1 1270 1;
+#X obj 160 240 nbx 5 14 0 5 0 0 \$0-haptic-drum-demo/Top-left-Pulse-strength
+\$0-haptic-drum-demo/Top-left-Pulse-strength empty 0 -6 0 10 -262144
+-1 -1 0.5 256;
+#X obj 10 270 hsl 128 15 0.001 0.1 0 0 \$0-haptic-drum-demo/Top-right-Pulse-length
+\$0-haptic-drum-demo/Top-right-Pulse-length Top-right-Pulse-length
+-2 -6 0 10 -262144 -1 -1 1411 1;
+#X obj 160 270 nbx 5 14 0.001 0.1 0 0 \$0-haptic-drum-demo/Top-right-Pulse-length
+\$0-haptic-drum-demo/Top-right-Pulse-length empty 0 -6 0 10 -262144
+-1 -1 0.012 256;
+#X obj 10 300 hsl 128 15 0 5 0 0 \$0-haptic-drum-demo/Top-right-Pulse-strength
+\$0-haptic-drum-demo/Top-right-Pulse-strength Top-right-Pulse-strength
+-2 -6 0 10 -262144 -1 -1 1270 1;
+#X obj 160 300 nbx 5 14 0 5 0 0 \$0-haptic-drum-demo/Top-right-Pulse-strength
+\$0-haptic-drum-demo/Top-right-Pulse-strength empty 0 -6 0 10 -262144
+-1 -1 0.5 256;
+#X obj 197 3 bng 15 250 50 1 \$0-init \$0-ignore empty 0 -6 0 10 -262144
+-1 -1;
+#X obj 217 3 tgl 15 1 \$0-active \$0-active empty 0 -6 0 10 -262144
+-1 -1 1 1;
+#X obj 563 -4 r \$0-init;
+#X obj 979 -4 s \$0-in;
+#X obj 1187 -4 s \$0-read;
+#X obj 1282 10 r \$0-write;
+#X msg 563 16 1;
+#X obj 563 36 s \$0-active;
+#X obj 979 16 r \$0-active;
+#X msg 979 36 active \$1;
+#X obj 1282 30 route active;
+#X obj 1282 50 s \$0-active;
+#X msg 563 56 0;
+#X obj 563 76 s \$0-haptic-drum-demo/Link-damping;
+#X obj 979 56 r \$0-haptic-drum-demo/Link-damping;
+#X msg 979 76 /haptic-drum-demo/Link-damping \$1;
+#X obj 1282 70 route /haptic-drum-demo/Link-damping;
+#X obj 1282 90 s \$0-haptic-drum-demo/Link-damping;
+#X msg 563 96 0;
+#X obj 563 116 s \$0-haptic-drum-demo/Link-stiffness;
+#X obj 979 96 r \$0-haptic-drum-demo/Link-stiffness;
+#X msg 979 116 /haptic-drum-demo/Link-stiffness \$1;
+#X obj 1282 110 route /haptic-drum-demo/Link-stiffness;
+#X obj 1282 130 s \$0-haptic-drum-demo/Link-stiffness;
+#X msg 563 136 0.012;
+#X obj 563 156 s \$0-haptic-drum-demo/Bottom-left-Pulse-length;
+#X obj 979 136 r \$0-haptic-drum-demo/Bottom-left-Pulse-length;
+#X msg 979 156 /haptic-drum-demo/Bottom-left-Pulse-length \$1;
+#X obj 1282 150 route /haptic-drum-demo/Bottom-left-Pulse-length;
+#X obj 1282 170 s \$0-haptic-drum-demo/Bottom-left-Pulse-length;
+#X msg 563 176 0.5;
+#X obj 563 196 s \$0-haptic-drum-demo/Bottom-left-Pulse-strength;
+#X obj 979 176 r \$0-haptic-drum-demo/Bottom-left-Pulse-strength;
+#X msg 979 196 /haptic-drum-demo/Bottom-left-Pulse-strength \$1;
+#X obj 1282 190 route /haptic-drum-demo/Bottom-left-Pulse-strength
+;
+#X obj 1282 210 s \$0-haptic-drum-demo/Bottom-left-Pulse-strength;
+#X msg 563 216 0.012;
+#X obj 563 236 s \$0-haptic-drum-demo/Bottom-right-Pulse-length;
+#X obj 979 216 r \$0-haptic-drum-demo/Bottom-right-Pulse-length;
+#X msg 979 236 /haptic-drum-demo/Bottom-right-Pulse-length \$1;
+#X obj 1282 230 route /haptic-drum-demo/Bottom-right-Pulse-length;
+#X obj 1282 250 s \$0-haptic-drum-demo/Bottom-right-Pulse-length;
+#X msg 563 256 0.5;
+#X obj 563 276 s \$0-haptic-drum-demo/Bottom-right-Pulse-strength;
+#X obj 979 256 r \$0-haptic-drum-demo/Bottom-right-Pulse-strength;
+#X msg 979 276 /haptic-drum-demo/Bottom-right-Pulse-strength \$1;
+#X obj 1282 270 route /haptic-drum-demo/Bottom-right-Pulse-strength
+;
+#X obj 1282 290 s \$0-haptic-drum-demo/Bottom-right-Pulse-strength
+;
+#X msg 563 296 0.012;
+#X obj 563 316 s \$0-haptic-drum-demo/Top-left-Pulse-length;
+#X obj 979 296 r \$0-haptic-drum-demo/Top-left-Pulse-length;
+#X msg 979 316 /haptic-drum-demo/Top-left-Pulse-length \$1;
+#X obj 1282 310 route /haptic-drum-demo/Top-left-Pulse-length;
+#X obj 1282 330 s \$0-haptic-drum-demo/Top-left-Pulse-length;
+#X msg 563 336 0.5;
+#X obj 563 356 s \$0-haptic-drum-demo/Top-left-Pulse-strength;
+#X obj 979 336 r \$0-haptic-drum-demo/Top-left-Pulse-strength;
+#X msg 979 356 /haptic-drum-demo/Top-left-Pulse-strength \$1;
+#X obj 1282 350 route /haptic-drum-demo/Top-left-Pulse-strength;
+#X obj 1282 370 s \$0-haptic-drum-demo/Top-left-Pulse-strength;
+#X msg 563 376 0.012;
+#X obj 563 396 s \$0-haptic-drum-demo/Top-right-Pulse-length;
+#X obj 979 376 r \$0-haptic-drum-demo/Top-right-Pulse-length;
+#X msg 979 396 /haptic-drum-demo/Top-right-Pulse-length \$1;
+#X obj 1282 390 route /haptic-drum-demo/Top-right-Pulse-length;
+#X obj 1282 410 s \$0-haptic-drum-demo/Top-right-Pulse-length;
+#X msg 563 416 0.5;
+#X obj 563 436 s \$0-haptic-drum-demo/Top-right-Pulse-strength;
+#X obj 979 416 r \$0-haptic-drum-demo/Top-right-Pulse-strength;
+#X msg 979 436 /haptic-drum-demo/Top-right-Pulse-strength \$1;
+#X obj 1282 430 route /haptic-drum-demo/Top-right-Pulse-strength;
+#X obj 1282 450 s \$0-haptic-drum-demo/Top-right-Pulse-strength;
+#X obj 158 349 hsl 128 15 -50 50 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 9400 1;
+#X floatatom 311 395 8 0 0 0 - - -;
+#N canvas 0 24 158 175 make-smooth-audio-signal~ 0;
+#X obj 19 13 inlet;
+#X obj 19 86 line~;
+#X msg 19 64 \$1 20;
+#X obj 79 66 outlet;
+#X obj 19 135 outlet~;
+#X obj 19 110 lp2~ 10 0.707 200;
+#X obj 19 37 * 0.0006;
+#X connect 0 0 6 0;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
+#X connect 6 0 3 0;
+#X restore 146 373 pd make-smooth-audio-signal~;
+#X text 99 430 dev1;
+#X text 102 439 pos;
+#X text 342 384 Finger position;
+#X text 344 396 m;
+#X text 144 334 Position of finger interacting with resonator;
+#X obj 212 469 hsl 128 15 -50 50 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 10900 1;
+#X floatatom 365 515 8 0 0 0 - - -;
+#N canvas 0 24 158 175 make-smooth-audio-signal~ 0;
+#X obj 19 13 inlet;
+#X obj 19 86 line~;
+#X msg 19 64 \$1 20;
+#X obj 79 66 outlet;
+#X obj 19 135 outlet~;
+#X obj 19 110 lp2~ 10 0.707 200;
+#X obj 19 37 * 0.0006;
+#X connect 0 0 6 0;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
+#X connect 6 0 3 0;
+#X restore 200 493 pd make-smooth-audio-signal~;
+#X text 176 533 pos;
+#X text 396 504 Finger position;
+#X text 398 516 m;
+#X text 198 454 Position of finger interacting with resonator;
+#X text 173 524 dev2;
+#X obj 141 603 dac~;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 3 111 0;
+#X connect 1 4 111 1;
+#X connect 25 0 35 0;
+#X connect 25 0 41 0;
+#X connect 25 0 47 0;
+#X connect 25 0 53 0;
+#X connect 25 0 59 0;
+#X connect 25 0 65 0;
+#X connect 25 0 71 0;
+#X connect 25 0 77 0;
+#X connect 25 0 83 0;
+#X connect 25 0 89 0;
+#X connect 28 0 33 0;
+#X connect 29 0 30 0;
+#X connect 31 0 32 0;
+#X connect 32 0 26 0;
+#X connect 33 0 34 0;
+#X connect 33 1 39 0;
+#X connect 35 0 36 0;
+#X connect 37 0 38 0;
+#X connect 38 0 26 0;
+#X connect 39 0 40 0;
+#X connect 39 1 45 0;
+#X connect 41 0 42 0;
+#X connect 43 0 44 0;
+#X connect 44 0 26 0;
+#X connect 45 0 46 0;
+#X connect 45 1 51 0;
+#X connect 47 0 48 0;
+#X connect 49 0 50 0;
+#X connect 50 0 26 0;
+#X connect 51 0 52 0;
+#X connect 51 1 57 0;
+#X connect 53 0 54 0;
+#X connect 55 0 56 0;
+#X connect 56 0 26 0;
+#X connect 57 0 58 0;
+#X connect 57 1 63 0;
+#X connect 59 0 60 0;
+#X connect 61 0 62 0;
+#X connect 62 0 26 0;
+#X connect 63 0 64 0;
+#X connect 63 1 69 0;
+#X connect 65 0 66 0;
+#X connect 67 0 68 0;
+#X connect 68 0 26 0;
+#X connect 69 0 70 0;
+#X connect 69 1 75 0;
+#X connect 71 0 72 0;
+#X connect 73 0 74 0;
+#X connect 74 0 26 0;
+#X connect 75 0 76 0;
+#X connect 75 1 81 0;
+#X connect 77 0 78 0;
+#X connect 79 0 80 0;
+#X connect 80 0 26 0;
+#X connect 81 0 82 0;
+#X connect 81 1 87 0;
+#X connect 83 0 84 0;
+#X connect 85 0 86 0;
+#X connect 86 0 26 0;
+#X connect 87 0 88 0;
+#X connect 87 1 93 0;
+#X connect 89 0 90 0;
+#X connect 91 0 92 0;
+#X connect 92 0 26 0;
+#X connect 93 0 94 0;
+#X connect 95 0 97 0;
+#X connect 97 0 1 1;
+#X connect 97 1 96 0;
+#X connect 103 0 105 0;
+#X connect 105 0 1 2;
+#X connect 105 1 104 0;
+#X coords 0 -1 1 1 235 320 1 0 0;

@@ -1,0 +1,149 @@
+faustcode:// The following is put together via Kjetil S. Matheussen's approach on the Faust mailing list 
+faustcode:// and the documentation on rdtable (including in music.lib)
+faustcode:numOfPresets = 24;
+faustcode:presetNum = int(nentry("Preset number",0,0,23,1));
+faustcode:presetInitIndex = (+(1)~_) - 1;  // 0,1,2,3,É
+faustcode:mytake(k,total,longlist) = longlist : par(i,total,*(k==i)) :> _;  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ground(0.0),mn40xn40y,();
+ground(0.0),mn40xn20y,();
+ground(0.0),mn40xn0y,();
+ground(0.0),mn40x20y,();
+ground(0.0),mn40x40y,();
+ground(0.0),mn20xn40y,();
+ground(0.0),mn20xn20y,();
+#mass(massMembrane*(1.0 + randomTweak*(0.836068))),mn20xn0y,();
+	mass(0.01,0.0,0.0),mn20xn0y,();
+ground(0.0),mn20x20y,();
+ground(0.0),mn20x40y,();
+ground(0.0),mn0xn40y,();
+	mass(massMembrane*(1.0 + randomTweak*(-0.799939)),0.0,0.0),mn0xn20y,();
+	mass(massSnrmn0xn20yMass*(1.0 + randomTweak*(0.574577)),0.0,0.0),massSnrmn0xn20y,();
+link(gravParam,0.00,0.0), linkSnrmn0xn20y,snareGround,massSnrmn0xn20y,();
+touch(touchStiffSnrmn0xn20y,snareDamping,0.0), touchSnrmn0xn20y,mn0xn20y,massSnrmn0xn20y,();
+	mass(massMembrane*(1.0 + randomTweak*(-0.542241)),0.0,0.0),mn0xn0y,();
+	mass(massMembrane*(1.0 + randomTweak*(0.567359)),0.0,0.0),mn0x20y,();
+	mass(massSnrmn0x20yMass*(1.0 + randomTweak*(-0.119600)),0.0,0.0),massSnrmn0x20y,();
+link(gravParam,0.00,0.0), linkSnrmn0x20y,snareGround,massSnrmn0x20y,();
+touch(touchStiffSnrmn0x20y,snareDamping,0.0), touchSnrmn0x20y,mn0x20y,massSnrmn0x20y,();
+ground(0.0),mn0x40y,();
+ground(0.0),m20xn40y,();
+ground(0.0),m20xn20y,();
+	mass(massMembrane*(1.0 + randomTweak*(-0.918061)),0.0,0.0),m20xn0y,();
+	mass(massSnrm20xn0yMass*(1.0 + randomTweak*(-0.061272)),0.0,0.0),massSnrm20xn0y,();
+link(gravParam,0.00,0.0), linkSnrm20xn0y,snareGround,massSnrm20xn0y,();
+touch(touchStiffSnrm20xn0y,snareDamping,0.0), touchSnrm20xn0y,m20xn0y,massSnrm20xn0y,();
+ground(0.0),m20x20y,();
+ground(0.0),m20x40y,();
+ground(0.0),m40xn40y,();
+ground(0.0),m40xn20y,();
+ground(0.0),m40xn0y,();
+ground(0.0),m40x20y,();
+ground(0.0),m40x40y,();
+
+link(50.0,0.001,0.0),ldev2,dev2,g,(llabel);
+link(interactionStiffness,interactionDamping,0.0),lll,dev1,drumstick,(label);
+
+	mass(drumstickMass,0.0,0.0),drumstick,();
+touch(drumstickStiffness,drumstickDamping,0.0),tt,drumstick, mn0xn0y,();
+
+ground(0.0),g,();
+ground(0.0),snareGround,();
+port( ),dev1,(devlabel);
+port( ),dev2,(devlabel);
+
+audioout,aL,(mn20xn0y*volume1 + mn0xn0y*0.25*volume2 + snareVolume*mn0xn20y+ snareVolume*mn0x20y+ snareVolume*m20xn0y):highpass(1,2000.0):highpass(1,1000.0)*(2400000.0)*volume*panVar;
+audioout,aR,(mn20xn0y*volume1 + mn0xn0y*0.25*volume2 + snareVolume*mn0xn20y+ snareVolume*mn0x20y+ snareVolume*m20xn0y):highpass(1,2000.0):highpass(1,1000.0)*(2400000.0)*volume*(1.0-panVar);
+link(edgeStiffness,edgeDamping,0.0),l1,mn40xn0y,mn20xn0y,();
+link(edgeStiffness,edgeDamping,0.0),l2,mn20xn20y,mn20xn0y,();
+link(edgeStiffness,edgeDamping,0.0),l3,mn20xn20y,mn0xn20y,();
+link(edgeStiffness,edgeDamping,0.0),l4,mn20xn0y,mn20x20y,();
+link(membraneStiffness,membraneDamping,0.0),l5,mn20xn0y,mn0xn0y,();
+link(edgeStiffness,edgeDamping,0.0),l6,mn20x20y,mn0x20y,();
+link(edgeStiffness,edgeDamping,0.0),l7,mn0xn40y,mn0xn20y,();
+link(membraneStiffness,membraneDamping,0.0),l8,mn0xn20y,mn0xn0y,();
+link(edgeStiffness,edgeDamping,0.0),l9,mn0xn20y,m20xn20y,();
+link(membraneStiffness,membraneDamping,0.0),l10,mn0xn0y,mn0x20y,();
+link(membraneStiffness,membraneDamping,0.0),l11,mn0xn0y,m20xn0y,();
+link(edgeStiffness,edgeDamping,0.0),l12,mn0x20y,mn0x40y,();
+link(edgeStiffness,edgeDamping,0.0),l13,mn0x20y,m20x20y,();
+link(edgeStiffness,edgeDamping,0.0),l14,m20xn20y,m20xn0y,();
+link(edgeStiffness,edgeDamping,0.0),l15,m20xn0y,m20x20y,();
+link(edgeStiffness,edgeDamping,0.0),l16,m20xn0y,m40xn0y,();
+
+
+
+
+
+faustcode:interactionDampingPresets = (0.188189,0.188189,0.2,0.243307,0.243307,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.145669,0.2,0.2,0.302362,0.2,0.2,0.2,0.2);
+faustcode:interactionStiffnessPresets = (80.6299,80.6299,80.6299,400,400,80.6299,80.6299,105.197,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299,80.6299);
+faustcode:drumstickDampingPresets = (0.0590551,0.120472,0.0566929,0,0,0,0,0,0,0.0425197,0.0425197,0.0425197,0.0425197,0,0,0,0,0,0,0,0,0,0,0);
+faustcode:drumstickMassPresets = (0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001);
+faustcode:drumstickStiffnessPresets = (275.046,275.046,275.046,32.448,32.448,330.322,330.322,330.322,330.322,400,363.15,400,400,127.645,127.645,127.645,160.472,127.645,127.645,400,127.645,127.645,127.645,127.645);
+faustcode:edgeDampingPresets = (0.0732551,0.0921339,0.010326,0.0158323,0.0158323,0.00324646,0.00245984,0.00245984,0.00245984,0.0001,0.0001,0.00245984,0.00245984,0.001,0.000886614,0.000886614,0.000886614,0.00167323,0.00167323,0.00481969,0.00481969,0.00481969,0.00481969,0.00481969);
+faustcode:edgeStiffnessPresets = (122.018,184.38,184.38,262.333,262.333,122.018,67.4512,44.0654,44.0654,184.38,184.38,184.38,184.38,652.097,652.097,1000,1000,722.254,644.302,722.254,722.254,722.254,722.254,722.254);
+faustcode:massMembranePresets = (0.00609624,0.00609624,0.00609624,0.00299398,0.00217611,0.0006,0.00031,0.00016288,0.00016288,0.000182383,0.000119469,0.000182383,0.000119469,0.0001,0.0001,0.0001,5e-05,5e-05,5e-05,7.5e-05,5e-05,5e-05,5e-05,5e-05);
+faustcode:membraneDampingPresets = (0.075615,0.0968535,0.0142591,0.00403307,0.00403307,0.0111126,0.00324646,0.00245984,0.00324646,0.0001,0.0001,0.00324646,0.00324646,0.001,0.00167323,0.00167323,0.00167323,0.00324646,0.00324646,0.00324646,0.00639291,0.00639291,0.00639291,0.00639291);
+faustcode:membraneStiffnessPresets = (80.1575,267.244,267.244,160.994,160.994,823.593,823.593,387.057,823.593,165.906,165.906,165.906,165.906,675.483,1000,1000,1000,867.48,867.48,867.48,867.48,867.48,867.48,867.48);
+faustcode:panVarPresets = (1,0,1,0.149606,0.653543,1,0.740157,0.307087,0,0,0.874016,0,0.874016,1,0.755906,0.535433,0,0,0.259843,0.724409,1,1,0.322835,0);
+faustcode:randomTweakPresets = (0.283465,0.283465,0.283465,0.141732,0.346457,0.700787,0.732283,0.795276,0.732283,0,0,0,0,0.322835,0.322835,0.220472,0.149606,0.511811,0.511811,0.511811,0.511811,0.511811,0.511811,0.511811);
+faustcode:snareDampingPresets = (0.0695984,0.0695984,0.0695984,0.0463685,0.0619591,0.0635181,0.0494866,0.0494866,0.0494866,0.0243858,0.00801575,0.0672598,0.0953228,0.0494866,0.0494866,0.0494866,0.0929843,0.0728724,0.0728724,0.0728724,0.0728724,0.0728724,0.0728724,0.0728724);
+faustcode:touchStiffSnrm20xn0yPresets = (5629.88,5629.88,5629.88,1944.84,1944.84,7933.03,7933.03,7933.03,7933.03,1944.84,1944.84,1944.84,1944.84,7933.03,7933.03,7933.03,15149.6,3326.73,3326.73,3326.73,3326.73,3326.73,3326.73,3326.73);
+faustcode:touchStiffSnrmn0x20yPresets = (6704.69,6704.69,6704.69,4862.17,4862.17,4862.17,4862.17,4862.17,4862.17,1330.67,1330.67,1330.67,1330.67,4862.17,4862.17,4862.17,14535.4,4862.17,4862.17,4862.17,4862.17,4862.17,4862.17,4862.17);
+faustcode:touchStiffSnrmn0xn20yPresets = (5476.34,5476.34,5476.34,3787.36,3787.36,6704.69,6704.69,6704.69,6704.69,2866.1,2866.1,2866.1,2866.1,6704.69,6704.69,6704.69,18066.9,3940.91,3940.91,3940.91,3940.91,3940.91,3940.91,3940.91);
+faustcode:snareVolumePresets = (0,0,0.708661,0.669291,0.629921,0.15748,0.15748,0.15748,0.15748,0,0,0.866142,0.866142,0.15748,0.15748,0.275591,0.275591,1.33858,0.433071,0.354331,0.0787402,0.0787402,0.0787402,0.0787402);
+faustcode:volume1Presets = (3,3,3,1.27559,1.27559,0.669213,0.125906,0.0786614,0.125906,0,0.0708661,0,0,0.125906,0.125906,0.125906,1.54323,0.141732,0,0.645591,0.125906,0.125906,0.125906,0.125906);
+faustcode:volume2Presets = (0,0,0,1.41732,1.41732,2.00787,2.00787,1.53543,2.00787,0.874016,1.32283,0,1.32283,2.00787,2.00787,2.00787,0.330709,1.25197,2.00787,1.06299,2.00787,2.00787,2.00787,2.00787);
+faustcode:volumePresets = (3,2.17323,3,3,3,0.267638,0.267638,0.267638,0.267638,0.267638,0.149528,0.267638,0.149528,1,1,1,0.574724,0.480236,0.810945,0.314882,0.810945,0.810945,0.810945,0.810945);
+faustcode:gravParamPresets = (300,300,300,255.661,222.047,255.661,255.661,255.661,255.661,0.5,0.6,0.15,0.23,255.661,255.661,255.661,300,300,300,300,300,300,300,300);
+faustcode:massSnrm20xn0yMassPresets = (0.000382119,0.000382119,0.000382119,0.000178055,0.000178055,0.000169552,0.000169552,0.000169552,0.000169552,0.000378993,0.000378993,7.26469e-05,7.26469e-05,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552,0.000169552);
+faustcode:massSnrmn0x20yMassPresets = (0.000325852,0.000325852,0.000325852,9.45288e-05,9.45288e-05,4.76391e-05,4.76391e-05,4.76391e-05,4.76391e-05,0.000275836,0.0003196,1.95052e-05,5.7017e-05,0.000119537,4.76391e-05,4.76391e-05,4.76391e-05,8.51509e-05,6.3269e-05,4.76391e-05,4.76391e-05,4.76391e-05,4.76391e-05,4.76391e-05);
+faustcode:massSnrmn0xn20yMassPresets = (0.000357111,0.000357111,0.000357111,0.000307096,0.000307096,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,0.000347734,0.00035086,0.000110159,0.000110159,0.000219568,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05,9.14028e-05);
+
+
+
+
+
+faustcode:interactionDamping=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, interactionDampingPresets),presetNum);
+faustcode:interactionStiffness=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, interactionStiffnessPresets),presetNum);
+faustcode:drumstickDamping=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, drumstickDampingPresets),presetNum);
+faustcode:drumstickMass=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, drumstickMassPresets),presetNum);
+faustcode:drumstickStiffness=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, drumstickStiffnessPresets),presetNum);
+faustcode:edgeDamping=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, edgeDampingPresets),presetNum);
+faustcode:edgeStiffness=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, edgeStiffnessPresets),presetNum);
+faustcode:massMembrane=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, massMembranePresets),presetNum);
+faustcode:membraneDamping=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, membraneDampingPresets),presetNum);
+faustcode:membraneStiffness=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, membraneStiffnessPresets),presetNum);
+faustcode:panVar=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, panVarPresets),presetNum);
+faustcode:randomTweak=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, randomTweakPresets),presetNum);
+faustcode:snareDamping=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, snareDampingPresets),presetNum);
+faustcode:touchStiffSnrm20xn0y=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, touchStiffSnrm20xn0yPresets),presetNum);
+faustcode:touchStiffSnrmn0x20y=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, touchStiffSnrmn0x20yPresets),presetNum);
+faustcode:touchStiffSnrmn0xn20y=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, touchStiffSnrmn0xn20yPresets),presetNum);
+faustcode:snareVolume=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, snareVolumePresets),presetNum);
+faustcode:volume1=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, volume1Presets),presetNum);
+faustcode:volume2=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, volume2Presets),presetNum);
+faustcode:volume=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, volumePresets),presetNum);
+faustcode:gravParam=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, gravParamPresets),presetNum);
+faustcode:massSnrm20xn0yMass=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, massSnrm20xn0yMassPresets),presetNum);
+faustcode:massSnrmn0x20yMass=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, massSnrmn0x20yMassPresets),presetNum);
+faustcode:massSnrmn0xn20yMass=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets, massSnrmn0xn20yMassPresets),presetNum);

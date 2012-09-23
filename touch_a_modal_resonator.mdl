@@ -1,0 +1,42 @@
+# Example MDL file for Synth-A-Modeler
+#
+# This is the same as touch_a_resonator.mdl, except that the resonator
+# is modeled using the resonator object.
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+# Specify audio target GUI widgets
+faustcode:resonanceFrequency=hslider("Resonance Frequency", 326.0, 40.0, 3000.0, 4.0);
+faustcode:decayTimeOfResonator=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
+faustcode:massOfResonator=hslider("Mass of Resonator", 0.001, 0.0004, 0.008, 0.0002);
+faustcode:interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
+faustcode:interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
+
+# Model itself
+resonator(resonanceFrequency, decayTimeOfResonator, massOfResonator),r1,( );
+port( ),dev1,(devlabel);
+port( ),dev2,(devlabel);
+
+touch(interactionStiffness,interactionDamping,0.0),tt,r1,dev1,(tlabel);
+
+audioout,aLeft,r1*(1000.0);
+audioout,aRight,r1*(1000.0);

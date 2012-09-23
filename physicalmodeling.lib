@@ -1,0 +1,392 @@
+// Some physical modeling primitives written in Faust code.
+//
+// 2011 and 2012 by Edgar Berdahl
+// Audio Communication Group, Technical University of Berlin
+
+import("music.lib");
+import("effect.lib");
+
+// Forward Euler differentiator
+differentiator = _ <: (_, mem) : - : *(fs) : _;
+
+
+link(k,R,o) = _ : (_-o) <: (_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs))) : (_,_) : + : _;
+
+
+// Old version of touch
+//touch(k,R,o) = _ <: (_,_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs)), (_>o)) : (_,_,_) : (+,_) : * : _;
+
+// Correct implementation of touch
+touch(k,R,o) = _ : -(o) <: (_,_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs)), (_>0.0)) : (_,_,_) : (+,_) : * : _;
+
+
+
+
+// This plucking logic determines the new state for the state machine
+pluckingLogic(prevState,xthresh,xdiff) = (newState) with {
+	// state is zero means that we are above the string
+	// state is one means that we are below the string
+
+	// Should set newState to 0 if ((prevState==1) & (xdiff > xthresh))
+	setNewStateToZero = ((prevState==1) & (xdiff > xthresh));
+
+	// Should set newState to 1 if ((prevState==0) & (xdiff < -xthresh))
+	setNewStateToOne = ((prevState==0) & (xdiff < -xthresh));
+
+	// This is where we determine whether to retain the previous state or not
+	// (I implemented the "not" function using 1-)
+	retainPrevState = ((1-setNewStateToZero) & (1-setNewStateToOne));
+
+	// We could use 
+	// newState = prevState*retainCurrentState + setNewStateToZero*0 + setNewStateToOne*1;
+	// but we can factor out the zero term, so
+	newState = (retainPrevState*prevState + setNewStateToOne*1) : _;
+};
+
+pluckingStateMachine = pluckingLogic ~(_);
+
+pluckingForceEnable(state,xthresh,xdiff) = enable with {
+	// It is not possible to have both (state==0) and (state==1), so we can be
+	// sure that the output here is either 0 or 1.
+	enable = ((state==0) & (-xthresh <= xdiff) & (xdiff <= 0))*1 + ((state==1) & (0 <= xdiff) & (xdiff <= xthresh))*1;
+};
+
+calculatePluckingForceEnable = (_,_) <: (_,_,_,_) : (pluckingStateMachine, (_,_)) : pluckingForceEnable;
+
+// This is the old implementation of pluck that doesn't implement the offset.
+//pluck(k,R,o) = _ <: (_,_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs)), calculatePluckingForceEnable(o)) : (_,_,_) : (+,_) : * : _;
+
+// New implementation of pluck includes the offset
+pluck(k,R,pluckDistance,o) = _ : -(o) <: (_,_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs)), calculatePluckingForceEnable(pluckDistance)) : (_,_,_) : (+,_) : * : _;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// The following is put together via Kjetil S. Matheussen's approach on the Faust mailing list 
+// and the documentation on rdtable (including in music.lib)
+presetInitIndex = (+(1)~_) - 1;  // 0,1,2,3,É
+mytake(k,total,longlist) = longlist : par(i,total,*(k==i)) :> _; 
+round = _:+(0.5):int:_;
+
+
+
+
+
+// e.g. 
+// NOTE:  Due to a bug in Faust's rdtable, tableLength > 1   !!!
+pulseTouchTable(k,R,o,pulseMultiplier,pulseTau,pulseLen,theTable,tableLength) = pulseTouchGeneral(k,R,o,pulseMultiplier,pulseTau,pulseLen,rdtable(tableLength,mytake(presetInitIndex,tableLength,theTable)),tableLength);
+
+
+
+
+// e.g. pulseTouchGeneral(100.0,0.01,0.0,250.0,0.001,0.025,rdtable(100,noise:+(0.5)), 100);
+pulseTouchGeneral(k,R,o,pulseMultiplier,pulseTau,pulseLen,mapMultiplier,mapMultiplierLength) = _ <: (_,_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs)), (_>o)) : (_,_,(_<:(_,_))) : (+,_,((*:_<:(_,_):(+~(*(decayConst))<:(_,_):(<(pulseThresh),_)),_)~(_,!,!):(!,_,_):(*(pulseMultiplier),(selectNextTableIndex:int:mapMultiplier)):(_,_):*)) : (*,_) : + : _
+with {
+	selectNextTableIndex = _<:(_,_):(1.0-_,_):((myPermute,_) : (*,((+(1.0):round:%(mapMultiplierLength:round)),_:*)):(_,_) : +)~(_<:(_,_));
+	myPermute(a,b,c) = (a,c,b);
+
+	decayConst = exp(-1.0/pulseTau/fs);
+	pulseThresh = exp(-pulseLen/pulseTau);
+};
+
+
+
+
+
+
+
+
+
+// pulseTau and pulseLen are in seconds -- this models the haptic drum link
+// The pulse switches off as soon as the decaying exponential falls beneath pulseThresh.
+//
+// Need to be careful about the sign of pulseMultiplier !!!
+//
+// Maybe it would be nicer to make the pulseMultiplier correspond to the momentum transfer instead ...
+pulseTouch(k,R,o,pulseMultiplier,pulseTau,pulseLen) = _ <: (_,_,_) : (*(k),  (_ <: (_,_) : (_, mem) : - : *(R*fs)), (_>o)) : (_,_,(_<:(_,_))) : (+,_,((*:+~(*(decayConst))<:(_,_):(<(pulseThresh),_))~(_,!):(!,_):*(pulseMultiplier))) : (*,_) : + : _
+with {
+	decayConst = exp(-1.0/pulseTau/fs);
+	pulseThresh = exp(-pulseLen/pulseTau);
+};
+
+
+largeOscillator1(f,tau,m,b) = mainStuff:chooseOutputs
+with {
+  PI = 3.1415926535897932384626;
+
+  decayParam = exp(-1.0/tau/fs);
+  x1 = decayParam*cos(2.0*PI*f/fs);
+  y1 = decayParam*sin(2.0*PI*f/fs);
+
+  b1 = 1.0/m/fs/fs;
+  b2 = -1.0*b1*cos(2.0*PI*f/fs)/sin(2.0*PI*f/fs);
+
+  mainBox(w,u,Fext,nl) = (x1*w + nl*w - y1*u + b1*Fext,   y1*w + x1*u + nl*u + b2*Fext);
+  mainStuff = (calcNonlinear:mainBox)~(chooseFeedbacks);
+  calcNonlinear(w,u,Fext)=(w,u,Fext,b*(w*w+u*u)/fs);
+					
+  chooseFeedbacks = (_,_);  		
+  chooseOutputs = (_,!);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+onePoleBLT(fcutoff) = _:*(b)<:(_,_):(mem,_):+:(+)~(*(fb)):_ with {
+	aInSPlane = 2*3.14159265358979*fcutoff;
+	b = aInSPlane/(2*fs + aInSPlane);
+	fb = (2*fs-aInSPlane)/(2*fs+aInSPlane);
+};
+
+MatsuokaNeuron(tau,b,s,myScaler,myOffset,fc) = _:-(myOffset):/(myScaler):onePoleBLT(fc):+(1.0):((_,-):(_,*(-1.0)):(block2,block1):(_,-,_):(_,*(-1.0),_))~(cross,!):(!,!,_):*(myScaler):+(myOffset) with {
+	cross = _,_<:!,_,_,!; 
+	block1 = _:((_,-):(_,*(-1.0)):(_,*(1.0/fs)):(_,*(s)):+)~(_<:(_,_)):max(0.0):min(1.0):(_)<:(_,_);
+	block2 = *(1.0/tau):*(1.0/fs):*(s):(+~(_):(_))<:(_,_):(*(b),_);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+integratorPoleWGJunctions = 0.99999;
+cross = _,_<:!,_,_,!; // standard line interchanger from Julius
+
+
+// I passed along all three inputs in case they were useful in the denominator (for instance in 
+// alternate versions of this object), but the Faust compiler prunes away the unused ones.
+junctionlink(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionLink(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (cross,_,_) : ((_ <: (_,_)),_,_,_) : (_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     );
+junctionlinkUnderneath = junctionlink;  // Interaction is symmetrical, so we can define the opposite connection direction this way
+
+calculateXJandVJjunctionLink(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,+(k/fs + R))) : (((+,_):+),_) : / <: (_,_) : (junctionIntegrator(integratorPoleWGJunctions, waveguideHeight),_)) ~ (_,!);
+// Or use this dummy version instead in order that PS output from Faust isn't corrupt for junctionLink:
+//calculateXJandVJjunctionLink(waveguideHeight, k, R, o) = (_,_,_) : (_,_,!);
+
+
+
+
+
+
+
+
+junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*);
+
+calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
+// Or use this dummy version instead in order that PS output from Faust isn't corrupt for junctionTouch:
+// calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (_,_,_);
+
+// For now I am assuming that the mass-like element is on top of the waveguides (SEE NOTE ABOUT OPPOSITE INTERACTION)
+touchLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset) = (XJoutput, VJoutput, inContact)
+with {
+   ////inContact = (X > (prevXJ*integratorPole + VJlinked/fs));  // THIS WOULD BE FOR THE OPPOSITE INTERACTION
+   inContact = (X < (prevXJ*integratorPole + VJlinked/fs)); 
+
+   // I believe that this is probably a little bit less stable, but it is simpler:
+   //inContact = (X <= prevXJ);
+
+   VJoutput = (inContact, VJnotlinked, VJlinked) : select2;
+   XJoutput = VJoutput : junctionIntegrator(integratorPole, outputOffset);
+};
+
+
+
+
+
+// The following are the same as for junctionTouch, calculateXJandVJjunctionTouch, and touchLogic, except that the logic is switched by flipping the inequality
+// in touchUnderneathLogic so that the mass-like object is "beneath" the waveguide junction.
+junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*);
+
+calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchUnderneathLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
+
+touchUnderneathLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset) = (XJoutput, VJoutput, inContact)
+with {
+   inContact = (X > (prevXJ*integratorPole + VJlinked/fs));  // For the opposite interaction
+   //inContact = (X < (prevXJ*integratorPole + VJlinked/fs));
+
+   // I believe that this is probably a little bit less stable, but it is simpler:
+   //inContact = (X <= prevXJ);
+
+   VJoutput = (inContact, VJnotlinked, VJlinked) : select2;
+   XJoutput = VJoutput : junctionIntegrator(integratorPole, outputOffset);
+};
+
+
+
+
+
+
+
+
+junctionpluck(waveguideHeight, k, R, pluckDistance, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionPluck(waveguideHeight, k, R, pluckDistance, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
+junctionpluckUnderneath = junctionpluck;  // Interaction is symmetrical, so we can define the opposite connection direction this way
+
+calculateXJandVJjunctionPluck(waveguideHeight, k, R, pluckDistance, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight,pluckDistance)  : (pluckLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
+
+pluckLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset, pluckDistance) = (XJoutput, VJoutput, inContact)
+with {
+   inContact = calculatePluckingForceEnable(pluckDistance,prevXJ*integratorPole + VJlinked/fs-X);
+
+   // I believe that this is probably a little bit less stable, but it is simpler:
+   //inContact = calculatePluckingForceEnable(pluckDistance,prevXJ-X);
+
+   VJoutput = (inContact, VJnotlinked, VJlinked) : select2;
+   XJoutput = VJoutput : junctionIntegrator(integratorPole, outputOffset);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+resonator(f,tau,m) = mainStuff:chooseOutputs
+with {
+  PI = 3.1415926535897932384626;
+  b = 0.0;
+
+  decayParam = exp(-1.0/tau/fs);
+  x1 = decayParam*cos(2.0*PI*f/fs);
+  y1 = decayParam*sin(2.0*PI*f/fs);
+
+  b1 = 1.0/m/fs/fs;
+  b2 = -1.0*b1*cos(2.0*PI*f/fs)/sin(2.0*PI*f/fs);
+
+  mainBox(w,u,Fext,nl) = (x1*w + nl*w - y1*u + b1*Fext,   y1*w + x1*u + nl*u + b2*Fext);
+  mainStuff = (calcNonlinear:mainBox)~(chooseFeedbacks);
+  calcNonlinear(w,u,Fext)=(w,u,Fext,b*(w*w+u*u)/fs);
+
+  chooseFeedbacks = (_,_);
+  chooseOutputs = (_,!);
+};
+
+
+// We assume velocity waves, so there must be a sign inversion also
+// at the termination.  For now we are just using a generic, linear phase
+// lowpass filter.
+stringTermination = *(-1.0) : twoZeros(0.33333333333,0.33333333333,0.33333333333);  // deprecated!
+
+
+
+
+
+
+
+
+
+
+
+//fs = min(192000, max(1, fconstant(int fSamplingFreq, <math.h>)));					 // This gets the current sampling rate in some environments É
+//													 // BUT THEN THERE ARE PROBLEMS WITH THE FOLLOWING CODE
+//simpleString(maxTime,currentTime) = fdelay1(1000, (fs*0.5*currentTime-1.0));                           // We could use this, but it's wasteful of memory!
+//simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime))-1, (fs*0.5*currentTime-1.0));    // This is really what we want
+//simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime)), (fs*0.5*currentTime-1.0));      // approximation doesn't work either
+//simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime)), fs*0.5*currentTime);            // This was what we had earlier -- it works, but its inaccurate!
+
+// So for now we are rigidly setting the sampling rate:
+fs = 44100.0;
+simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime))-1, (fs*0.5*currentTime-1.0));    // This is really what we want
+
+
+
+
+
+
+
+// simpleStringTerm just makes a boxcar window to lowpass filter the loop signal using linear phase.  The signal is also multiplied by
+// the reflectionCoeffient.  For a string, the reflection coefficient for velocity waves could for example be -0.995
+// (It would be neat to rewrite this later with Jonathan Abel's trick for making it more efficient with a single delay line and an integrator.)
+simpleStringTerm(reflectionCoefficient, numCoeffs) = _ : *(reflectionCoefficient) : constantFilter(1.0/numCoeffs, numCoeffs);
+onesFIR(1) = _;
+onesFIR(numCoeffs) = _ <: (_,_) : (_, onesFIR(numCoeffs-1)') : +;
+constantFilter(value,numCoeffs) = _ : *(value) : onesFIR(numCoeffs);
+
+
+
+
+
+
+
+//constantFilter(coefValue,2) = _ <: (_,_) : (*(coefValue), *(coefValue)') : +;
+
+
+//explicitJunction(aL,bR,Fin) = (aR,bL,vout) with {
+
+
+
+twoZeros(b0,b1,b2,x) = (x*b0 + x'*b1 + x''*b2);
+
+
+// HSPv3 is wrong -- there is no (1.0-integratorPolePosition) scaling factor for leaky integrators
+// (although there is one for one-pole lowpass filters!)
+
+// integratorPolePosition is the pole position for the single-pole integrator
+// outputOffset is an offset that is added at the output of the integrator
+junctionIntegrator(integratorPolePosition, outputOffset) = *(1/fs) : (+~(_:*(integratorPolePosition))) : +(outputOffset);
+// with {
+//	//integratorPolePosition = 1.0;
+//	integratorPolePosition = 0.99999;
+//};
+
+
+
+
+// This one is more efficient but does not incorporate initial conditions.
+massNoIC(m) = (/(m*fs*fs) : ((_,_ : +) ~ _) : ((_,_ : +) ~ _));
+
+timeCounter = (+(1)~(_) );   // 1,2,3,... 
+impulseStart = (timeCounter == 1);
+mass(m,x0,v0) = (/(m*fs*fs) : ((_,_ : +) ~ (_:+((v0/fs):*(impulseStart)))) : ((_,_ : +) ~ (_:+((x0-v0/fs):*(impulseStart)))));
+
+
+ground(g)=_:!:g;

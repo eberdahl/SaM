@@ -1,0 +1,100 @@
+#!/usr/bin/perl
+#
+# Edgar Berdahl, Jan 21 2012
+# Updated February 2012
+#
+# First argument is input filename for MDL file
+# Second argument is output filename for MDX file
+#
+# For example: ./SAM-preprocessor examplelinks.mdl examplelinks.mdx
+#
+# ALL NUMBERS IN MDL FILES SHOULD BE FLOATING-POINT NUMBERS (NOT INTEGERS)
+
+
+# Here we include the regular expression definitions necessary for parsing model specification files.
+require 'SAM-reg-ex';
+
+
+use v5.10;
+
+use warnings;
+$filename = $ARGV[0];      # e.g. "examplelinks.mdl";
+$filenameout = $ARGV[1];   # e.g. "examplelinks.mdx";
+my $indx = 0;              # index variable used over and over again
+
+
+
+say "Starting SAM-preprocessor...";
+
+
+# First remove all of the comments and write the result into $tmp_filename
+$tmp_filename = "tempSAM3981.tmp";
+open my $fh_tmp_out, '>', $tmp_filename
+    or die "Cannot write '$tmp_filename'";
+open $filehandle, '<', $filename
+    or die "Cannot read '$filename': $!\n";
+#my $beforeComment = qr/(\A[^\n\r#]*)/;   # Contains anything except newlines, returns, and pound symbols (#)
+#my $afterComment = qr/([^\n\r]*)/;       # Contains anything except newlines and returns
+my $beforeComment = qr/([^#]*)/;   # Contains anything except pound symbols (#)
+my $afterComment = qr/(.*)/;       # Contains anything
+my $filterOutComments = qr/\A${beforeComment}#${afterComment}$/;
+while (<$filehandle>)
+{
+    chomp;
+    $theline = $_;
+    
+    # Each line out is simply the line in up until the point where a pound symbol (#) is reached
+    if ($theline =~ qr/$filterOutComments/) {
+	#say "1=" . $1 . ",   2=" . $2;
+        say $fh_tmp_out $1;
+    } else {
+	say $fh_tmp_out $theline;     # If there are no comments in the line
+    }
+}
+close $fh_tmp_out;
+$filename = $tmp_filename;    # Starting now we read out of the temporary file
+
+
+
+
+# Open MDX file for output and prepare to write into it
+open my $fh_out, '>', $filenameout
+    or die "Cannot write '$filenameout': $!\n";
+
+
+
+
+
+
+
+
+# For now just copy over all lines
+open $filehandle, '<', $filename
+    or die "Cannot read '$filename': $!\n";
+while (<$filehandle>)
+{
+    chomp;
+    $theline = $_;
+
+    say $fh_out $theline;	    
+}
+
+
+
+
+
+
+
+
+
+# Delete the temporary file if it still exists
+close $filehandle;
+if (-e $tmp_filename)
+{
+    unlink($tmp_filename);
+}
+
+
+
+
+say "SAM-preprocessor finished.";

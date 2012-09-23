@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+
+#Perhaps I should also be using the following lines, but it works without officially making this a "package."
+#package SAM-reg-ex;
+##file: SAM-reg-ex.pm
+
+# We need to use this package in order to be able to export the variable names.
+use Exporter 'import';
+
+
+
+
+# First define the regular expressions that will be used for parsing the MDL file
+our $mylabel = qr/([a-zA-Z\d]*)/;       # for a single label   # NOTE EARLIER THIS WAS + INSTEAD OF *, WHICH COULD POSSIBLE BREAK THE adjust COMMANDS
+our $mylabels = qr/([a-zA-Z,\d\s]*)/;   # for comma-separated labels with whitespaces
+
+#our $myval = qr/([-\+Ee\.\d]+)/;              # A "floating-point" number can contain the characters +, -, e, E, ., and any digit and in any order  --  maybe this is broken?
+#our $myParams = qr/(\s*[-\+\.eE,\s\d]+\s*)/;  # To represent comma-represented lists of numbers  ... this was previously my $myParams = qr/([-\d\.eE,\s]+)?/;   
+# Actually, maybe we should just assume that any text included within parenthesis will both be parsable by Faust and by any "controladjust" commands (just disallow newlines, returns, alarms, escapes, and form feeds)
+my $myParams = qr/(\s*[^\n\r\a\e\f]*\s*)/;
+
+# A single parameter is analogous but may not contain any commas
+my $myParam = qr/(\s*[^\n\r\a\e\f,]*\s*)/;
+
+#### Now I have changed my parameter lists to allow references to variable names, mathematical operations, really anything understood by Faust.
+#### Thus, each parameter is really just any non-zero text that doesn't include commas, newlines, returns, alarms, escapes, and form feeds
+####our $myParams = qr/(\s*[[^,\n\r\a\e\f]+,\s\d]+\s*)/;  
+####our $myParams = qr/(\s*[\w,\s\d]+\s*)/;  
+
+
+our $link = qr/(link|pluck|touch|linkCA|BUT|pulseTouch|pulseTouchGeneral|pulseTouchTable)/;
+our $linkline = qr/\A\s*${link}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+
+our $vertex = qr/(mass|port|ground|resonator|massCA)/;
+our $vertexline = qr/\A\s*${vertex}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+
+our $audiooutDetails = qr/(.+)/;
+our $audiooutline = qr/\A\s*audioout\s*,\s*${mylabel}\s*,${audiooutDetails};\s*$/;
+#our $moreAudioOutSums = qr/(.*)/;
+#our $audiooutParseSum = qr/\A\s*,\s*${mylabel}\s*,\s*${myval}\s*${moreAudioOutSums}/;
+
+our $faustCode = qr/(.*)/;
+our $faustCodeLine = qr/\A\s*faustcode:\s*${faustCode}$/;
+
+our $adjustIndex = qr/([\d]+)/;
+#our $adjustline = qr/\A\s*controladjust\s*,\s*${mylabel}\s*,\s*${mylabel}\s*:\s*${adjustIndex}\s*;\s*$/;
+our $adjustline = qr/\A\s*controladjust\s*,\s*${mylabel}\s*,\s*${mylabel}\s*:\s*${adjustIndex}\s*;\s*$/;
+
+our $terminationline = qr/\A\s*termination\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+our $waveguideline = qr/\A\s*waveguide\(\s*${myParam}\s*,\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+
+our $junctioninteraction = qr/(junctionlink|junctionlinkUnderneath|junctiontouch|junctiontouchUnderneath|junctionpluck|junctionpluckUnderneath)/;
+our $junctioninteractionline = qr/\A\s*${junctioninteraction}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+our $junctionline = qr/\A\s*junction\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+
+push @EXPORT, qw( $mylabel $mylabels $link $linkline $vertex $vertexline $audiooutDetails $audiooutline $faustCode $faustCodeLine $adjustIndex $adjustline $terminationline $waveguideline $junctioninteractionline $junctionline );
+
+# If we were going to export functions, then we would use syntax akin to the following
+#our @EXPORT = qw( myFunction1 myFunction2 );
+
+1;

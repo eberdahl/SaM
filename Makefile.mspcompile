@@ -1,0 +1,77 @@
+# I took the original Makefile from the Faust distribution and modified it
+# so that the Perl script would get run to produce the DSP file from an MDL file.
+#
+# Furthermore, it attempts to copy in helpfiles from the maxhelp directory into mspdir.
+# (This way you don't lose the help patches you are using to test your Max/MSP externals
+# if you run "make clean", yet the help patches are stored in the mspdir so that Max/MSP
+# can find them easily without having to add that to Max/MSP's path.)
+#
+# Edgar Berdahl
+# January, 2012
+
+
+dspsrc  := $(wildcard *.mdl)
+cppsrc  := $(addprefix $(DEST), $(dspsrc:.mdl=.cpp))
+appl 	:= $(addprefix $(DEST), $(dspsrc:.mdl=~.mxo))
+dspfile	:= $(dspsrc:.mdl=.dsp)
+processor := $(shell uname -p)
+
+CC=g++
+#CC=/Developer/usr/bin/llvm-g++
+
+# For some reason, the path for the Faust architecture files must be absolute rather than relative to the home directory ~
+INC	:= -I/Applications/Max5/MaxSDK-5.1.7/c74support/max-includes/ -I/Applications/Max5/MaxSDK-5.1.7/c74support/msp-includes -I/Users/eberdahl/faust/architecture -I $(PWD)
+#INC	:= -I/usr/local/include/c74support/max-includes -I/usr/local/include/c74support/msp-includes -I $(PWD)
+
+all :  $(dspfile) $(appl)
+
+%.dsp : %.mdl
+	perl Synth-A-Modeler $< $@
+
+$(DEST)%~.mxo : %.dsp Info.plist.template
+	install -d $@/Contents/MacOS
+	faust $(VEC) -g -ps -vs 2048 -a $(ARCH) $< -o $@/$(<:.dsp=.cpp)
+	cp $< $@/$<
+
+	# EJB tried using a conditional for controlling the optional copying of help files, but didn't get it to work yet.
+#ifeq "$(wildcard maxhelp/$(<:.dsp=~.maxhelp))" "maxhelp/$(<:.dsp=~.maxhelp)"
+	#cp maxhelp/$(<:.dsp=~.maxhelp) $@/../$(<:.dsp=~.maxhelp)
+#endif
+	# So EJB decided just to copy it in the background so that an error on copy (if there's no help file) won't stop make from running
+	cp maxhelp/$(<:.dsp=*) $@/.. &
+	#cp maxhelp/$(<:.dsp=~.maxhelp) $@/../$(<:.dsp=~.maxhelp) &
+
+ifeq ($(processor), i386)
+	$(CC) -arch i386 -fpascal-strings -fasm-blocks -g -O3 $(INC)  -c $@/$(<:.dsp=.cpp) -o $@/$(<:.dsp=.i386.o)
+	$(CC) -framework MaxAPI -framework Carbon -framework MaxAudioAPI -arch i386 -Wl,-Y,1455 -bundle $@/$(<:.dsp=.i386.o) -o $@/$(<:.dsp=.i386~) 
+	$(CC) -arch ppc -fpascal-strings -fasm-blocks -g -O3 $(INC)  -c $@/$(<:.dsp=.cpp) -o $@/$(<:.dsp=.ppc.o)
+	$(CC) -framework Carbon -framework MaxAPI -framework MaxAudioAPI -arch ppc -Wl,-Y,1455 -bundle $@/$(<:.dsp=.ppc.o) -o $@/$(<:.dsp=.ppc~)
+	sed s/FOO/$(<:.dsp=~)/ <Info.plist.template >$@/Contents/Info.plist
+	lipo -create $@/$(<:.dsp=.i386~) $@/$(<:.dsp=.ppc~) -output $@/Contents/MacOS/$(<:.dsp=~)
+	rm -f $@/$(<:.dsp=.ppc~) $@/$(<:.dsp=.ppc.o) $@/$(<:.dsp=.i386.o) $@/$(<:.dsp=.i386~)
+else
+	g++ -arch ppc -fpascal-strings -fasm-blocks -g -O3 $(INC)  -c $@/$(<:.dsp=.cpp) -o $@/$(<:.dsp=.ppc.o)
+	g++ -framework Carbon -framework MaxAPI -framework MaxAudioAPI -arch ppc -Wl,-Y,1455 -bundle $@/$(<:.dsp=.ppc.o) -o $@/$(<:.dsp=.ppc~)
+	sed s/FOO/$(<:.dsp=~)/ <Info.plist.template >$@/Contents/Info.plist
+	lipo -create $@/$(<:.dsp=.ppc~) -output $@/Contents/MacOS/$(<:.dsp=~)
+	rm -f $@/$(<:.dsp=.ppc~) $@/$(<:.dsp=.ppc.o)
+endif
+
+Info.plist.template :
+	echo '<?xml version="1.0" encoding="UTF-8"?>' > Info.plist.template
+	echo '<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">'  >> Info.plist.template
+	echo '<plist version="1.0">'  		>> Info.plist.template
+	echo '<dict>'  				>> Info.plist.template
+	echo '	<key>CFBundleExecutable</key>'  >> Info.plist.template
+	echo '	<string>FOO</string>'  		>> Info.plist.template
+	echo '	<key>CFBundleName</key>'  	>> Info.plist.template
+	echo '	<string>FOO</string>'  		>> Info.plist.template
+	echo '	<key>CFBundlePackageType</key>'  >> Info.plist.template
+	echo '	<string>iLaX</string>'  	>> Info.plist.template
+	echo '</dict>'  			>> Info.plist.template
+	echo '</plist>'  			>> Info.plist.template
+
+clean :
+	rm -f $(DEST); rm *.dsp
+
+

@@ -1,0 +1,65 @@
+# This is a very simple snare "drum" model of two small masses bouncing
+# on top of a resonant membrane.  The sound output corresponds to
+# the positions of the bouncing masses.
+
+
+
+# Example MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+faustcode:touchStiffnL=hslider("touchStiffnL", 18000.0, 2000.0, 20000.0, 1000.0);
+faustcode:touchStiffnR=hslider("touchStiffnR", 13000.0, 2000.0, 20000.0, 1000.0);
+faustcode:massL=hslider("massL", 0.000007, 0.000003, 0.00001, 0.000001);
+faustcode:massR=hslider("massR", 0.000004, 0.000003, 0.00001, 0.000001);
+faustcode:massMembrane=hslider("massMembrane", 0.08, 0.0001, 0.1, 0.0001);
+faustcode:decayTimeMembrane =hslider("decayTimeMembrane", 0.08, 0.01, 1.0, 0.01);
+faustcode:freqMembrane=hslider("freqMembrane",170.0, 30.0, 2000.0, 10.0);
+faustcode:touchDamp=hslider("touchDamp",0.01,0.00,0.5,0.01);
+faustcode:gravParam=hslider("gravParam",30.0,1.0,100.0,1.0);
+
+
+	mass(massL,0.0,0.0),msnr1,(mlabel);
+	mass(massR,0.0,0.0),msnr2,(mlabel);
+resonator(freqMembrane, decayTimeMembrane, massMembrane),r1,( );
+ground(0.0),g,(glabel);
+#ground(-0.1),gunder,(glabel2);
+port( ),dev1,(devlabel);
+port( ),dev2,(devlabel);
+
+
+# For the snares
+touch(touchStiffnL,0.03,0.0),ttsrn1,r1,msnr1,(label);
+link(gravParam,0.00,0.0), lsrn1,g,msnr1,(labelz);
+
+touch(touchStiffnR,0.03,0.0),ttsrn2,r1,msnr2,(label);
+link(gravParam,0.00,0.0), lsrn2,g,msnr2,(labelz);
+
+
+
+link(50.0,0.001,0.0),ldev2,dev2,g,(llabel);
+touch(100.0,touchDamp,0.0),tt,dev1,r1,(label);
+
+# Actually for this particular model, the highpass filter isn't necessary ...
+audioout,a1,(r1*(0.0)+msnr1*(1000.0)):highpass(6,50);
+audioout,a2,(r1*(0.0)+msnr2*(1000.0)):highpass(6,50);
