@@ -338,6 +338,7 @@ while (<$filehandle>)
 	# First check if there is an associated link-like object
 	my $linkIdentifier = "";  # The junction is NOT connected to a link-like object unless we find one
 	my $linkedMassLikeObject = "";   # Same for the mass that could be connected if a link is found
+	$numConnectingLinks = 0;
 	open my $fh_inner, '<', $filename
 	    or die "Cannot read '$filename': $!\n";
 	while (<$fh_inner>) {
@@ -406,7 +407,7 @@ while (<$filehandle>)
               	say "Read WAVEGUIDE: " . $theline_inner;
 		say "Read for: " . $1 . " and " . $2 . " and3=" . $3 . " and4=" . $4 . " and5=" . $5;
 		$waveguideImpedance = $1;  my $faustWaveguideCode = $2;  my $waveguideName = $3;   my $i4 = $4;  my $i5 = $5;   # Save regex
-        
+
 		say "junctionIdentifier=" . $junctionIdentifier . ", i4=" . $i4 . ", $i5=" . $i5;
 		if ($junctionIdentifier =~ m/(^\s?$i4\s?$)/) {
 		    say "JUNCTION is on the left!";
@@ -444,7 +445,10 @@ while (<$filehandle>)
 	    $junctionEqn1 = "\t" . $junctionIdentifier . "Outputs = (" . $linkedMassLikeObject . "p, " . $sumWaveForcesIn . ", " . $sumImpedances . ") : " . $faustJunctionName . "(" . $faustJunctionParams . ");";
 	}
 
+	$junctionEqn2 = "\t" . $junctionIdentifier . "=" . $junctionIdentifier . "Outputs:(_,!);";   # for listening
+
 	say $fh_out $junctionEqn1;
+	say $fh_out $junctionEqn2;
 	say $fh_out "";
 
 	# Actually I think it's ok to have zero waveguides attached to a junction -- it's just silly!
@@ -706,8 +710,12 @@ for $indx (1 .. ($feedbackNum)) {
     }
 }
 for $indx (1 .. ($portNum+$audioOutNum)) {
-    $feedbackSelector = $feedbackSelector . ",!";
-    $outputsSelector = $outputsSelector . ",_";
+    if (($indx > 1) || ($feedbackNum > 0)) {
+	$feedbackSelector = $feedbackSelector . ",";
+	$outputsSelector = $outputsSelector . ",";
+    }
+    $feedbackSelector = $feedbackSelector . "!";
+    $outputsSelector = $outputsSelector . "_";
 }
 
 say $fh_out "process = (bigBlock)~(" . $feedbackSelector . "):(" . $outputsSelector . ");";
