@@ -6,6 +6,7 @@ system	:= $(shell uname -s)
 dspsrc  := $(wildcard *.mdl)
 cppsrc  := $(addprefix $(DEST), $(dspsrc:.mdl=.cpp))
 dspfile := $(dspsrc:.mdl=.dsp)
+mdxfile	:= $(dspsrc:.mdl=.mdx)
 
 
 ### check what type of applications to build (MacOSX Darwin or Linux)
@@ -25,11 +26,13 @@ TMP = $(TDR)/$(<:.dsp=)
 ### --------------------------------------------
 
 
-all : $(dspfile) $(appls)
+all : $(mdxfile) $(dspfile) $(appls)
 
 
 ### Darwin
-%.dsp : %.mdl
+%.mdx : %.mdl
+	perl SAM-preprocessor $< $@
+%.dsp : %.mdx
 	perl Synth-A-Modeler $< $@
 
 $(DEST)%.app : %.dsp
@@ -52,7 +55,9 @@ hdir := $(if $(hdir1),$(dir $(hdir1)),$(hdir23))
 qm4 := $(shell which qmake-qt4)
 qm := $(if $(qm4),$(qm4),qmake)
 
-%.dsp : %.mdl
+%.mdx : %.mdl
+	perl SAM-preprocessor $< $@
+%.dsp : %.mdx
 	perl Synth-A-Modeler $< $@
 
 $(DEST)% : %.dsp
