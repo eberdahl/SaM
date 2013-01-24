@@ -126,24 +126,6 @@ with {
 };
 
 
-largeOscillator1(f,tau,m,b) = mainStuff:chooseOutputs
-with {
-  PI = 3.1415926535897932384626;
-
-  decayParam = exp(-1.0/tau/fs);
-  x1 = decayParam*cos(2.0*PI*f/fs);
-  y1 = decayParam*sin(2.0*PI*f/fs);
-
-  b1 = 1.0/m/fs/fs;
-  b2 = -1.0*b1*cos(2.0*PI*f/fs)/sin(2.0*PI*f/fs);
-
-  mainBox(w,u,Fext,nl) = (x1*w + nl*w - y1*u + b1*Fext,   y1*w + x1*u + nl*u + b2*Fext);
-  mainStuff = (calcNonlinear:mainBox)~(chooseFeedbacks);
-  calcNonlinear(w,u,Fext)=(w,u,Fext,b*(w*w+u*u)/fs);
-					
-  chooseFeedbacks = (_,_);  		
-  chooseOutputs = (_,!);
-};
 
 
 
@@ -156,41 +138,10 @@ with {
 
 
 
+//integratorPoleWGJunctions = 1.0;
+//integratorPoleWGJunctions = 0.99999;
+integratorPoleWGJunctions = 0.999;
 
-
-
-
-
-onePoleBLT(fcutoff) = _:*(b)<:(_,_):(mem,_):+:(+)~(*(fb)):_ with {
-	aInSPlane = 2*3.14159265358979*fcutoff;
-	b = aInSPlane/(2*fs + aInSPlane);
-	fb = (2*fs-aInSPlane)/(2*fs+aInSPlane);
-};
-
-MatsuokaNeuron(tau,b,s,myScaler,myOffset,fc) = _:-(myOffset):/(myScaler):onePoleBLT(fc):+(1.0):((_,-):(_,*(-1.0)):(block2,block1):(_,-,_):(_,*(-1.0),_))~(cross,!):(!,!,_):*(myScaler):+(myOffset) with {
-	cross = _,_<:!,_,_,!; 
-	block1 = _:((_,-):(_,*(-1.0)):(_,*(1.0/fs)):(_,*(s)):+)~(_<:(_,_)):max(0.0):min(1.0):(_)<:(_,_);
-	block2 = *(1.0/tau):*(1.0/fs):*(s):(+~(_):(_))<:(_,_):(*(b),_);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-integratorPoleWGJunctions = 0.99999;
 cross = _,_<:!,_,_,!; // standard line interchanger from Julius
 
 
@@ -210,13 +161,14 @@ calculateXJandVJjunctionLink(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),
 
 
 
-junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*);
+//junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*); // was pushing the haptic device in the wrong direction
+junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
 
 calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
 // Or use this dummy version instead in order that PS output from Faust isn't corrupt for junctionTouch:
 // calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (_,_,_);
 
-// For now I am assuming that the mass-like element is on top of the waveguides (SEE NOTE ABOUT OPPOSITE INTERACTION)
+
 touchLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset) = (XJoutput, VJoutput, inContact)
 with {
    ////inContact = (X > (prevXJ*integratorPole + VJlinked/fs));  // THIS WOULD BE FOR THE OPPOSITE INTERACTION
@@ -235,8 +187,8 @@ with {
 
 // The following are the same as for junctionTouch, calculateXJandVJjunctionTouch, and touchLogic, except that the logic is switched by flipping the inequality
 // in touchUnderneathLogic so that the mass-like object is "beneath" the waveguide junction.
-junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*);
-
+//junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*); // was pushing the haptic device in the wrong direction
+junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
 calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchUnderneathLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
 
 touchUnderneathLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset) = (XJoutput, VJoutput, inContact)
@@ -325,18 +277,18 @@ stringTermination = *(-1.0) : twoZeros(0.33333333333,0.33333333333,0.33333333333
 
 
 
+// This gets the current sampling rate in some environments
+//fs = min(192000, max(1, fconstant(int fSamplingFreq, <math.h>)));					 
 
-//fs = min(192000, max(1, fconstant(int fSamplingFreq, <math.h>)));					 // This gets the current sampling rate in some environments É
-//													 // BUT THEN THERE ARE PROBLEMS WITH THE FOLLOWING CODE
-//simpleString(maxTime,currentTime) = fdelay1(1000, (fs*0.5*currentTime-1.0));                           // We could use this, but it's wasteful of memory!
-//simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime))-1, (fs*0.5*currentTime-1.0));    // This is really what we want
-//simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime)), (fs*0.5*currentTime-1.0));      // approximation doesn't work either
-//simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime)), fs*0.5*currentTime);            // This was what we had earlier -- it works, but its inaccurate!
 
-// So for now we are rigidly setting the sampling rate:
+// But for now we are rigidly setting the sampling rate:
 fs = 44100.0;
-simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime))-1, (fs*0.5*currentTime-1.0));    // This is really what we want
 
+
+log2(theval) = log(theval) * 1.442695041;  // like dividing by 0.69 = log_e(2)
+// The following works around what is (in my opinion) effectively a bug in Faust -- 
+// delay times are calculated incorrectly unless the delay line length is a power of 2.
+simpleString(maxTime,currentTime) = fdelay1((2,ceil(log2(fs*0.5*maxTime))):pow:int, (fs*0.5*currentTime-1.0));
 
 
 
@@ -344,31 +296,24 @@ simpleString(maxTime,currentTime) = fdelay1(int(ceil(fs*0.5*maxTime))-1, (fs*0.5
 
 
 // simpleStringTerm just makes a boxcar window to lowpass filter the loop signal using linear phase.  The signal is also multiplied by
-// the reflectionCoeffient.  For a string, the reflection coefficient for velocity waves could for example be -0.995
-// (It would be neat to rewrite this later with Jonathan Abel's trick for making it more efficient with a single delay line and an integrator.)
+// the reflectionCoeffient.  For a string, the reflection coefficient for velocity waves could for example be -0.995.
+// (It would be neat to rewrite this later with Julius' truncated IIR filters.)
 simpleStringTerm(reflectionCoefficient, numCoeffs) = _ : *(reflectionCoefficient) : constantFilter(1.0/numCoeffs, numCoeffs);
 onesFIR(1) = _;
 onesFIR(numCoeffs) = _ <: (_,_) : (_, onesFIR(numCoeffs-1)') : +;
 constantFilter(value,numCoeffs) = _ : *(value) : onesFIR(numCoeffs);
-
-
-
-
-
-
-
 //constantFilter(coefValue,2) = _ <: (_,_) : (*(coefValue), *(coefValue)') : +;
 
 
-//explicitJunction(aL,bR,Fin) = (aR,bL,vout) with {
+
 
 
 
 twoZeros(b0,b1,b2,x) = (x*b0 + x'*b1 + x''*b2);
 
 
-// HSPv3 is wrong -- there is no (1.0-integratorPolePosition) scaling factor for leaky integrators
-// (although there is one for one-pole lowpass filters!)
+// HSPv3 is wrong -- there is no (1.0-integratorPolePosition) scaling factor for leaky 
+// integrators, although there is one for one-pole lowpass filters!
 
 // integratorPolePosition is the pole position for the single-pole integrator
 // outputOffset is an offset that is added at the output of the integrator

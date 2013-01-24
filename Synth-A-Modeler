@@ -134,13 +134,14 @@ my $vertexNum = 0;    # number of mass-like objects (including ports)
 my $linkNum = 0;      # number of link-like objects
 my $portNum = 0;      # number of ports
 my $waveguideNum = 0;
+my $junctionNum = 0;
 my $inputs = "";
 my $outputs = "";
 my $audioOutputs = "";
 my $audioOutNum = 0;
 my $adjustInputs = "";
 my $adjustNum = 0;
-# First we handle the links and the masses that are NOT ports
+# First we handle the objects that are not ports or audioouts (i.e. links, masses that aren't ports, waveguides, junctions)
 open $filehandle, '<', $filename
     or die "Cannot read '$filename': $!\n";
 while (<$filehandle>)
@@ -157,7 +158,7 @@ while (<$filehandle>)
 	#$vertexNum++;    
 	if ($1 ne "port") {    # if it is NOT a port
 	    $vertexNum++;
-	    if (($vertexNum+$waveguideNum) > 1) {
+	    if (($vertexNum+$waveguideNum+$junctionNum) > 1) {
 		$inputs = $inputs . ",";
 		$outputs = $outputs . ",";
 	    }
@@ -167,7 +168,7 @@ while (<$filehandle>)
     }    
     if ($theline =~ qr/$waveguideline/) {
 	$waveguideNum++;
-	if (($vertexNum+$waveguideNum) > 1) {
+	if (($vertexNum+$waveguideNum+$junctionNum) > 1) {
 	    $inputs = $inputs . ",";
 	    $outputs = $outputs . ",";
 	}
@@ -175,6 +176,15 @@ while (<$filehandle>)
 	$inputs = $inputs . $3 . "Rp";
 	$outputs = $outputs . $3 . "L,";
 	$outputs = $outputs . $3 . "R";
+    }
+    if ($theline =~ qr/$junctionline/) {
+	$junctionNum++;
+	if (($vertexNum+$waveguideNum+$junctionNum) > 1) {
+	    $inputs = $inputs . ",";
+	    $outputs = $outputs . ",";
+	}
+	$inputs = $inputs . $2 . "p";
+	$outputs = $outputs . $2;
     }
 }
 close $filehandle;
@@ -224,7 +234,7 @@ while (<$filehandle>)
 close $filehandle;
 $outputs = $outputs . $audioOutputs;
 
-my $feedbackNum = $vertexNum - $portNum + 2*$waveguideNum;
+my $feedbackNum = $vertexNum - $portNum + 2*$waveguideNum + $junctionNum;
 my $theline = "There are " . $vertexNum . " vertices and " . $linkNum . " link(s) and " . $waveguideNum . " waveguides and " . $portNum . " port(s) and " . ($vertexNum - $portNum) . " non-port mass-like objects.";
 say $theline;
 #$theline = "So feedbackNum=" . $feedbackNum . "\n";
