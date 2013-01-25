@@ -71,7 +71,6 @@ $(DEST)%.cpp: %.dsp
 	faust -a $(ARCH) -double $< -o $@
 	# If there are pre-specified help files, then copy them over
 	cp pdhelp/$(<:.dsp=*) $(DEST) &
-	#cp pdhelp/$(<:.dsp=-help.pd) $(@:.cpp=-help.pd) &
 	
 $(DEST)%.pd: %.dsp
 	faust -xml $< -o /dev/null

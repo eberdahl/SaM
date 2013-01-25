@@ -26,10 +26,14 @@ my $indx = 0;              # index variable used over and over again
 
 
 
+
+
+
 # Open file for storing verbose information on compilation result
 open my $fh_compilation, '>', "SAM-debug-compilation.txt"
     or die "Error: Cannot open SAM-debug-compilation.txt for storing comilation result!";
 
+# Handle when the compiler fails
 sub diegracefully($) { 
     say "The Synth-A-Modeler Perl script returned an Error!  Verbose compilation details follow:\n";
     say $_[0];
@@ -488,7 +492,7 @@ while (<$filehandle>)
 
 	say $fh_out $junctionEqn1;
 	say $fh_out $junctionEqn2;
-	say $fh_out "";
+	say $fh_out "\n";
 
 	# Actually I think it's ok to have zero waveguides attached to a junction -- it's just silly!
 	if ($waveguideMatches == 0) {

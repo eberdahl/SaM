@@ -15,9 +15,11 @@ endif
 MYICCFLAGS := '-O3 -xHost -ftz -fno-alias -fp-model fast=2 $(OSCCTRL)' 
 
 ifeq ($(system), Darwin)
-MYGCCFLAGS := '-O3 -m32 -march=native -msse -msse2 -msse3 -ffast-math -Wno-extra-tokens -Wno-return-type -Wno-unused-variable $(OSCCTRL)'
+#MYGCCFLAGS := '-O3 -m32 -march=native -msse -msse2 -msse3 -ffast-math -Wno-extra-tokens -Wno-return-type -Wno-unused-variable $(OSCCTRL)'
+MYGCCFLAGS := '-O3 -m32 -march=native -msse -msse2 -msse3 -ffast-math $(OSCCTRL)'
 else
-MYGCCFLAGS := '-O3 -msse -msse2 -msse3 -ffast-math -Wno-extra-tokens -Wno-return-type -Wno-unused-variable $(OSCCTRL)'
+#MYGCCFLAGS := '-O3 -msse -msse2 -msse3 -ffast-math -Wno-extra-tokens -Wno-return-type -Wno-unused-variable $(OSCCTRL)'
+MYGCCFLAGS := '-O3 -msse -msse2 -msse3 -ffast-math  $(OSCCTRL)'
 endif
 
 VSIZE := 256
