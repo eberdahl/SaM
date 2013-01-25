@@ -1,0 +1,56 @@
+If you are using Synth-A-Modeler with a different target than the ones we have tested so far (or you are upgrading to a much newer version of Faust), you will need a properly configured makefile.
+
+In the following, we explain the changes made to the makefiles in faust-0.9.46/examples to arrive at the new makefiles.  (Note that we recommend using at least faust 0.9.58 or later.)
+
+
+1) First of all, it is really helpful to be able to compile only a single model at a time by specifying the model name (without any extensions) using TARGET= when calling make.  To enable this feature, go to Makefile.pdcompile and change
+dspsrc                  := $(wildcard *.dsp)
+to
+ifdef TARGET
+dspsrc                  := $(TARGET).mdl
+else
+dspsrc                  := $(wildcard *.mdl)
+endif
+
+2) Next, the following variables need to be edited so that they are referenced according to an input "mdl" file instead of an input "dsp" file:
+cppsrc                  := $(addprefix $(DEST), $(dspsrc:.mdl=.cpp))
+dspfile                 := $(dspsrc:.mdl=.dsp)
+mdxfile                 := $(dspsrc:.mdl=.mdx)
+patches                 := $(addprefix $(DEST),  $(dspsrc:.mdl=.pd))
+
+And further down, similarly these also need to depend on "mdl" files:
+ifeq ($(system), Darwin)
+modules                 := $(addprefix $(DEST),  $(dspsrc:.mdl=~.pd_darwin))
+else
+modules                 := $(addprefix $(DEST),  $(dspsrc:.mdl=~.pd_linux))
+endif
+
+
+3) The mdx files also need to be included in the build targets:
+allmodules: $(mdxfile) $(dspfile) $(todo)
+
+
+4) We need to cause perl to be called for building any mdx or dsp files:
+%.mdx : %.mdl
+        @perl SAM-preprocessor $< $@
+
+%.dsp : %.mdx
+        perl Synth-A-Modeler $< $@
+
+
+5) Make sure that faust is using double-precision computations:
+        faust -a $(ARCH) -double $< -o $@
+
+
+6) I personally like to have a separate directory "pdhelp" to store pre-specified help files (that I make by modifying the
+   automatically generated pd-faust files) so that they don't get deleted if I run "make clean".  So I add the
+   following lines also, note they only copy over help files that start with the same name as the original mdl file:
+ 	# If there are pre-specified help files, then copy them over
+ 	cp pdhelp/$(<:.dsp=*) $(DEST) &
+
+
+
+
+
+ - Edgar Berdahl, January 2013
+
