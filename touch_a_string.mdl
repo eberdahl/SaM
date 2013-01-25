@@ -1,8 +1,7 @@
 
 
-termination(simpleStringTerm(-0.994,30) ),t1 ,();
-
-termination(simpleStringTerm(-0.994,30)), t2,();
+termination(simpleStringTerm(-0.994,5000.0) ),t1 ,();
+termination(simpleStringTerm(-0.994,5000.0)), t2,();
 
 waveguide(0.5, simpleString(0.01, 0.01)),w1,t1 ,junct1,();
 waveguide(0.5 ,simpleString(0.01, 0.007)),w2,junct1, t2,();

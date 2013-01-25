@@ -1,0 +1,79 @@
+# MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+# To do: Maybe make the wave impedance adjustable via the GUI ...
+
+
+
+# To specify frequency in Hz
+# faustcode: freq=hslider("Frequency [Hz]", 80.0, 20.0, 1000.0, 5.0);
+
+# To specify frequency using MIDI note numbers 
+faustcode: freqMIDI=hslider("Frequency [MIDI]", 27.0, 20.0, 84.0, 0.05);
+faustcode: freq = 440.0*pow(2.0,(freqMIDI-69.0)/12.0);
+
+faustcode: k=hslider("Pluck stiffness [N/m]",250.0,50.0,1000.0,50.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.1,0.0,2.5,0.01);
+faustcode: relPos=hslider("Pluck position along length",0.29,0.01,0.99,0.01);
+faustcode: maxdisp=hslider("Pluck half-width [m]",0.006,0.001,0.01,0.001);
+faustcode: bridgeAtten=hslider("Bridge attenuation",2.5,0.5,7.0,0.01);
+faustcode: bridgeFc=hslider("Bridge cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
+faustcode: fretAtten=hslider("Fret attenuation",2.5,0.5,7.0,0.01);
+faustcode: fretFc=hslider("Fret cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
+faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
+faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0);    // LP filter with cutoff frequency at 10Hz smoothes volume control signal
+faustcode: outputDSP=highpass(4,20.0);
+
+
+
+port(),dev0,(); # pos 395,45
+port(),dev1,(); # pos 363,277
+
+
+
+pluck(k,R,maxdisp,0.0),p0,junct0,dev0,();
+
+
+
+# These waveguide delay lengths are NOT compensated by the delay introduced by the terminations:
+# waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos)),wg0,bridge,junct0,();
+# waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos))),wg1,fret,junct0,();
+
+# These waveguide delay lengths are compensated by the delay introduced by the terminations:
+waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos-simpleStringTermDelay(bridgeFc))),wg0,bridge,junct0,();
+waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1,fret,junct0,();
+
+
+
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridge,(); # pos 32,154
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fret,(); # pos 440,146
+
+
+
+junction(0.0),junct0,(); # pos 248,96
+
+
+
+audioout,a0,(bridge*vol):outputDSP; # pos 51,280
+audioout,a1,(fret*vol):outputDSP; # pos 507,272

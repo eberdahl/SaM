@@ -35,7 +35,8 @@ open my $fh_compilation, '>', "SAM-debug-compilation.txt"
 
 # Handle when the compiler fails
 sub diegracefully($) { 
-    say "The Synth-A-Modeler Perl script returned an Error!  Verbose compilation details follow:\n";
+    my $error_line = "The Synth-A-Modeler Perl script returned an ERROR while working on " . $filenameout . "!  Verbose compilation details follow:\n";
+    say $error_line;
     say $_[0];
 
     unlink($filenameout);   # Delete output DSP file to avoid confusing the make build system

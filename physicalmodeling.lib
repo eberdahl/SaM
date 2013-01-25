@@ -5,6 +5,15 @@
 
 import("music.lib");
 import("effect.lib");
+//import("filter.lib");
+
+
+onePoleBLT(fcutoff) = _:*(b)<:(_,_):(mem,_):+:(+)~(*(fb)):_ with {
+	aInSPlane = 2*3.14159265358979*fcutoff;
+	b = aInSPlane/(2*fs + aInSPlane);
+	fb = (2*fs-aInSPlane)/(2*fs+aInSPlane);
+};
+
 
 // Forward Euler differentiator
 differentiator = _ <: (_, mem) : - : *(fs) : _;
@@ -292,17 +301,28 @@ simpleString(maxTime,currentTime) = fdelay1((2,ceil(log2(fs*0.5*maxTime))):pow:i
 
 
 
+// This is essentially the simplest possible string termination.  It has no memory.
+memorylessStringTerm(reflectionCoefficient) = _ : *(reflectionCoefficient) : _;
 
 
-
-// simpleStringTerm just makes a boxcar window to lowpass filter the loop signal using linear phase.  The signal is also multiplied by
+// simpleStringTerm makes a boxcar window to lowpass filter the loop signal using linear phase.  fc is the frequency of the
+// first zero in the magnitude response of the boxcar window filter.  The signal is also multiplied by
 // the reflectionCoeffient.  For a string, the reflection coefficient for velocity waves could for example be -0.995.
-// (It would be neat to rewrite this later with Julius' truncated IIR filters.)
-simpleStringTerm(reflectionCoefficient, numCoeffs) = _ : *(reflectionCoefficient) : constantFilter(1.0/numCoeffs, numCoeffs);
-onesFIR(1) = _;
-onesFIR(numCoeffs) = _ <: (_,_) : (_, onesFIR(numCoeffs-1)') : +;
-constantFilter(value,numCoeffs) = _ : *(value) : onesFIR(numCoeffs);
-//constantFilter(coefValue,2) = _ <: (_,_) : (*(coefValue), *(coefValue)') : +;
+simpleStringTerm(reflectionCoefficient, fc) = _ : *(reflectionCoefficient) : constantFilterTIIR(fc);
+constantFilterTIIR(fc) = _ <: (_,_) : (_,delay(256,M)) : - : /(M:float) : (+~(_)) with {  M = (fs/fc):int;  };
+
+// To make it easier to compensate for the "termination delay" introduced by the termination, we also include the following:
+simpleStringTermDelay(fc) = (M:float)/2.0/(fs:float) with {  M = (fs/fc):int;  };
+
+
+
+
+// Old implementation (nice recursive definition but expensive):
+//simpleStringTerm(reflectionCoefficient, numCoeffs) = _ : *(reflectionCoefficient) : constantFilter(1.0/numCoeffs, numCoeffs);
+//onesFIR(1) = _;
+//onesFIR(numCoeffs) = _ <: (_,_) : (_, onesFIR(numCoeffs-1)') : +;
+//constantFilter(value,numCoeffs) = _ : *(value) : onesFIR(numCoeffs);
+
 
 
 
