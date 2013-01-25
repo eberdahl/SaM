@@ -5,7 +5,13 @@
 
 system			:= $(shell uname -s)
 DEST			:= pddir/
+
+ifdef TARGET
+dspsrc  		:= $(TARGET).mdl
+else
 dspsrc  		:= $(wildcard *.mdl)
+endif
+
 cppsrc  		:= $(addprefix $(DEST), $(dspsrc:.mdl=.cpp))
 dspfile			:= $(dspsrc:.mdl=.dsp)
 mdxfile			:= $(dspsrc:.mdl=.mdx)
@@ -22,7 +28,7 @@ LINUXINCLUDE 	:= -I/usr/include/pdextended
 ###--------------------------------------------
 ### compilation flags for Darwin
 ###
-DARWINCFLAGS 	:= -DPD -fPIC -Wall -O3 -mfpmath=sse -msse -msse2 -msse3 -ffast-math
+DARWINCFLAGS 	:= -DPD -fPIC -Wall -O3 -msse -msse2 -msse3 -ffast-math -Wextra-tokens -Wno-unused-variable
 DYNLOAD_FLAGS	:= -bundle -undefined suppress -flat_namespace
 DARWININCLUDE 	:= -I/Applications/Pd-extended.app/Contents/Resources/include/
 
@@ -55,7 +61,7 @@ endif
 allmodules: $(mdxfile) $(dspfile) $(todo)
 
 %.mdx : %.mdl
-	perl SAM-preprocessor $< $@
+	@perl SAM-preprocessor $< $@
 
 %.dsp : %.mdx
 	perl Synth-A-Modeler $< $@

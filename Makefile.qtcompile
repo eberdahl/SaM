@@ -3,7 +3,13 @@
 ### ARCH : faust architecture file
 
 system	:= $(shell uname -s)
-dspsrc  := $(wildcard *.mdl)
+
+ifdef TARGET
+dspsrc  		:= $(TARGET).mdl
+else
+dspsrc  		:= $(wildcard *.mdl)
+endif
+
 cppsrc  := $(addprefix $(DEST), $(dspsrc:.mdl=.cpp))
 dspfile := $(dspsrc:.mdl=.dsp)
 mdxfile	:= $(dspsrc:.mdl=.mdx)
@@ -31,7 +37,7 @@ all : $(mdxfile) $(dspfile) $(appls)
 
 ### Darwin
 %.mdx : %.mdl
-	perl SAM-preprocessor $< $@
+	@perl SAM-preprocessor $< $@
 %.dsp : %.mdx
 	perl Synth-A-Modeler $< $@
 

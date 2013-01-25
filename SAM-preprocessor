@@ -24,7 +24,7 @@ my $indx = 0;              # index variable used over and over again
 
 
 
-say "Starting SAM-preprocessor...";
+#say "Starting SAM-preprocessor...";
 
 
 # First remove all of the comments and write the result into $tmp_filename
@@ -97,4 +97,4 @@ if (-e $tmp_filename)
 
 
 
-say "SAM-preprocessor finished.";
+#say "SAM-preprocessor finished.";

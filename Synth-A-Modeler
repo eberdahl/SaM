@@ -16,15 +16,18 @@ require 'SAM-reg-ex';
 
 
 use v5.10;
-
 use warnings;
+no warnings 'once';        # since some variables are used only once here but are e.g. defined in SAM-reg-ex
+
+
 $filename = $ARGV[0];      # e.g. "examplelinks.mdl";
 $filenameout = $ARGV[1];   # e.g. "examplelinks.dsp";
 my $indx = 0;              # index variable used over and over again
 
 
-
-
+# Open file for storing verbose information on compilation result
+open my $fh_compilation, '>', "SAM-debug-compilation.txt"
+    or die "Error: Cannot open SAM-debug-compilation.txt for storing comilation result!";
 
 
 
@@ -54,7 +57,7 @@ while (<$filehandle>)
     $theline = $_;
     
     if ($theline =~ qr/$faustCodeLine/) { 
-	say "Copying Faust line: " . $1;
+	say $fh_compilation "Copying Faust line: " . $1;
 	say $fh_out $1;
     }
 }
@@ -85,7 +88,7 @@ sub replace_param
     $indexToReplace = $_[0];
     $insertionValue = $_[1];
     $listOfParams = $_[2];
-    #say "BOO" . $listOfParams . "  :  " . $indexToReplace . "  :  " . $insertionValue;
+    #say $fh_compilation "BOO" . $listOfParams . "  :  " . $indexToReplace . "  :  " . $insertionValue;
 
     my $inFrontOf = "";
     my $current = "";
@@ -96,13 +99,13 @@ sub replace_param
 	} else { $inFrontOf = $inFrontOf . "," . $current; }
 
 	if ($behind =~ qr/$myFullLabelOrValue/) {    # only one element left
-	    #say "FULLLABELORVALUE: " . $1;
+	    #say $fh_compilation "FULLLABELORVALUE: " . $1;
 	    $current = $1;
 	    $behind = "";
 
 	} else {
 	    if ($behind =~ qr/$separateParams/) {
-		#say "SEPARATING: " . $1 . ", 2222: " . $2;
+		#say $fh_compilation "SEPARATING: " . $1 . ", 2222: " . $2;
 		$current = $1;
 		$behind = $2;
 	    } else {
@@ -111,7 +114,7 @@ sub replace_param
 	}
 	
 	$indexToReplace--;
-        #say "INFRONTOF: " . $inFrontOf . "    BEHIND: " . $behind;
+        #say $fh_compilation "INFRONTOF: " . $inFrontOf . "    BEHIND: " . $behind;
     } while ($indexToReplace > 0);
 
     if (($inFrontOf eq "") && ($behind eq "")) { return $insertionValue; } 
@@ -150,11 +153,11 @@ while (<$filehandle>)
     $theline = $_;
     
     if ($theline =~ qr/$linkline/) { 
-	#say "Read this link:  " . $1 . " " . $2 . " " . $3 . " " . $4 . " " . $5 . " " . $6;
+	#say $fh_compilation "Read this link:  " . $1 . " " . $2 . " " . $3 . " " . $4 . " " . $5 . " " . $6;
 	$linkNum++;
     }
     if ($theline =~ qr/$vertexline/) {
-	#say "Read this vertex:  " . $1 . " " . $2 . " " . $3 . " " . $4;
+	#say $fh_compilation "Read this vertex:  " . $1 . " " . $2 . " " . $3 . " " . $4;
 	#$vertexNum++;    
 	if ($1 ne "port") {    # if it is NOT a port
 	    $vertexNum++;
@@ -198,7 +201,7 @@ while (<$filehandle>)
     $theline = $_;
     
     if ($theline =~ qr/$vertexline/) {
-	#say "Read this vertex:  " . $1 . " " . $2 . " " . $3 . " " . $4;
+	#say $fh_compilation "Read this vertex:  " . $1 . " " . $2 . " " . $3 . " " . $4;
 	if ($1 eq "port") {    # if it is a port in particular
 	    $portNum++;   $vertexNum++;
 	    if (($vertexNum+$waveguideNum) > 1) {
@@ -223,10 +226,10 @@ while (<$filehandle>)
     if ($theline =~ qr/$audiooutline/) {
 	$audioOutNum++;
 	$audioOutputs = $audioOutputs . "," . $1;
-#	say "Read AUDIOOUT: " . $theline;
+#	say $fh_compilation "Read AUDIOOUT: " . $theline;
     }
     #if ($theline =~ qr/$adjustline/) {
-	#say "ADJUST 1: " . $1 . ", 2: " . $2 . ", 3: " . $3 . ". 4: " . $4;
+	#say $fh_compilation "ADJUST 1: " . $1 . ", 2: " . $2 . ", 3: " . $3 . ". 4: " . $4;
 	#my $guiLine = $1 . " = " . $4 . ";";
 	#say $fh_out $guiLine;
     #}
@@ -236,9 +239,9 @@ $outputs = $outputs . $audioOutputs;
 
 my $feedbackNum = $vertexNum - $portNum + 2*$waveguideNum + $junctionNum;
 my $theline = "There are " . $vertexNum . " vertices and " . $linkNum . " link(s) and " . $waveguideNum . " waveguides and " . $portNum . " port(s) and " . ($vertexNum - $portNum) . " non-port mass-like objects.";
-say $theline;
+say $fh_compilation $theline;
 #$theline = "So feedbackNum=" . $feedbackNum . "\n";
-#say $theline;
+#say $fh_compilation $theline;
 
 
 
@@ -276,8 +279,8 @@ while (<$filehandle>)
     $theline = $_;
 
     if ($theline =~ qr/$terminationline/) {
-	say "Read TERMINATION: " . $theline;
-	say "Read for: " . $1 . " and " . $2;
+	say $fh_compilation "Read TERMINATION: " . $theline;
+	say $fh_compilation "Read for: " . $1 . " and " . $2;
 	my $faustTermCode = $1;   my $termLabel = $2;
 
 	# Find the associated waveguide to determine whether the output from the termination goes into
@@ -290,20 +293,20 @@ while (<$filehandle>)
 	    $theline_inner = $_;
 	    
 	    if ($theline_inner =~ qr/$waveguideline/) {
-		say "Read WAVEGUIDE: " . $theline_inner;
-		say "Read for: " . $1 . " and " . $2 . " and3=" . $3 . " and4=" . $4 . " and5=" . $5;
+		say $fh_compilation "Read WAVEGUIDE: " . $theline_inner;
+		say $fh_compilation "Read for: " . $1 . " and " . $2 . " and3=" . $3 . " and4=" . $4 . " and5=" . $5;
 		my $faustWaveguideCode = $2;  my $waveguideName = $3;   my $i4 = $4;  my $i5 = $5;   # Save regex
 
-		say "termlabel=" . $termLabel . ", i4=" . $i4 . ", $i5=" . $i5;
+		say $fh_compilation "termlabel=" . $termLabel . ", i4=" . $i4 . ", $i5=" . $i5;
 		if ($termLabel =~ m/(^\s?$i4\s?$)/) {
-		    say "TERM is on the left!";
+		    say $fh_compilation "TERM is on the left!";
 		    $termEqn1 = "\t" . $waveguideName . "R = " . $termLabel . " : " . $faustWaveguideCode . ";";
 		    $termEqn2 = "\t" . $termLabel . " = " . $waveguideName . "Lp : " . $faustTermCode . ";";
 		    $waveguideMatches = $waveguideMatches + 1;
 		}
 
 		if ($termLabel =~ m/(^\s?$i5\s?$)/) {
-		    say "TERM is on the right!";
+		    say $fh_compilation "TERM is on the right!";
 		    $termEqn1 = "\t" . $waveguideName . "L = " . $termLabel . " : " . $faustWaveguideCode . ";";
 		    $termEqn2 = "\t" . $termLabel . " = " . $waveguideName . "Rp : " . $faustTermCode . ";";
 		    $waveguideMatches = $waveguideMatches + 1;		    
@@ -317,7 +320,7 @@ while (<$filehandle>)
 	    say $fh_out $termEqn2;	
 	    say $fh_out "";
 	} else {
-	    say "ERROR:  Wrong number " . $waveguideMatches . " of waveguides connected to termination " . $termLabel;   die;
+	    say $fh_compilation "ERROR:  Wrong number " . $waveguideMatches . " of waveguides connected to termination " . $termLabel;   die;
 	}
     }
 }
@@ -339,8 +342,8 @@ while (<$filehandle>)
 
     #if ($theline =~ qr/$junctioninteractionline/) {
     if ($theline =~ qr/$junctionline/) {
-	say "Read JUNCTION: " . $theline;
-	say "Read for: " . $1 . " and " . $2 . "and3=" . $3;
+	say $fh_compilation "Read JUNCTION: " . $theline;
+	say $fh_compilation "Read for: " . $1 . " and " . $2 . "and3=" . $3;
 	my $faustJunctionName = "junction";   
 	my $faustJunctionParams = $1;   
 	my $junctionIdentifier = $2;
@@ -357,7 +360,7 @@ while (<$filehandle>)
 	    
 	    if ($theline_inner =~ qr/$linkline/) {
 		my $i1 = $1;  my $i2 = $2;  my $i3 = $3;
-		say "Found link 1=" . $1 . ", 2=" . $2 . ", 3=" . $3 . ", 4=" . $4 . ", 5=" . $5;
+		say $fh_compilation "Found link 1=" . $1 . ", 2=" . $2 . ", 3=" . $3 . ", 4=" . $4 . ", 5=" . $5;
 		
 
 		if ($junctionIdentifier eq $4) {
@@ -382,7 +385,7 @@ while (<$filehandle>)
 		    $numLinks--;
 		    $linkstoremove{$3} = $junctionIdentifier;    # add to list of link-like objects not to be introduced into DSP file
 		    $junctionmasslikeobjects{$junctionIdentifier} = $4;   # add to hash of junction names to masses they're connected to
-		    #say "3=" . $3 . ", 4=" . $4 . ", 5=" . $5;
+		    #say $fh_compilation "3=" . $3 . ", 4=" . $4 . ", 5=" . $5;
 
 		    $linkIdentifier = $3;
 		    $linkedMassLikeObject = $4;
@@ -393,12 +396,12 @@ while (<$filehandle>)
 	}
 	close $fh_inner;
 	if ($numConnectingLinks > 1) {
-	    say "ERROR:  Currently only one link-like object can be connected to a junction.";
-	    say "ERROR:  However, " . $numConnectingLinks . ">1 link-like objects were connected to the junction " . $junctionIdentifier . ".";
+	    say $fh_compilation "ERROR:  Currently only one link-like object can be connected to a junction.";
+	    say $fh_compilation "ERROR:  However, " . $numConnectingLinks . ">1 link-like objects were connected to the junction " . $junctionIdentifier . ".";
 	    die;
 	} elsif ($numConnectingLinks == 0) {    # Or copy the junction line directly if there are no links associated with it
-	    #say "numConnectingLinks=" . $numConnectingLinks;
-	    say "NO LINK-LIKE OBJECTS WERE CONNECTED TO THIS JUNTION!";
+	    #say $fh_compilation "numConnectingLinks=" . $numConnectingLinks;
+	    say $fh_compilation "NO LINK-LIKE OBJECTS WERE CONNECTED TO THIS JUNTION!";
 	    #say $fh_out $theline;
 	}
 
@@ -414,13 +417,13 @@ while (<$filehandle>)
 	    $theline_inner = $_;
 	    
 	    if ($theline_inner =~ qr/$waveguideline/) {
-              	say "Read WAVEGUIDE: " . $theline_inner;
-		say "Read for: " . $1 . " and " . $2 . " and3=" . $3 . " and4=" . $4 . " and5=" . $5;
+              	say $fh_compilation "Read WAVEGUIDE: " . $theline_inner;
+		say $fh_compilation "Read for: " . $1 . " and " . $2 . " and3=" . $3 . " and4=" . $4 . " and5=" . $5;
 		$waveguideImpedance = $1;  my $faustWaveguideCode = $2;  my $waveguideName = $3;   my $i4 = $4;  my $i5 = $5;   # Save regex
 
-		say "junctionIdentifier=" . $junctionIdentifier . ", i4=" . $i4 . ", $i5=" . $i5;
+		say $fh_compilation "junctionIdentifier=" . $junctionIdentifier . ", i4=" . $i4 . ", $i5=" . $i5;
 		if ($junctionIdentifier =~ m/(^\s?$i4\s?$)/) {
-		    say "JUNCTION is on the left!";
+		    say $fh_compilation "JUNCTION is on the left!";
 
 		    $sumImpedances = $sumImpedances . "+" . $waveguideImpedance;
 		    $sumWaveForcesIn = $sumWaveForcesIn . "+" . $waveguideName . "Lp*" . $waveguideImpedance;
@@ -433,7 +436,7 @@ while (<$filehandle>)
 		}
 
 		if ($junctionIdentifier =~ m/(^\s?$i5\s?$)/) {
-		    say "JUNCTION is on the right!";
+		    say $fh_compilation "JUNCTION is on the right!";
 
 		    $sumImpedances = $sumImpedances . "+" . $waveguideImpedance;
 		    $sumWaveForcesIn = $sumWaveForcesIn . "+" . $waveguideName . "Rp*" . $waveguideImpedance;
@@ -463,7 +466,7 @@ while (<$filehandle>)
 
 	# Actually I think it's ok to have zero waveguides attached to a junction -- it's just silly!
 	if ($waveguideMatches == 0) {
-	    say "ERROR:  Wrong number " . $waveguideMatches . " of waveguides connected to junction " . $junctionIdentifier;   die;
+	    say $fh_compilation "ERROR:  Wrong number " . $waveguideMatches . " of waveguides connected to junction " . $junctionIdentifier;   die;
 	}
     }
 }
@@ -478,13 +481,13 @@ close $filehandle;
 
 
 #To display the keys stored in the hash representing links that should not be copied over into the MDX file:
-say "Printing the list of links of remove:";
+say $fh_compilation "Printing the list of links of remove:";
 foreach (sort keys %linkstoremove) {
-    print "$_ : $linkstoremove{$_}\n";
+    say $fh_compilation "$_ : $linkstoremove{$_}";
 }
-say "Printing the list of links of remove:";
+say $fh_compilation "Printing the list of links of remove:";
 foreach (sort keys %junctionmasslikeobjects) {
-    print "$_ : $junctionmasslikeobjects{$_}\n";
+    say $fh_compilation "$_ : $junctionmasslikeobjects{$_}";
 }
 
 
@@ -508,7 +511,7 @@ while (<$filehandle>)
     $theline = $_;
 
     if ($theline =~ qr/$vertexline/) {
-#	print "Read a vertex: $theline\n";
+#	say $fh_compilation "Read a vertex: $theline\n";
 	$typeOfMass = $1;
 	$massName = $3;
 
@@ -526,7 +529,7 @@ while (<$filehandle>)
 	    
 	    # Add forces from links only if they should not be removed by junctions
 	    if ($theline_inner =~ qr/$linkline/) {
-		#say "Read LINK for: " . $1 . " and " . $2 . "and3=" . $3;
+		#say $fh_compilation "Read LINK for: " . $1 . " and " . $2 . "and3=" . $3;
 		if (!(exists $linkstoremove{ $3 })) {
 		    if ($4 eq $massName) {		      
 			$vertexLine = $vertexLine . "-" . $3;
@@ -539,8 +542,8 @@ while (<$filehandle>)
 
 	    # Add any forces coming out of junctions
 	    if ($theline_inner  =~ qr/$junctionline/) {
-		say "Read JUNCTION: " . $theline;
-		say "Read for: " . $1 . " and " . $2 . "and3=" . $3;
+		say $fh_compilation "Read JUNCTION: " . $theline;
+		say $fh_compilation "Read for: " . $1 . " and " . $2 . "and3=" . $3;
 
 		if ($junctionmasslikeobjects{$2} eq $massName) {
 		    $vertexLine = $vertexLine . "+(" . $2 . "Outputs:(!,_))";
@@ -562,14 +565,14 @@ while (<$filehandle>)
 	    
 	    if ($theline_inner =~ qr/$adjustline/) {
 		my $i1 = $1;  my $i2 = $2;  my $i3 = $3;   # Save adjust regex
-		say "Does " . $i2 . " matchz " . $listOfLabels . "?";
-		say "MASS Adjust 1: " . $1 . ", 2: " . $2 . ", 3: " . $3 . "       for " . $elementParams;
+		say $fh_compilation "Does " . $i2 . " matchz " . $listOfLabels . "?";
+		say $fh_compilation "MASS Adjust 1: " . $1 . ", 2: " . $2 . ", 3: " . $3 . "       for " . $elementParams;
                 # Check if the adjust's label is included among the comma-separated list of labels
 		if ($listOfLabels =~ m/(^\s?$i2\s?$)|(^\s?$i2\s?,.*$)|(^.*,\s?$i2\s?$)|(^.*,\s?$i2\s?,.*$)/) {
-		    say "YES!";
-		    say "CALLING REPLACEPARAMS " . $elementParams . "," . $i3 . "->" . $i1;
+		    say $fh_compilation "YES!";
+		    say $fh_compilation "CALLING REPLACEPARAMS " . $elementParams . "," . $i3 . "->" . $i1;
 		    $elementParams = replace_param( $i3, $i1, $elementParams );
-		    say "RETURN VALUE: " . $elementParams;
+		    say $fh_compilation "RETURN VALUE: " . $elementParams;
 		}
 	    }
 	}
@@ -614,9 +617,9 @@ while (<$filehandle>)
     chomp;
     $theline = $_;
 
-    #say $theline;
+    #say $fh_compilation $theline;
     if ($theline =~ qr/$linkline/) {    # if we find a line specifying a link
-	#say "FOUNDALINK!!";
+	#say $fh_compilation "FOUNDALINK!!";
 	my $o1 = $1;  my $o2 = $2;  my $o3 = $3;  my $o4 = $4;  my $o5 = $5;  my $o6 = $6;    # save captures
 
 	# Only continue processing the link if it has NOT been removed by being absorbed into a junction
@@ -632,15 +635,15 @@ while (<$filehandle>)
 		
 		if ($theline_inner =~ qr/$adjustline/) {
 		    my $i1 = $1;  my $i2 = $2;  my $i3 = $3;
-		    say "Does " . $i2 . " match " . $o6 . "?";
-		    #say "LINK Adjust 1: " . $1 . ", 2: " . $2 . ", 3: " . $3;
+		    say $fh_compilation "Does " . $i2 . " match " . $o6 . "?";
+		    #say $fh_compilation "LINK Adjust 1: " . $1 . ", 2: " . $2 . ", 3: " . $3;
 		    # Check if the adjust's label is included in the current list of comma-separated labels
 		    if ($o6 =~ m/(^\s?$i2\s?$)|(^\s?$i2\s?,.*$)|(^.*,\s?$i2\s?$)|(^.*,\s?$i2\s?,.*$)/) {
-			say "YES!";
+			say $fh_compilation "YES!";
 			#$o2 = $o2 . "," . $i3 . "->" . $i1;
-			say "CALLING REPLACE_PARAM " . $o2 . "," . $i3 . "->" . $i1;
+			say $fh_compilation "CALLING REPLACE_PARAM " . $o2 . "," . $i3 . "->" . $i1;
 			$o2 = replace_param( $i3, $i1, $o2 );
-			say "RETURN VALUE: " . $o2;
+			say $fh_compilation "RETURN VALUE: " . $o2;
 		    }
 		}
 	    }
@@ -684,16 +687,16 @@ while (<$filehandle>)
     $theline = $_;
 
     if ($theline =~ qr/$audiooutline/) {
-	say "Read AUDIOOUT: " . $theline;
-	say "Read for: " . $1 . " and " . $2;
+	say $fh_compilation "Read AUDIOOUT: " . $theline;
+	say $fh_compilation "Read for: " . $1 . " and " . $2;
 	$audiooutEqn = "\t" . $1 . " = " . $2 . ";";
 	#$audioParams = $2;
-	#say "AUDIOPARAMS: " . $audioParams;
+	#say $fh_compilation "AUDIOPARAMS: " . $audioParams;
 	#while ($audioParams =~ qr/$audiooutParseSum/) {
-	#    say "We have 1: " . $1 . ", 2: " . $2 . ", 3: " . $3;
+	#    say $fh_compilation "We have 1: " . $1 . ", 2: " . $2 . ", 3: " . $3;
 	#    $audiooutEqn = $audiooutEqn . "+" . $1 . "*(" . $2 . ")";
 	#    $audioParams = $3;
-	#    #say "Now parsing: \"" . $audioParams . "\"";
+	#    #say $fh_compilation "Now parsing: \"" . $audioParams . "\"";
 	#}
 	#$audiooutEqn = $audiooutEqn . ";";
 	say $fh_out $audiooutEqn;
