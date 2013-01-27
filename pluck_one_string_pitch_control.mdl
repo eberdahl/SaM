@@ -42,7 +42,8 @@ faustcode: bridgeFc=hslider("Bridge cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
 faustcode: fretAtten=hslider("Fret attenuation",2.5,0.5,7.0,0.01);
 faustcode: fretFc=hslider("Fret cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
 faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
-faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0);    // LP filter with cutoff frequency at 10Hz smoothes volume control signal
+# LP filter with cutoff frequency at 10Hz smoothes volume control signal
+faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0);
 faustcode: outputDSP=highpass(4,20.0);
 
 
