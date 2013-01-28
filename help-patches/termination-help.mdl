@@ -1,0 +1,41 @@
+# MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+
+
+
+
+
+
+termination(simpleStringTerm(-0.996, 20)),term0,(); # pos 112,202
+
+
+
+
+faustcode: outputDSP=highpass(4,20.0);
+
+
+## comment("Termination",55,ff000000),comment0; # pos 166,35
+## comment("A termination represents an object like a bridge|or a nut. In other words, a termination marks |the end of one or more waveguides",16,ff000000),comment1; # pos 207,95
+## comment("Parameters:||- termType|- identifier|- labels",16,ff000000),comment2; # pos 279,191

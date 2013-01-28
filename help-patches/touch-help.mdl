@@ -1,0 +1,43 @@
+# MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+mass(0.001,0.0,0.0),m0,(); # pos 72,176
+port(),dev0,(); # pos 83,285
+
+
+touch(100.0,0.1,0.0),t0,m0,dev0,();
+
+
+
+
+
+
+
+
+faustcode: outputDSP=highpass(4,20.0);
+
+
+## comment("Touch",55,ff000000),comment0; # pos 89,43
+## comment("Link-type objects connect from one mass-like object|to another mass-like object. For that reason, each of|the links must specify the two mass-like objects that|it connects.",16,ff000000),comment3; # pos 216,103
+## comment("Parameters:||- stiffness|- damping|- offset|- identifier|- start vertex|- end vertex|- labels",16,ff000000),comment4; # pos 298,223

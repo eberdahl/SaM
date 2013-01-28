@@ -1,0 +1,41 @@
+# MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+ground(0.0),g0,(); # pos 85,198
+
+
+
+
+
+
+
+
+
+
+faustcode: outputDSP=highpass(4,20.0);
+
+
+## comment("Ground",55,ff000000),comment0; # pos 99,43
+## comment("The ground object is like an infinite mass|that never moves. It always stays at the|same position.",16,ff000000),comment3; # pos 169,111
+## comment("Parameters:||- position|- identifier|- labels",16,ff000000),comment5; # pos 247,199
