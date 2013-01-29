@@ -1,0 +1,118 @@
+# MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+port(),dev0,(); # pos 627,709
+
+
+pluck(k,R,maxdisp,0.0),p0,junct0,dev0,();
+pluck(300.0,0.1,0.003,0.0),p1,junct0cpy,dev0,();
+pluck(300.0,0.1,0.003,0.0),p2,junct0cpy1,dev0,();
+pluck(300.0,0.1,0.003,0.0),p3,junct0cpy2,dev0,();
+pluck(300.0,0.1,0.003,0.0),p4,junct0cpy3,dev0,();
+pluck(300.0,0.1,0.003,0.0),p5,junct0cpy4,dev0,();
+pluck(300.0,0.1,0.003,0.0),p6,junct0cpy5,dev0,();
+pluck(300.0,0.1,0.003,0.0),p7,junct0cpy6,dev0,();
+pluck(300.0,0.1,0.003,0.0),p8,junct0cpy7,dev0,();
+pluck(300.0,0.1,0.003,0.0),p9,junct0cpy8,dev0,();
+
+
+waveguide(2.5,simpleString(0.027,(1.0/(noteC-1.0))*relPos-simpleStringTermDelay(bridgeFc))),wg0,bridge,junct0,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteC-1.0))*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1,fret,junct0,();
+waveguide(2.5,simpleString(0.027,(1.0/noteC)*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy,bridgecpy,junct0cpy,();
+waveguide(2.5,simpleString(0.027,(1.0/noteC)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy,fretcpy,junct0cpy,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteG-1.0))*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy1,bridgecpy1,junct0cpy1,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteG-1.0))*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy1,fretcpy1,junct0cpy1,();
+waveguide(2.5,simpleString(0.027,(1.0/noteG)*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy2,bridgecpy2,junct0cpy2,();
+waveguide(2.5,simpleString(0.027,(1.0/noteG)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy2,fretcpy2,junct0cpy2,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteD-1.0))*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy3,bridgecpy3,junct0cpy3,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteD-1.0))*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy3,fretcpy3,junct0cpy3,();
+waveguide(2.5,simpleString(0.027,(1.0/noteD)*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy4,bridgecpy4,junct0cpy4,();
+waveguide(2.5,simpleString(0.027,(1.0/noteD)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy4,fretcpy4,junct0cpy4,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteA-1.0))*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy5,bridgecpy5,junct0cpy5,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteA-1.0))*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy5,fretcpy5,junct0cpy5,();
+waveguide(2.5,simpleString(0.027,(1.0/noteA)*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy6,bridgecpy6,junct0cpy6,();
+waveguide(2.5,simpleString(0.027,(1.0/noteA)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy6,fretcpy6,junct0cpy6,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteF-1.0))*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy7,bridgecpy7,junct0cpy7,();
+waveguide(2.5,simpleString(0.027,(1.0/(noteF-1.0))*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy7,fretcpy7,junct0cpy7,();
+waveguide(2.5,simpleString(0.027,(1.0/noteF)*relPos-simpleStringTermDelay(bridgeFc))),wg0cpy8,bridgecpy8,junct0cpy8,();
+waveguide(2.5,simpleString(0.027,(1.0/noteF)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1cpy8,fretcpy8,junct0cpy8,();
+
+
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridge,(); # pos 160,146
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fret,(); # pos 672,146
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy,(); # pos 672,178
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy,(); # pos 160,178
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy1,(); # pos 672,258
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy1,(); # pos 160,258
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy2,(); # pos 664,290
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy2,(); # pos 152,290
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy3,(); # pos 688,370
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy3,(); # pos 152,370
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy4,(); # pos 688,394
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy4,(); # pos 152,394
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy5,(); # pos 672,458
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy5,(); # pos 160,458
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy6,(); # pos 680,482
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy6,(); # pos 160,482
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy7,(); # pos 688,562
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy7,(); # pos 176,562
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fretcpy8,(); # pos 696,586
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridgecpy8,(); # pos 176,586
+
+
+junction(0.04),junct0,(); # pos 400,136
+junction(0.04),junct0cpy,(); # pos 400,168
+junction(0.03),junct0cpy1,(); # pos 400,248
+junction(0.03),junct0cpy2,(); # pos 400,280
+junction(0.02),junct0cpy3,(); # pos 400,360
+junction(0.02),junct0cpy4,(); # pos 400,384
+junction(0.01),junct0cpy5,(); # pos 400,448
+junction(0.01),junct0cpy6,(); # pos 400,472
+junction(0.0),junct0cpy7,(); # pos 400,552
+junction(0.0),junct0cpy8,(); # pos 400,576
+
+
+faustcode: freqMIDI=hslider("Frequency [MIDI]", 27.0, 20.0, 84.0, 0.05);
+faustcode: freq = 440.0*pow(2.0,(freqMIDI-69.0)/12.0);
+faustcode: k=hslider("Pluck stiffness [N/m]",250.0,50.0,1000.0,50.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.1,0.0,2.5,0.01);
+faustcode: relPos=hslider("Pluck position along length",0.29,0.01,0.99,0.01);
+faustcode: maxdisp=hslider("Pluck half-width [m]",0.006,0.001,0.01,0.001);
+faustcode: bridgeAtten=hslider("Bridge attenuation",2.5,0.5,7.0,0.01);
+faustcode: bridgeFc=hslider("Bridge cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
+faustcode: fretAtten=hslider("Fret attenuation",2.5,0.5,7.0,0.01);
+faustcode: fretFc=hslider("Fret cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
+faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
+faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
+faustcode: outputDSP=highpass(4,20.0);
+faustcode: noteF=174.61;
+faustcode: noteA=220.0;
+faustcode: noteD=293.66;
+faustcode: noteG=392.0;
+faustcode: noteC=523.25;
+faustcode: import("freeverb.dsp");
+
+
+audioout,a0,(bridge*vol+bridgecpy*1.0+bridgecpy1*1.0+bridgecpy2*1.0+bridgecpy3*1.0+bridgecpy4*1.0+bridgecpy5*1.0+bridgecpy6*1.0+bridgecpy7*1.0+bridgecpy8*1.0):outputDSP:myreverb; # pos 59,336
+audioout,a1,(fret*vol+fretcpy*1.0+fretcpy1*1.0+fretcpy2*1.0+fretcpy3*1.0+fretcpy4*1.0+fretcpy5*1.0+fretcpy6*1.0+fretcpy7*1.0+fretcpy8*1.0):outputDSP:myreverb; # pos 851,336
