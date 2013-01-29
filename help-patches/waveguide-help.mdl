@@ -40,4 +40,4 @@ faustcode: outputDSP=highpass(4,20.0);
 
 ## comment("Waveguide",55,ff000000),comment0; # pos 155,43
 ## comment("A waveguide uses wave variables to|represent the vibration of a string",16,ff000000),comment1; # pos 160,95
-## comment("Parameters:||- impendance|- stringType|- identifier|- left object|- right object|- labels",16,ff000000),comment2; # pos 324,207
+## comment("Parameters:||- impedance|- stringType|- identifier|- left object|- right object|- labels",16,ff000000),comment2; # pos 324,207
