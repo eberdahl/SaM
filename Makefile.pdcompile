@@ -6,8 +6,8 @@
 system			:= $(shell uname -s)
 DEST			:= pddir/
 
-ifdef TARGET
-dspsrc  		:= $(TARGET).mdl
+ifdef SAMTARGET
+dspsrc  		:= $(SAMTARGET).mdl
 else
 dspsrc  		:= $(wildcard *.mdl)
 endif

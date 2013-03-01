@@ -3,11 +3,11 @@ If you are using Synth-A-Modeler with a different target than the ones we have t
 In the following, we explain the changes made to the makefiles in faust-0.9.46/examples to arrive at the new makefiles.  (Note that we recommend using at least faust 0.9.58 or later.)
 
 
-1) First of all, it is really helpful to be able to compile only a single model at a time by specifying the model name (without any extensions) using TARGET= when calling make.  To enable this feature, go to Makefile.pdcompile and change
+1) First of all, it is really helpful to be able to compile only a single model at a time by specifying the model name (without any extensions) using SAMTARGET= when calling make.  To enable this feature, go to Makefile.pdcompile and change
 dspsrc                  := $(wildcard *.dsp)
 to
-ifdef TARGET
-dspsrc                  := $(TARGET).mdl
+ifdef SAMTARGET
+dspsrc                  := $(SAMTARGET).mdl
 else
 dspsrc                  := $(wildcard *.mdl)
 endif
@@ -53,4 +53,3 @@ allmodules: $(mdxfile) $(dspfile) $(todo)
 
 
  - Edgar Berdahl, January 2013
-

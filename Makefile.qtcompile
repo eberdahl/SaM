@@ -4,8 +4,8 @@
 
 system	:= $(shell uname -s)
 
-ifdef TARGET
-dspsrc  		:= $(TARGET).mdl
+ifdef SAMTARGET
+dspsrc  		:= $(SAMTARGET).mdl
 else
 dspsrc  		:= $(wildcard *.mdl)
 endif
@@ -18,7 +18,7 @@ mdxfile	:= $(dspsrc:.mdl=.mdx)
 ### check what type of applications to build (MacOSX Darwin or Linux)
 ifeq ($(system), Darwin)
 appls	:= $(addprefix $(DEST),  $(dspsrc:.mdl=.app))
-SPEC	:= -spec macx-g++
+SPEC	:= -spec macx-g++ QMAKE_CXXFLAGS=-fpermissive
 else
 appls	:= $(addprefix $(DEST),  $(dspsrc:.mdl=))
 SPEC	:= 
@@ -44,7 +44,7 @@ all : $(mdxfile) $(dspfile) $(appls)
 $(DEST)%.app : %.dsp
 	install -d $(TMP)
 	faust -double -a $(ARCH) $(VEC) $< -o $(TMP)/$<.cpp
-	cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/lib/faust/gui/faustqt.h" 
+	cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/include/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/lib/faust/gui/faustqt.h" 
 	cd $(TMP); qmake $(SPEC)
 	make -C $(TMP)
 	rm -rf $@
