@@ -254,8 +254,6 @@ with {
 resonator(f,tau,m) = mainStuff:chooseOutputs
 with {
   PI = 3.1415926535897932384626;
-  b = 0.0;
-
   decayParam = exp(-1.0/tau/fs);
   x1 = decayParam*cos(2.0*PI*f/fs);
   y1 = decayParam*sin(2.0*PI*f/fs);
@@ -263,9 +261,8 @@ with {
   b1 = 1.0/m/fs/fs;
   b2 = -1.0*b1*cos(2.0*PI*f/fs)/sin(2.0*PI*f/fs);
 
-  mainBox(w,u,Fext,nl) = (x1*w + nl*w - y1*u + b1*Fext,   y1*w + x1*u + nl*u + b2*Fext);
-  mainStuff = (calcNonlinear:mainBox)~(chooseFeedbacks);
-  calcNonlinear(w,u,Fext)=(w,u,Fext,b*(w*w+u*u)/fs);
+  mainBox(w,u,Fext) = (x1*w - y1*u + b1*Fext,   y1*w + x1*u + b2*Fext);
+  mainStuff = (mainBox)~(chooseFeedbacks);
 
   chooseFeedbacks = (_,_);
   chooseOutputs = (_,!);
