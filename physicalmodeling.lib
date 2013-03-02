@@ -198,7 +198,8 @@ with {
 // in touchUnderneathLogic so that the mass-like object is "beneath" the waveguide junction.
 //junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*); // was pushing the haptic device in the wrong direction
 junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
-calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchUnderneathLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
+calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchUnderneathLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);
+
 
 touchUnderneathLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset) = (XJoutput, VJoutput, inContact)
 with {
@@ -238,20 +239,17 @@ with {
 
 
 
+// Will give "inconsistent number of parameters in pattern-matching rule" error -- apparently it wants to always have the same number of parameters
+//resonators(f,tau,m,(ls)) = _ <: (_,_) : (singleResonator(f,tau,m), resonators(ls)) : + : _;
+//resonators(f,tau,m) = singleResonator(f,tau,m);
+
+// So instead we use lists of parameters, which are simulated using parallel composition.
+// The Synth-A-Modeler perl script adds the extra pair of parentheses so that it is not necessary (although it is ok) to have them in MDL files.
+resonators((f,tau,m,ls)) = _ <: (_,_) : (singleResonator(f,tau,m), resonators(ls)) : + : _;
+resonators((f,tau,m)) = singleResonator(f,tau,m);
 
 
-
-
-
-
-
-
-
-
-
-
-
-resonator(f,tau,m) = mainStuff:chooseOutputs
+singleResonator(f,tau,m) = mainStuff:chooseOutputs
 with {
   PI = 3.1415926535897932384626;
   decayParam = exp(-1.0/tau/fs);
@@ -267,6 +265,9 @@ with {
   chooseFeedbacks = (_,_);
   chooseOutputs = (_,!);
 };
+
+
+
 
 
 // We assume velocity waves, so there must be a sign inversion also

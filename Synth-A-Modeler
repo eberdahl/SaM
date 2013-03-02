@@ -611,7 +611,9 @@ while (<$filehandle>)
 
 	if ($1 eq "port") {      # if it is an external port
 	    $vertexLine = $vertexLine . ");";
-	} else {                 # if it is a mass to be simulated 
+	} elsif ($1 eq "resonators") {                 # if it describes some resonators
+	    $vertexLine = $vertexLine . ") : " . $typeOfMass . "((" . $elementParams . "));";   # need extra parentheses to represent variable number of parameters using parallel composition
+	} else {                 # if it is any other mass-like object to be simulated 
 	    $vertexLine = $vertexLine . ") : " . $typeOfMass . "(" . $elementParams . ");";
 	}
 	say $fh_out $vertexLine;

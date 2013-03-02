@@ -32,7 +32,7 @@ faustcode:interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.
 faustcode:interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
 
 # Model itself
-resonator(resonanceFrequency, decayTimeOfResonator, massOfResonator),r1,( );
+resonators((resonanceFrequency, decayTimeOfResonator, massOfResonator)),r1,( );
 port( ),dev1,(devlabel);
 port( ),dev2,(devlabel);
 

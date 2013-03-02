@@ -31,7 +31,7 @@ my $myParam = qr/(\s*[^\n\r\a\e\f,]*\s*)/;
 our $link = qr/(link|pluck|touch|linkCA|BUT|pulseTouch|pulseTouchGeneral|pulseTouchTable)/;
 our $linkline = qr/\A\s*${link}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
 
-our $vertex = qr/(mass|port|ground|resonator|massCA)/;
+our $vertex = qr/(mass|port|ground|resonators|massCA)/;
 our $vertexline = qr/\A\s*${vertex}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
 
 our $audiooutDetails = qr/(.+)/;
