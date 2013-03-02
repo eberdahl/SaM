@@ -22,14 +22,14 @@
 
 
 
-port(),dev0,(); # pos 267,61
-ground(0.0),g0,(); # pos 45,46
-port(),dev0cpy,(); # pos 363,61
-mass(m*1.0,0.0,0.0),m0,(); # pos 160,32
+port(),dev0  ; # pos 267,61
+ground(0.0),g0; # pos 45,46
+port(),dev0cpy; # pos 363,61
+mass(m*1.0,0.0,0.0),m0; # pos 160,32
 
 
-link(rk*1.0,rR*1.0,0.0),l0,m0,g0,();
-pluck(k*1.0,R*1.0,maxDisp*1.0,0.0),p0,dev0,m0,();
+link(rk*1.0,rR*1.0,0.0),l0,m0,g0 ;
+pluck(k*1.0,R*1.0,maxDisp*1.0,0.0),p0,dev0,m0;
 
 
 

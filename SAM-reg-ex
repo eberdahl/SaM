@@ -29,10 +29,10 @@ my $myParam = qr/(\s*[^\n\r\a\e\f,]*\s*)/;
 
 
 our $link = qr/(link|pluck|touch|linkCA|BUT|pulseTouch|pulseTouchGeneral|pulseTouchTable)/;
-our $linkline = qr/\A\s*${link}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+our $linkline = qr/\A\s*${link}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*;\s*$/;
 
 our $vertex = qr/(mass|port|ground|resonators|massCA)/;
-our $vertexline = qr/\A\s*${vertex}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+our $vertexline = qr/\A\s*${vertex}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*;\s*$/;
 
 our $audiooutDetails = qr/(.+)/;
 our $audiooutline = qr/\A\s*audioout\s*,\s*${mylabel}\s*,${audiooutDetails};\s*$/;
@@ -46,12 +46,12 @@ our $adjustIndex = qr/([\d]+)/;
 #our $adjustline = qr/\A\s*controladjust\s*,\s*${mylabel}\s*,\s*${mylabel}\s*:\s*${adjustIndex}\s*;\s*$/;
 our $adjustline = qr/\A\s*controladjust\s*,\s*${mylabel}\s*,\s*${mylabel}\s*:\s*${adjustIndex}\s*;\s*$/;
 
-our $terminationline = qr/\A\s*termination\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
-our $waveguideline = qr/\A\s*waveguide\(\s*${myParam}\s*,\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+our $terminationline = qr/\A\s*termination\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*;\s*$/;
+our $waveguideline = qr/\A\s*waveguide\(\s*${myParam}\s*,\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*${mylabel}\s*;\s*$/;
 
 our $junctioninteraction = qr/(junctionlink|junctionlinkUnderneath|junctiontouch|junctiontouchUnderneath|junctionpluck|junctionpluckUnderneath)/;
-our $junctioninteractionline = qr/\A\s*${junctioninteraction}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
-our $junctionline = qr/\A\s*junction\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*\(\s*${mylabels}\s*\)\s*;\s*$/;
+our $junctioninteractionline = qr/\A\s*${junctioninteraction}\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*,\s*${mylabel}\s*;\s*$/;
+our $junctionline = qr/\A\s*junction\(\s*${myParams}\s*\)\s*,\s*${mylabel}\s*;\s*$/;
 
 push @EXPORT, qw( $mylabel $mylabels $link $linkline $vertex $vertexline $audiooutDetails $audiooutline $faustCode $faustCodeLine $adjustIndex $adjustline $terminationline $waveguideline $junctioninteractionline $junctionline );
 

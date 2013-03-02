@@ -38,19 +38,19 @@ faustcode:outputDSP=highpass(4,20.0);
 faustcode:vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes 
 
 # e.g. for four resonance frequencies
-resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2,   f3,tau*0.8,m*f1*f1/f3/f3,    f4,tau*0.5,m*f1*f1/f4/f4),reson1,( );
+resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2,   f3,tau*0.8,m*f1*f1/f3/f3,    f4,tau*0.5,m*f1*f1/f4/f4),reson1;
 
 # e.g. for two resonance frequencies
-#resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2),reson1,( );
+#resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2),reson1;
 
 # e.g. for one resonance frequency
-#resonators(f1,tau,m),reson1,( );
+#resonators(f1,tau,m),reson1;
 
 
-port( ),dev1,(devlabel);
-port( ),dev2,(devlabel);
+port( ),dev1;
+port( ),dev2;
 
-touch(interactionStiffness,interactionDamping,0.0),tt,reson1,dev1,(tlabel);
+touch(interactionStiffness,interactionDamping,0.0),tt,reson1,dev1;
 
 audioout,aLeft,reson1*(1000.0)*vol:outputDSP;
 audioout,aRight,reson1*(1000.0)*vol:outputDSP;

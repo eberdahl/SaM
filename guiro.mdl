@@ -22,22 +22,22 @@
 
 
 
-port(),dev0,(); # pos 43,285
-port(),dev1,(); # pos 491,93
-resonator(200.0,decayTime*1.0,0.01),r0,(); # pos 352,288
-resonator(700.0,decayTime*1.0,0.01),r1,(); # pos 352,192
-resonator(500.0,decayTime*1.0,0.01),r2,(); # pos 352,128
-resonator(300.0,decayTime*1.0,0.01),r3,(); # pos 352,64
-resonator(70.0,decayTime*1.0,0.01),r0cpy,(); # pos 352,416
-resonator(150.0,decayTime*1.0,0.01),r1cpy,(); # pos 352,352
+port(),dev0; # pos 43,285
+port(),dev1; # pos 491,93
+resonators(200.0,decayTime*1.0,0.01),r0; # pos 352,288
+resonators(700.0,decayTime*1.0,0.01),r1; # pos 352,192
+resonators(500.0,decayTime*1.0,0.01),r2; # pos 352,128
+resonators(300.0,decayTime*1.0,0.01),r3; # pos 352,64
+resonators(70.0,decayTime*1.0,0.01),r0cpy; # pos 352,416
+resonators(150.0,decayTime*1.0,0.01),r1cpy; # pos 352,352
 
 
-pluck(k*1.0,R*1.0,maxdist*1.0,0.00),p0,dev0,r0,();
-pluck(k*1.0,R*1.0,maxdist*1.0,0.01),p1,dev0,r1,();
-pluck(k*1.0,R*1.0,maxdist*1.0,0.02),p2,dev0,r2,();
-pluck(k*1.0,R*1.0,maxdist*1.0,0.03),p3,dev0,r3,();
-pluck(k*1.0,R*1.0,maxdist*1.0,-0.01),p4,dev0,r1cpy,();
-pluck(k*1.0,R*1.0,maxdist*1.0,-0.02),p5,dev0,r0cpy,();
+pluck(k*1.0,R*1.0,maxdist*1.0,0.00),p0,dev0,r0;
+pluck(k*1.0,R*1.0,maxdist*1.0,0.01),p1,dev0,r1;
+pluck(k*1.0,R*1.0,maxdist*1.0,0.02),p2,dev0,r2;
+pluck(k*1.0,R*1.0,maxdist*1.0,0.03),p3,dev0,r3;
+pluck(k*1.0,R*1.0,maxdist*1.0,-0.01),p4,dev0,r1cpy;
+pluck(k*1.0,R*1.0,maxdist*1.0,-0.02),p5,dev0,r0cpy;
 
 
 

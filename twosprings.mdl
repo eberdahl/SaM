@@ -28,14 +28,14 @@ faustcode:stiffness=hslider("Stiffness", 50.0, 10.0, 500.0, 10.0);
 
 
 # mass-like objects
-ground( 0.0),g1,(mygrnd);
-port(),dev1,(hapticdev);
-port(),dev2,(hapticdev);
+ground( 0.0),g1;
+port(),dev1;
+port(),dev2;
 
 
 # link-like objects
-link(stiffness,0.00,0.0),l1,dev1,g1,(linkLabel);
-link(stiffness,0.00,0.0),l2,dev2,g1,(linkLabel);
+link(stiffness,0.00,0.0),l1,dev1,g1;
+link(stiffness,0.00,0.0),l2,dev2,g1;
 
 
 audioout,a1,l1*(0.3);

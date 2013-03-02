@@ -22,40 +22,40 @@
 
 
 
-port(),dev0,(); # pos 869,78
-port(),dev1,(); # pos 817,371
+port(),dev0; # pos 869,78
+port(),dev1; # pos 817,371
 
 
-pluck(k*1.0,R*1.0,maxdisp*1.0,0.025*moveStrings),p0,junct0,dev0,();
-pluck(k*1.0,R*1.0,maxdisp*1.0,0.015*moveStrings),p1,junct0cpy2,dev0,();
-pluck(k*1.0,R*1.0,maxdisp*1.0,0.005*moveStrings),p2,junct0cpy3,dev0,();
-pluck(k*1.0,R*1.0,maxdisp*1.0,-0.005*moveStrings),p3,junct0cpy4,dev0,();
-pluck(k*1.0,R*1.0,maxdisp*1.0,-0.015*moveStrings),p4,junct0cpy5,dev0,();
-pluck(k*1.0,R*1.0,maxdisp*1.0,-0.025*moveStrings),p5,junct0cpy6,dev0,();
+pluck(k*1.0,R*1.0,maxdisp*1.0,0.025*moveStrings),p0,junct0,dev0;
+pluck(k*1.0,R*1.0,maxdisp*1.0,0.015*moveStrings),p1,junct0cpy2,dev0;
+pluck(k*1.0,R*1.0,maxdisp*1.0,0.005*moveStrings),p2,junct0cpy3,dev0;
+pluck(k*1.0,R*1.0,maxdisp*1.0,-0.005*moveStrings),p3,junct0cpy4,dev0;
+pluck(k*1.0,R*1.0,maxdisp*1.0,-0.015*moveStrings),p4,junct0cpy5,dev0;
+pluck(k*1.0,R*1.0,maxdisp*1.0,-0.025*moveStrings),p5,junct0cpy6,dev0;
 
 
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler1)),wg0,term0,junct0,();
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler2)),wg0cpy2,term0cpy2,junct0cpy2,();
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler3)),wg0cpy3,term0cpy3,junct0cpy3,();
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler4)),wg0cpy4,term0cpy4,junct0cpy4,();
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler5)),wg0cpy5,term0cpy5,junct0cpy5,();
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler6)),wg0cpy6,term0cpy6,junct0cpy6,();
+waveguide(2.5,simpleString(0.017,0.017*frequencyScaler1)),wg0,term0,junct0;
+waveguide(2.5,simpleString(0.017,0.017*frequencyScaler2)),wg0cpy2,term0cpy2,junct0cpy2;
+waveguide(2.5,simpleString(0.017,0.017*frequencyScaler3)),wg0cpy3,term0cpy3,junct0cpy3;
+waveguide(2.5,simpleString(0.017,0.017*frequencyScaler4)),wg0cpy4,term0cpy4,junct0cpy4;
+waveguide(2.5,simpleString(0.017,0.017*frequencyScaler5)),wg0cpy5,term0cpy5,junct0cpy5;
+waveguide(2.5,simpleString(0.017,0.017*frequencyScaler6)),wg0cpy6,term0cpy6,junct0cpy6;
 
 
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0,(); # pos 100,210
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy2,(); # pos 190,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy3,(); # pos 270,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy4,(); # pos 350,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy5,(); # pos 450,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy6,(); # pos 550,220
+termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0; # pos 100,210
+termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy2; # pos 190,220
+termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy3; # pos 270,220
+termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy4; # pos 350,220
+termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy5; # pos 450,220
+termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy6; # pos 550,220
 
 
-junction(0.0),junct0,(); # pos 313,156
-junction(0.0),junct0cpy2,(); # pos 403,166
-junction(0.0),junct0cpy3,(); # pos 483,166
-junction(0.0),junct0cpy4,(); # pos 563,166
-junction(0.0),junct0cpy5,(); # pos 663,166
-junction(0.0),junct0cpy6,(); # pos 763,166
+junction(0.0),junct0; # pos 313,156
+junction(0.0),junct0cpy2; # pos 403,166
+junction(0.0),junct0cpy3; # pos 483,166
+junction(0.0),junct0cpy4; # pos 563,166
+junction(0.0),junct0cpy5; # pos 663,166
+junction(0.0),junct0cpy6; # pos 763,166
 
 
 faustcode: frequencyScaler1=hslider("Waveguide freq. scaler 1", 0.8, 0.1, 1.0, 0.01);

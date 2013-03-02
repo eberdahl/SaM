@@ -22,12 +22,12 @@
 
 
 
-port(),dev0,(); # pos 187,61
-ground(0.0),g0,(); # pos 45,46
-port(),dev1,(); # pos 299,61
+port(),dev0; # pos 187,61
+ground(0.0),g0; # pos 45,46
+port(),dev1; # pos 299,61
 
 
-touch(k*1.0,R*1.0,0.0),t0,g0,dev0,();
+touch(k*1.0,R*1.0,0.0),t0,g0,dev0;
 
 
 

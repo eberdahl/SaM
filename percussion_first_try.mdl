@@ -39,26 +39,26 @@ faustcode:touchDamp=hslider("touchDamp",0.01,0.00,0.5,0.01);
 faustcode:gravParam=hslider("gravParam",30.0,1.0,100.0,1.0);
 
 
-	mass(massL,0.0,0.0),msnr1,(mlabel);
-	mass(massR,0.0,0.0),msnr2,(mlabel);
-resonator(freqMembrane, decayTimeMembrane, massMembrane),r1,( );
-ground(0.0),g,(glabel);
-#ground(-0.1),gunder,(glabel2);
-port( ),dev1,(devlabel);
-port( ),dev2,(devlabel);
+	mass(massL,0.0,0.0),msnr1;
+	mass(massR,0.0,0.0),msnr2;
+resonators(freqMembrane, decayTimeMembrane, massMembrane),r1;
+ground(0.0),g;
+#ground(-0.1),gunder;
+port( ),dev1;
+port( ),dev2;
 
 
 # For the snares
-touch(touchStiffnL,0.03,0.0),ttsrn1,r1,msnr1,(label);
-link(gravParam,0.00,0.0), lsrn1,g,msnr1,(labelz);
+touch(touchStiffnL,0.03,0.0),ttsrn1,r1,msnr1;
+link(gravParam,0.00,0.0), lsrn1,g,msnr1;
 
-touch(touchStiffnR,0.03,0.0),ttsrn2,r1,msnr2,(label);
-link(gravParam,0.00,0.0), lsrn2,g,msnr2,(labelz);
+touch(touchStiffnR,0.03,0.0),ttsrn2,r1,msnr2;
+link(gravParam,0.00,0.0), lsrn2,g,msnr2;
 
 
 
-link(50.0,0.001,0.0),ldev2,dev2,g,(llabel);
-touch(100.0,touchDamp,0.0),tt,dev1,r1,(label);
+link(50.0,0.001,0.0),ldev2,dev2,g;
+touch(100.0,touchDamp,0.0),tt,dev1,r1;
 
 # Actually for this particular model, the highpass filter isn't necessary ...
 audioout,a1,(r1*(0.0)+msnr1*(1000.0)):highpass(6,50);

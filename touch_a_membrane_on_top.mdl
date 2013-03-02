@@ -2,25 +2,25 @@
 
 faustcode:frequencyScaler = 0.3;
 
-termination(simpleStringTerm(-0.991,5000.0) ),t1 ,();
-waveguide(0.5, simpleString(0.01, 0.01*frequencyScaler)),w1,t1 ,junct1,();
+termination(simpleStringTerm(-0.991,5000.0) ),t1 ;
+waveguide(0.5, simpleString(0.01, 0.01*frequencyScaler)),w1,t1 ,junct1;
 
-termination(simpleStringTerm(0.994,5000.0)), t2,();
-waveguide(0.5 ,simpleString(0.014, 0.014*frequencyScaler)),w2,t2, junct1,();
+termination(simpleStringTerm(0.994,5000.0)), t2;
+waveguide(0.5 ,simpleString(0.014, 0.014*frequencyScaler)),w2,t2, junct1;
 
   # another comment
 
-termination(simpleStringTerm(-0.999,5000.0) ),t3 ,();
-waveguide(0.5, simpleString(0.033, 0.033*frequencyScaler)),w3,t3 ,junct1,();
+termination(simpleStringTerm(-0.999,5000.0) ),t3 ;
+waveguide(0.5, simpleString(0.033, 0.033*frequencyScaler)),w3,t3 ,junct1;
 
-termination(simpleStringTerm(0.9975,5000.0)), t4,();
-waveguide(0.5 ,simpleString(0.023, 0.023*frequencyScaler)),w4,t4, junct1,();
+termination(simpleStringTerm(0.9975,5000.0)), t4;
+waveguide(0.5 ,simpleString(0.023, 0.023*frequencyScaler)),w4,t4, junct1;
 
-junction(0.01),junct1,();  # we can have comments after lines as well
+junction(0.01),junct1;  # we can have comments after lines as well
 
-touch(3200.0, 2.5, 0.007),touch1 ,junct1, dev1,();
+touch(3200.0, 2.5, 0.007),touch1 ,junct1, dev1;
 
-port( ),dev1,(devlabel);
+port( ),dev1;
 
 audioout,a1,t1;
 audioout,a2,t2;

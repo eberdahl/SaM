@@ -374,7 +374,7 @@ while (<$filehandle>)
     #if ($theline =~ qr/$junctioninteractionline/) {
     if ($theline =~ qr/$junctionline/) {
 	say $fh_compilation "Read JUNCTION: " . $theline;
-	say $fh_compilation "Read for: " . $1 . " and " . $2 . "and3=" . $3;
+	say $fh_compilation "Read for: " . $1 . " and " . $2;
 	my $faustJunctionName = "junction";   
 	my $faustJunctionParams = $1;   
 	my $junctionIdentifier = $2;
@@ -574,7 +574,7 @@ while (<$filehandle>)
 	    # Add any forces coming out of junctions
 	    if ($theline_inner  =~ qr/$junctionline/) {
 		say $fh_compilation "Read JUNCTION: " . $theline;
-		say $fh_compilation "Read for: " . $1 . " and " . $2 . "and3=" . $3;
+		say $fh_compilation "Read for: " . $1 . " and " . $2;
 
 		if ($junctionmasslikeobjects{$2} eq $massName) {
 		    $vertexLine = $vertexLine . "+(" . $2 . "Outputs:(!,_))";

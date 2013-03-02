@@ -31,18 +31,18 @@
 
 
 # Mass-like objects# ---------------------# format [type]([default parameters]),[identifier],([label1],[label2],É)## For instance, for a one-dimensional mass we have# mass([mass in kg],[optional initial position in m (defaults to zero)],[optional initial velocity in m/s (defaults to zero)]),[identifier],([label1],[label2],...)## Or for a port to the real world, which corresponds to one position input and one force output, we have# port( ),[identifier],([label1],[label2],...)## Finally ground object is like an infinite mass that never moves. It always stays at the same position.# ground([optional initial position in m]),[identifier],([label1],[label2],...)
-mass(0.01,0.0,0.0),m1,();
-mass(1e-2,0.0,0.0),m2,();
-mass(0.03,0.0,0.0),m3,();
-port(),dev1,();
-ground(0.0),g,();
+mass(0.01,0.0,0.0),m1;
+mass(1e-2,0.0,0.0),m2;
+mass(0.03,0.0,0.0),m3;
+port(),dev1;
+ground(0.0),g;
 
 
 
 # Link-like objects# ---------------------# Link-type objects connect from one mass-like object to another mass-like object. For that # reason, each of the links must specify the two mass-like objects that it connects. ## format:# [type]([default parameters]),[identifying_name],[starting_vertex],[ending_vertex],([label1],[label2],...)## For instance for a linear link we have# link([stiffness in N/m],[damping in N/(m/s)],[optional center position offset in m (defaults to zero)]),[unique_linkname],[starting_vertex],[ending_vertex],([label1],[label2],...)## Or for a nonlinear, switching "BUT" contact link, we have# contact([stiffness in N/m],[damping in N/(m/s)],[optional offset for engagement in m] (defaults to zero)),[unique_linkname],[starting_vertex],[ending_vertex],([label1],[label2],...)## Or for a nonlinear plucking link, we have# pluck([stiffness in N/m],[damping in N/(m/s)],[optional minimum displacement difference for contact in m (defaults to zero)]),[unique_linkname],[starting_vertex],[ending_vertex],([label1],[label2],...)# In this model, we have just three simple linear links. The stiffness parameter is written as a mathematical expression in terms of the identifier ("variable") adjStiffness (see faustcode below for definition of adjStiffness).
-link(2.0*adjStiffness,0.003,0.0),l1,m1,m2,();
-link(2.0*adjStiffness,0.004,0.0),l2,m2,m3,();
-link(2.0*adjStiffness,0.005,0.0),l3,m2,dev1,();
+link(2.0*adjStiffness,0.003,0.0),l1,m1,m2;
+link(2.0*adjStiffness,0.004,0.0),l2,m2,m3;
+link(2.0*adjStiffness,0.005,0.0),l3,m2,dev1;
 
 
 

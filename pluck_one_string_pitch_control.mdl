@@ -47,31 +47,31 @@ faustcode: outputDSP=highpass(4,20.0);
 
 
 
-port(),dev0,(); # pos 395,45
-port(),dev1,(); # pos 363,277
+port(),dev0; # pos 395,45
+port(),dev1; # pos 363,277
 
 
 
-pluck(k,R,maxdisp,0.0),p0,junct0,dev0,();
+pluck(k,R,maxdisp,0.0),p0,junct0,dev0;
 
 
 
 # These waveguide delay lengths are NOT compensated by the delay introduced by the terminations:
-# waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos)),wg0,bridge,junct0,();
-# waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos))),wg1,fret,junct0,();
+# waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos)),wg0,bridge,junct0;
+# waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos))),wg1,fret,junct0;
 
 # These waveguide delay lengths are compensated by the delay introduced by the terminations:
-waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos-simpleStringTermDelay(bridgeFc))),wg0,bridge,junct0,();
-waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1,fret,junct0,();
+waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos-simpleStringTermDelay(bridgeFc))),wg0,bridge,junct0;
+waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1,fret,junct0;
 
 
 
-termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridge,(); # pos 32,154
-termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fret,(); # pos 440,146
+termination(simpleStringTerm(-1.0+pow(10.0,-bridgeAtten:float), bridgeFc)),bridge; # pos 32,154
+termination(simpleStringTerm(-1.0+pow(10.0,-fretAtten:float), fretFc)),fret; # pos 440,146
 
 
 
-junction(0.0),junct0,(); # pos 248,96
+junction(0.0),junct0; # pos 248,96
 
 
 
