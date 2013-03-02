@@ -25,18 +25,32 @@
 
 
 # Specify audio target GUI widgets
-faustcode:resonanceFrequency=hslider("Resonance Frequency", 326.0, 40.0, 3000.0, 4.0);
-faustcode:decayTimeOfResonator=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
-faustcode:massOfResonator=hslider("Mass of Resonator", 0.001, 0.0004, 0.008, 0.0002);
+faustcode:f=300;  // Reference frequency for the initial resonance frequency choices
+faustcode:f1=hslider("Resonance Frequency1", f, 40.0, 3000.0, 4.0);
+faustcode:f2=hslider("Resonance Frequency2", f*1.4142, 40.0, 3000.0, 4.0);
+faustcode:f3=hslider("Resonance Frequency3", f*1.7321, 40.0, 3000.0, 4.0);
+faustcode:f4=hslider("Resonance Frequency4", f*2.2361, 40.0, 3000.0, 4.0);
+faustcode:tau=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
+faustcode:m=hslider("Mass of Resonator", 0.01, 0.004, 0.08, 0.002);
 faustcode:interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
 faustcode:interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
+faustcode:outputDSP=highpass(4,20.0);
+faustcode:vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes 
 
-# Model itself
-resonators(resonanceFrequency, decayTimeOfResonator, massOfResonator),r1,( );
+# e.g. for four resonance frequencies
+resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2,   f3,tau*0.8,m*f1*f1/f3/f3,    f4,tau*0.5,m*f1*f1/f4/f4),reson1,( );
+
+# e.g. for two resonance frequencies
+#resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2),reson1,( );
+
+# e.g. for one resonance frequency
+#resonators(f1,tau,m),reson1,( );
+
+
 port( ),dev1,(devlabel);
 port( ),dev2,(devlabel);
 
-touch(interactionStiffness,interactionDamping,0.0),tt,r1,dev1,(tlabel);
+touch(interactionStiffness,interactionDamping,0.0),tt,reson1,dev1,(tlabel);
 
-audioout,aLeft,r1*(1000.0);
-audioout,aRight,r1*(1000.0);
+audioout,aLeft,reson1*(1000.0)*vol:outputDSP;
+audioout,aRight,reson1*(1000.0)*vol:outputDSP;
