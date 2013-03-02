@@ -6,6 +6,7 @@
 import("music.lib");
 import("effect.lib");
 //import("filter.lib");
+import("SAM-fx.lib");
 
 
 onePoleBLT(fcutoff) = _:*(b)<:(_,_):(mem,_):+:(+)~(*(fb)):_ with {

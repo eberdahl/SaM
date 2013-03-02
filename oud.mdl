@@ -111,7 +111,6 @@ faustcode: noteA=220.0;
 faustcode: noteD=293.66;
 faustcode: noteG=392.0;
 faustcode: noteC=523.25;
-faustcode: import("SAMfreeverb.dsp");
 
 
 audioout,a0,(bridge*vol+bridgecpy*1.0+bridgecpy1*1.0+bridgecpy2*1.0+bridgecpy3*1.0+bridgecpy4*1.0+bridgecpy5*1.0+bridgecpy6*1.0+bridgecpy7*1.0+bridgecpy8*1.0):outputDSP:SAMfreereverb; # pos 59,336
