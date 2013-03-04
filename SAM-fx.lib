@@ -1,5 +1,15 @@
 
 
+SAMlimiter = compressor_mono(10e10,-6,0.0008,0.1);
+// syntax: compressor_mono(ratio,thresh,att,rel)
+// compression ratio of 10e10 means it is a very hard limiter (it is hard to make a model explode faster than this, but it is certainly possible to do so)
+// thresh = -6dB means limiter kicks in above this threshold
+// attach time is 0.8ms
+// release time is 0.1s
+
+
+defaultOutputDSP = highpass(4,20.0):SAMlimiter;
+
 
 
 // I use my own definition of an FIR filter because I find that it compiles better for longer

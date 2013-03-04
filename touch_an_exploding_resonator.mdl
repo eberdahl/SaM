@@ -1,0 +1,44 @@
+# Example MDL file for Synth-A-Modeler
+#
+# From LAC Paper 2012 entitled "An Introduction to the Synth-A-Modeler 
+# Compiler: Modular and Open-Source Sound Synthesis using Physical Models"
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+# Specify audio target GUI widgets
+faustcode:stiffnessOfResonator=hslider("Stiffness of Resonator", 4200.0, 400.0, 8000.0, 100.0);
+faustcode:dampingOfResonator=hslider("Damping of Resonator", -0.01, -0.1, 0.0, 0.001);
+faustcode:massOfResonator=hslider("Mass of Resonator", 0.001, 0.0004, 0.008, 0.0002);
+faustcode:interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
+faustcode:interactionDamping=hslider("Touch Interaction Damping", 0.3, 0.02, 1.0, 0.02);
+
+# Model itself
+mass(massOfResonator,0.0,0.0),m1;
+ground(0.0),g;
+port( ),dev1;
+port( ),dev2;
+
+link(stiffnessOfResonator,dampingOfResonator,0.0),ll,m1,g;
+touch(interactionStiffness,interactionDamping,0.0),tt,m1,dev1;
+
+audioout,aLeft,m1*(1000.0):SAMlimiter;
+audioout,aRight,m1*(1000.0):SAMlimiter;
