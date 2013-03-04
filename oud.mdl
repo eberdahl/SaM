@@ -23,6 +23,7 @@
 
 
 port(),dev0; # pos 627,709
+port(),dev1;
 
 
 pluck(k,R,maxdisp,0.0),p0,junct0,dev0;
@@ -113,5 +114,5 @@ faustcode: noteG=392.0;
 faustcode: noteC=523.25;
 
 
-audioout,a0,(bridge*vol+bridgecpy*1.0+bridgecpy1*1.0+bridgecpy2*1.0+bridgecpy3*1.0+bridgecpy4*1.0+bridgecpy5*1.0+bridgecpy6*1.0+bridgecpy7*1.0+bridgecpy8*1.0):outputDSP:SAMfreereverb; # pos 59,336
-audioout,a1,(fret*vol+fretcpy*1.0+fretcpy1*1.0+fretcpy2*1.0+fretcpy3*1.0+fretcpy4*1.0+fretcpy5*1.0+fretcpy6*1.0+fretcpy7*1.0+fretcpy8*1.0):outputDSP:SAMfreereverb; # pos 851,336
+audioout,a0,(bridge+bridgecpy+bridgecpy1+bridgecpy2+bridgecpy3+bridgecpy4+bridgecpy5+bridgecpy6+bridgecpy7+bridgecpy8)*vol:outputDSP:bodyResp1:SAMfreereverb; # pos 59,336
+audioout,a1,(fret+fretcpy+fretcpy1+fretcpy2+fretcpy3+fretcpy4+fretcpy5+fretcpy6+fretcpy7+fretcpy8)*vol:outputDSP:bodyResp2:SAMfreereverb; # pos 851,336
