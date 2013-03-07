@@ -1,0 +1,363 @@
+touch(stiffnessTouch,dampingTouch,0.0),l1,m0,m1;
+touch(stiffnessLinear,dampingLinear,0.0),l2,m1,m2;
+touch(stiffnessTouch,dampingTouch,0.0),l3,m2,m3;
+touch(stiffnessTouch,dampingTouch,0.0),l4,m3,m4;
+touch(stiffnessLinear,dampingLinear,0.0),l5,m4,m5;
+touch(stiffnessLinear,dampingLinear,0.0),l6,m5,m6;
+touch(stiffnessTouch,dampingTouch,0.0),l7,m6,m7;
+touch(stiffnessTouch,dampingTouch,0.0),l8,m7,m8;
+touch(stiffnessLinear,dampingLinear,0.0),l9,m8,m9;
+touch(stiffnessLinear,dampingLinear,0.0),l10,m9,m10;
+touch(stiffnessTouch,dampingTouch,0.0),l11,m10,m11;
+touch(stiffnessLinear,dampingLinear,0.0),l12,m11,m12;
+touch(stiffnessTouch,dampingTouch,0.0),l13,m12,m13;
+touch(stiffnessLinear,dampingLinear,0.0),l14,m13,m14;
+touch(stiffnessLinear,dampingLinear,0.0),l15,m14,m15;
+touch(stiffnessLinear,dampingLinear,0.0),l16,m15,m16;
+touch(stiffnessLinear,dampingLinear,0.0),l17,m16,m17;
+touch(stiffnessTouch,dampingTouch,0.0),l18,m17,m18;
+touch(stiffnessLinear,dampingLinear,0.0),l19,m18,m19;
+touch(stiffnessTouch,dampingTouch,0.0),l20,m19,m20;
+touch(stiffnessTouch,dampingTouch,0.0),l21,m20,m21;
+touch(stiffnessLinear,dampingLinear,0.0),l22,m21,m22;
+touch(stiffnessTouch,dampingTouch,0.0),l23,m22,m23;
+touch(stiffnessTouch,dampingTouch,0.0),l24,m23,m24;
+touch(stiffnessTouch,dampingTouch,0.0),l25,m24,m25;
+touch(stiffnessTouch,dampingTouch,0.0),l26,m25,m26;
+touch(stiffnessTouch,dampingTouch,0.0),l27,m26,m27;
+touch(stiffnessLinear,dampingLinear,0.0),l28,m27,m28;
+touch(stiffnessLinear,dampingLinear,0.0),l29,m28,m29;
+touch(stiffnessLinear,dampingLinear,0.0),l30,m29,m30;
+touch(stiffnessTouch,dampingTouch,0.0),l31,m30,m31;
+touch(stiffnessLinear,dampingLinear,0.0),l32,m31,m32;
+touch(stiffnessTouch,dampingTouch,0.0),l33,m32,m33;
+touch(stiffnessTouch,dampingTouch,0.0),l34,m33,m34;
+touch(stiffnessTouch,dampingTouch,0.0),l35,m34,m35;
+touch(stiffnessLinear,dampingLinear,0.0),l36,m35,m36;
+touch(stiffnessLinear,dampingLinear,0.0),l37,m36,m37;
+touch(stiffnessTouch,dampingTouch,0.0),l38,m37,m38;
+touch(stiffnessLinear,dampingLinear,0.0),l39,m38,m39;
+touch(stiffnessLinear,dampingLinear,0.0),l40,m39,m40;
+touch(stiffnessTouch,dampingTouch,0.0),l41,m40,m41;
+touch(stiffnessLinear,dampingLinear,0.0),l42,m41,m42;
+touch(stiffnessTouch,dampingTouch,0.0),l43,m42,m43;
+touch(stiffnessLinear,dampingLinear,0.0),l44,m43,m44;
+touch(stiffnessLinear,dampingLinear,0.0),l45,m44,m45;
+touch(stiffnessLinear,dampingLinear,0.0),l46,m45,m46;
+touch(stiffnessLinear,dampingLinear,0.0),l47,m46,m47;
+touch(stiffnessTouch,dampingTouch,0.0),l48,m47,m48;
+touch(stiffnessTouch,dampingTouch,0.0),l49,m48,m49;
+touch(stiffnessLinear,dampingLinear,0.0),l50,m49,m50;
+touch(stiffnessLinear,dampingLinear,0.0),l51,m50,m51;
+touch(stiffnessTouch,dampingTouch,0.0),l52,m51,m52;
+touch(stiffnessLinear,dampingLinear,0.0),l53,m52,m53;
+touch(stiffnessLinear,dampingLinear,0.0),l54,m53,m54;
+touch(stiffnessTouch,dampingTouch,0.0),l55,m54,m55;
+touch(stiffnessTouch,dampingTouch,0.0),l56,m55,m56;
+touch(stiffnessTouch,dampingTouch,0.0),l57,m56,m57;
+touch(stiffnessLinear,dampingLinear,0.0),l58,m57,m58;
+touch(stiffnessLinear,dampingLinear,0.0),l59,m58,m59;
+touch(stiffnessTouch,dampingTouch,0.0),l60,m59,m60;
+touch(stiffnessTouch,dampingTouch,0.0),l61,m60,m61;
+touch(stiffnessTouch,dampingTouch,0.0),l62,m61,m62;
+touch(stiffnessTouch,dampingTouch,0.0),l63,m62,m63;
+touch(stiffnessTouch,dampingTouch,0.0),l64,m63,m64;
+touch(stiffnessLinear,dampingLinear,0.0),l65,m64,m65;
+touch(stiffnessTouch,dampingTouch,0.0),l66,m65,m66;
+touch(stiffnessTouch,dampingTouch,0.0),l67,m66,m67;
+touch(stiffnessTouch,dampingTouch,0.0),l68,m67,m68;
+touch(stiffnessLinear,dampingLinear,0.0),l69,m68,m69;
+touch(stiffnessTouch,dampingTouch,0.0),l70,m69,m70;
+touch(stiffnessLinear,dampingLinear,0.0),l71,m70,m71;
+touch(stiffnessLinear,dampingLinear,0.0),l72,m71,m72;
+touch(stiffnessLinear,dampingLinear,0.0),l73,m72,m73;
+touch(stiffnessLinear,dampingLinear,0.0),l74,m73,m74;
+touch(stiffnessLinear,dampingLinear,0.0),l75,m74,m75;
+touch(stiffnessTouch,dampingTouch,0.0),l76,m75,m76;
+touch(stiffnessTouch,dampingTouch,0.0),l77,m76,m77;
+touch(stiffnessLinear,dampingLinear,0.0),l78,m77,m78;
+touch(stiffnessLinear,dampingLinear,0.0),l79,m78,m79;
+touch(stiffnessTouch,dampingTouch,0.0),l80,m79,m80;
+touch(stiffnessLinear,dampingLinear,0.0),l81,m80,m81;
+touch(stiffnessLinear,dampingLinear,0.0),l82,m81,m82;
+touch(stiffnessTouch,dampingTouch,0.0),l83,m82,m83;
+touch(stiffnessLinear,dampingLinear,0.0),l84,m83,m84;
+touch(stiffnessTouch,dampingTouch,0.0),l85,m84,m85;
+touch(stiffnessTouch,dampingTouch,0.0),l86,m85,m86;
+touch(stiffnessTouch,dampingTouch,0.0),l87,m86,m87;
+touch(stiffnessTouch,dampingTouch,0.0),l88,m87,m88;
+touch(stiffnessLinear,dampingLinear,0.0),l89,m88,m89;
+touch(stiffnessTouch,dampingTouch,0.0),l90,m89,m90;
+touch(stiffnessLinear,dampingLinear,0.0),l91,m90,m91;
+touch(stiffnessLinear,dampingLinear,0.0),l92,m91,m92;
+touch(stiffnessTouch,dampingTouch,0.0),l93,m92,m93;
+touch(stiffnessTouch,dampingTouch,0.0),l94,m93,m94;
+touch(stiffnessTouch,dampingTouch,0.0),l95,m94,m95;
+touch(stiffnessLinear,dampingLinear,0.0),l96,m95,m96;
+touch(stiffnessTouch,dampingTouch,0.0),l97,m96,m97;
+touch(stiffnessLinear,dampingLinear,0.0),l98,m97,m98;
+touch(stiffnessTouch,dampingTouch,0.0),l99,m98,m99;
+touch(stiffnessTouch,dampingTouch,0.0),l100,m99,m100;
+touch(stiffnessTouch,dampingTouch,0.0),l101,m100,m101;
+touch(stiffnessLinear,dampingLinear,0.0),l102,m101,m102;
+touch(stiffnessLinear,dampingLinear,0.0),l103,m102,m103;
+touch(stiffnessTouch,dampingTouch,0.0),l104,m103,m104;
+touch(stiffnessLinear,dampingLinear,0.0),l105,m104,m105;
+touch(stiffnessTouch,dampingTouch,0.0),l106,m105,m106;
+touch(stiffnessTouch,dampingTouch,0.0),l107,m106,m107;
+touch(stiffnessLinear,dampingLinear,0.0),l108,m107,m108;
+touch(stiffnessTouch,dampingTouch,0.0),l109,m108,m109;
+touch(stiffnessTouch,dampingTouch,0.0),l110,m109,m110;
+touch(stiffnessLinear,dampingLinear,0.0),l111,m110,m111;
+touch(stiffnessTouch,dampingTouch,0.0),l112,m111,m112;
+touch(stiffnessTouch,dampingTouch,0.0),l113,m112,m113;
+touch(stiffnessTouch,dampingTouch,0.0),l114,m113,m114;
+touch(stiffnessLinear,dampingLinear,0.0),l115,m114,m115;
+touch(stiffnessTouch,dampingTouch,0.0),l116,m115,m116;
+touch(stiffnessLinear,dampingLinear,0.0),l117,m116,m117;
+touch(stiffnessTouch,dampingTouch,0.0),l118,m117,m118;
+touch(stiffnessLinear,dampingLinear,0.0),l119,m118,m119;
+touch(stiffnessTouch,dampingTouch,0.0),l120,m119,m120;
+touch(stiffnessTouch,dampingTouch,0.0),l121,m120,m121;
+touch(stiffnessLinear,dampingLinear,0.0),l122,m121,m122;
+touch(stiffnessTouch,dampingTouch,0.0),l123,m122,m123;
+touch(stiffnessTouch,dampingTouch,0.0),l124,m123,m124;
+touch(stiffnessTouch,dampingTouch,0.0),l125,m124,m125;
+touch(stiffnessLinear,dampingLinear,0.0),l126,m125,m126;
+touch(stiffnessTouch,dampingTouch,0.0),l127,m126,m127;
+touch(stiffnessTouch,dampingTouch,0.0),l128,m127,m128;
+touch(stiffnessTouch,dampingTouch,0.0),l129,m128,m129;
+touch(stiffnessTouch,dampingTouch,0.0),l130,m129,m130;
+touch(stiffnessTouch,dampingTouch,0.0),l131,m130,m131;
+touch(stiffnessLinear,dampingLinear,0.0),l132,m131,m132;
+touch(stiffnessTouch,dampingTouch,0.0),l133,m132,m133;
+touch(stiffnessLinear,dampingLinear,0.0),l134,m133,m134;
+touch(stiffnessLinear,dampingLinear,0.0),l135,m134,m135;
+touch(stiffnessLinear,dampingLinear,0.0),l136,m135,m136;
+touch(stiffnessTouch,dampingTouch,0.0),l137,m136,m137;
+touch(stiffnessLinear,dampingLinear,0.0),l138,m137,m138;
+touch(stiffnessTouch,dampingTouch,0.0),l139,m138,m139;
+touch(stiffnessTouch,dampingTouch,0.0),l140,m139,m140;
+touch(stiffnessLinear,dampingLinear,0.0),l141,m140,m141;
+touch(stiffnessTouch,dampingTouch,0.0),l142,m141,m142;
+touch(stiffnessLinear,dampingLinear,0.0),l143,m142,m143;
+touch(stiffnessLinear,dampingLinear,0.0),l144,m143,m144;
+touch(stiffnessTouch,dampingTouch,0.0),l145,m144,m145;
+touch(stiffnessLinear,dampingLinear,0.0),l146,m145,m146;
+touch(stiffnessLinear,dampingLinear,0.0),l147,m146,m147;
+touch(stiffnessTouch,dampingTouch,0.0),l148,m147,m148;
+touch(stiffnessLinear,dampingLinear,0.0),l149,m148,m149;
+touch(stiffnessLinear,dampingLinear,0.0),l150,m149,m150;
+ground(0.0),m0;
+mass(pointMass,0.0,0.0),m1; # pos 100,100
+mass(pointMass,0.0,0.0),m2; # pos 160,100
+mass(pointMass,0.0,0.0),m3; # pos 220,100
+mass(pointMass,0.0,0.0),m4; # pos 280,100
+mass(pointMass,0.0,0.0),m5; # pos 340,100
+mass(pointMass,0.0,0.0),m6; # pos 400,100
+mass(pointMass,0.0,0.0),m7; # pos 460,100
+mass(pointMass,0.0,0.0),m8; # pos 520,100
+mass(pointMass,0.0,0.0),m9; # pos 580,100
+mass(pointMass,0.0,0.0),m10; # pos 640,100
+mass(pointMass,0.0,0.0),m11; # pos 700,100
+mass(pointMass,0.0,0.0),m12; # pos 760,100
+mass(pointMass,0.0,0.0),m13; # pos 820,100
+mass(pointMass,0.0,0.0),m14; # pos 880,100
+mass(pointMass,0.0,0.0),m15; # pos 940,100
+mass(pointMass,0.0,0.0),m16; # pos 1000,100
+mass(pointMass,0.0,0.0),m17; # pos 1060,100
+mass(pointMass,0.0,0.0),m18; # pos 1120,100
+mass(pointMass,0.0,0.0),m19; # pos 1180,100
+mass(pointMass,0.0,0.0),m20; # pos 1240,100
+mass(pointMass,0.0,0.0),m21; # pos 1300,100
+mass(pointMass,0.0,0.0),m22; # pos 1360,100
+mass(pointMass,0.0,0.0),m23; # pos 1420,100
+mass(pointMass,0.0,0.0),m24; # pos 1480,100
+mass(pointMass,0.0,0.0),m25; # pos 1540,100
+mass(pointMass,0.0,0.0),m26; # pos 1600,100
+mass(pointMass,0.0,0.0),m27; # pos 1660,100
+mass(pointMass,0.0,0.0),m28; # pos 1720,100
+mass(pointMass,0.0,0.0),m29; # pos 1780,100
+mass(pointMass,0.0,0.0),m30; # pos 1840,100
+mass(pointMass,0.0,0.0),m31; # pos 1900,100
+mass(pointMass,0.0,0.0),m32; # pos 1960,100
+mass(pointMass,0.0,0.0),m33; # pos 2020,100
+mass(pointMass,0.0,0.0),m34; # pos 2080,100
+mass(pointMass,0.0,0.0),m35; # pos 2140,100
+mass(pointMass,0.0,0.0),m36; # pos 2200,100
+mass(pointMass,0.0,0.0),m37; # pos 2260,100
+mass(pointMass,0.0,0.0),m38; # pos 2320,100
+mass(pointMass,0.0,0.0),m39; # pos 2380,100
+mass(pointMass,0.0,0.0),m40; # pos 2440,100
+mass(pointMass,0.0,0.0),m41; # pos 2500,100
+mass(pointMass,0.0,0.0),m42; # pos 2560,100
+mass(pointMass,0.0,0.0),m43; # pos 2620,100
+mass(pointMass,0.0,0.0),m44; # pos 2680,100
+mass(pointMass,0.0,0.0),m45; # pos 2740,100
+mass(pointMass,0.0,0.0),m46; # pos 2800,100
+mass(pointMass,0.0,0.0),m47; # pos 2860,100
+mass(pointMass,0.0,0.0),m48; # pos 2920,100
+mass(pointMass,0.0,0.0),m49; # pos 2980,100
+mass(pointMass,0.0,0.0),m50; # pos 3040,100
+mass(pointMass,0.0,0.0),m51; # pos 3100,100
+mass(pointMass,0.0,0.0),m52; # pos 3160,100
+mass(pointMass,0.0,0.0),m53; # pos 3220,100
+mass(pointMass,0.0,0.0),m54; # pos 3280,100
+mass(pointMass,0.0,0.0),m55; # pos 3340,100
+mass(pointMass,0.0,0.0),m56; # pos 3400,100
+mass(pointMass,0.0,0.0),m57; # pos 3460,100
+mass(pointMass,0.0,0.0),m58; # pos 3520,100
+mass(pointMass,0.0,0.0),m59; # pos 3580,100
+mass(pointMass,0.0,0.0),m60; # pos 3640,100
+mass(pointMass,0.0,0.0),m61; # pos 3700,100
+mass(pointMass,0.0,0.0),m62; # pos 3760,100
+mass(pointMass,0.0,0.0),m63; # pos 3820,100
+mass(pointMass,0.0,0.0),m64; # pos 3880,100
+mass(pointMass,0.0,0.0),m65; # pos 3940,100
+mass(pointMass,0.0,0.0),m66; # pos 4000,100
+mass(pointMass,0.0,0.0),m67; # pos 4060,100
+mass(pointMass,0.0,0.0),m68; # pos 4120,100
+mass(pointMass,0.0,0.0),m69; # pos 4180,100
+mass(pointMass,0.0,0.0),m70; # pos 4240,100
+mass(pointMass,0.0,0.0),m71; # pos 4300,100
+mass(pointMass,0.0,0.0),m72; # pos 4360,100
+mass(pointMass,0.0,0.0),m73; # pos 4420,100
+mass(pointMass,0.0,0.0),m74; # pos 4480,100
+mass(pointMass,0.0,0.0),m75; # pos 4540,100
+mass(pointMass,0.0,0.0),m76; # pos 4600,100
+mass(pointMass,0.0,0.0),m77; # pos 4660,100
+mass(pointMass,0.0,0.0),m78; # pos 4720,100
+mass(pointMass,0.0,0.0),m79; # pos 4780,100
+mass(pointMass,0.0,0.0),m80; # pos 4840,100
+mass(pointMass,0.0,0.0),m81; # pos 4900,100
+mass(pointMass,0.0,0.0),m82; # pos 4960,100
+mass(pointMass,0.0,0.0),m83; # pos 5020,100
+mass(pointMass,0.0,0.0),m84; # pos 5080,100
+mass(pointMass,0.0,0.0),m85; # pos 5140,100
+mass(pointMass,0.0,0.0),m86; # pos 5200,100
+mass(pointMass,0.0,0.0),m87; # pos 5260,100
+mass(pointMass,0.0,0.0),m88; # pos 5320,100
+mass(pointMass,0.0,0.0),m89; # pos 5380,100
+mass(pointMass,0.0,0.0),m90; # pos 5440,100
+mass(pointMass,0.0,0.0),m91; # pos 5500,100
+mass(pointMass,0.0,0.0),m92; # pos 5560,100
+mass(pointMass,0.0,0.0),m93; # pos 5620,100
+mass(pointMass,0.0,0.0),m94; # pos 5680,100
+mass(pointMass,0.0,0.0),m95; # pos 5740,100
+mass(pointMass,0.0,0.0),m96; # pos 5800,100
+mass(pointMass,0.0,0.0),m97; # pos 5860,100
+mass(pointMass,0.0,0.0),m98; # pos 5920,100
+mass(pointMass,0.0,0.0),m99; # pos 5980,100
+mass(pointMass,0.0,0.0),m100; # pos 6040,100
+mass(pointMass,0.0,0.0),m101; # pos 6100,100
+mass(pointMass,0.0,0.0),m102; # pos 6160,100
+mass(pointMass,0.0,0.0),m103; # pos 6220,100
+mass(pointMass,0.0,0.0),m104; # pos 6280,100
+mass(pointMass,0.0,0.0),m105; # pos 6340,100
+mass(pointMass,0.0,0.0),m106; # pos 6400,100
+mass(pointMass,0.0,0.0),m107; # pos 6460,100
+mass(pointMass,0.0,0.0),m108; # pos 6520,100
+mass(pointMass,0.0,0.0),m109; # pos 6580,100
+mass(pointMass,0.0,0.0),m110; # pos 6640,100
+mass(pointMass,0.0,0.0),m111; # pos 6700,100
+mass(pointMass,0.0,0.0),m112; # pos 6760,100
+mass(pointMass,0.0,0.0),m113; # pos 6820,100
+mass(pointMass,0.0,0.0),m114; # pos 6880,100
+mass(pointMass,0.0,0.0),m115; # pos 6940,100
+mass(pointMass,0.0,0.0),m116; # pos 7000,100
+mass(pointMass,0.0,0.0),m117; # pos 7060,100
+mass(pointMass,0.0,0.0),m118; # pos 7120,100
+mass(pointMass,0.0,0.0),m119; # pos 7180,100
+mass(pointMass,0.0,0.0),m120; # pos 7240,100
+mass(pointMass,0.0,0.0),m121; # pos 7300,100
+mass(pointMass,0.0,0.0),m122; # pos 7360,100
+mass(pointMass,0.0,0.0),m123; # pos 7420,100
+mass(pointMass,0.0,0.0),m124; # pos 7480,100
+mass(pointMass,0.0,0.0),m125; # pos 7540,100
+mass(pointMass,0.0,0.0),m126; # pos 7600,100
+mass(pointMass,0.0,0.0),m127; # pos 7660,100
+mass(pointMass,0.0,0.0),m128; # pos 7720,100
+mass(pointMass,0.0,0.0),m129; # pos 7780,100
+mass(pointMass,0.0,0.0),m130; # pos 7840,100
+mass(pointMass,0.0,0.0),m131; # pos 7900,100
+mass(pointMass,0.0,0.0),m132; # pos 7960,100
+mass(pointMass,0.0,0.0),m133; # pos 8020,100
+mass(pointMass,0.0,0.0),m134; # pos 8080,100
+mass(pointMass,0.0,0.0),m135; # pos 8140,100
+mass(pointMass,0.0,0.0),m136; # pos 8200,100
+mass(pointMass,0.0,0.0),m137; # pos 8260,100
+mass(pointMass,0.0,0.0),m138; # pos 8320,100
+mass(pointMass,0.0,0.0),m139; # pos 8380,100
+mass(pointMass,0.0,0.0),m140; # pos 8440,100
+mass(pointMass,0.0,0.0),m141; # pos 8500,100
+mass(pointMass,0.0,0.0),m142; # pos 8560,100
+mass(pointMass,0.0,0.0),m143; # pos 8620,100
+mass(pointMass,0.0,0.0),m144; # pos 8680,100
+mass(pointMass,0.0,0.0),m145; # pos 8740,100
+mass(pointMass,0.0,0.0),m146; # pos 8800,100
+mass(pointMass,0.0,0.0),m147; # pos 8860,100
+mass(pointMass,0.0,0.0),m148; # pos 8920,100
+mass(pointMass,0.0,0.0),m149; # pos 8980,100
+mass(pointMass,0.0,0.0),m150; # pos 9040,100
+
+
+
+# This model consists randomly of linear links and touch links.
+#
+# THIS IS NOT CALIBRATED FOR A HAPTIC DEVICE !
+#
+# Example MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+
+faustcode:stiffnessLinear=hslider("Linear stiffness [N/m]", 8639.0,100.0,10000.0,100.0);
+faustcode:dampingLinear=hslider("Linear damping [N/(m/s)]", 0.001,0.0001,0.1,0.0001);
+faustcode:stiffnessTouch=hslider("Touch stiffness [N/m]", 8094.0,100.0,10000.0,100.0);
+faustcode:dampingTouch=hslider("Touch damping [N/(m/s)]", 0.034,0.0001,0.1,0.0001);
+faustcode:stiffnessDev=hslider("Device stiffness [N/m]", 8094.0,100.0,10000.0,100.0);
+faustcode:dampingDev=hslider("Device damping [N/(m/s)]", 0.034,0.0001,0.1,0.0001);
+faustcode:pointMass=hslider("Mass for string point [kg]", 0.0002, 0.00001, 0.008, 0.00001);
+
+ground(0.0),grnd; # pos 40,40
+port( ),dev1; # pos 200,200
+port( ),dev2; # pos 300,300
+
+touch(stiffnessDev,dampingDev,0.0),ldev1,m35,dev1;
+touch(stiffnessDev,dampingDev,0.0),ldev2,m150,dev2;
+
+#pluck(90.0, 1.5, 0.016),t1,dev1,m10;
+#link(50.0, 0.1, 0.0),ll,dev2,grnd;
+
+audioout,a1,(100.0*(m3 + m7 + m15 + m18 - m21 + m29 - m33)):highpass(6,40.0); # pos 80,80
+audioout,a2,(100.0*(m130 + m137 - m95 + m105 + m140 + m145 - m142 + m98 + m101)):highpass(6,40.0); # pos 200,200
+
+
+#link(50.0,0.001,0.0),ldev2,dev2,g;
+#touch(interactionStiffness,interactionDamping,0.0),tt,dev1,mn0xn0y;
+
+# Actually for this particular model, the highpass filter isn't necessary to eliminate DC offsets, but it sounds better with high-pass filtering!
+#audioout,aL,mn20xn0y*(0.24):differentiatorFwdEuler:differentiatorFwdEuler;
+#audioout,aR,mn0xn0y*(0.06):differentiatorFwdEuler:differentiatorFwdEuler;
+#audioout,aL,mn20xn0y*(2400000.0):highpass(1,2000.0):highpass(1,1000.0);
+#audioout,aR,mn0xn0y*(600000.0):highpass(1,2000.0):highpass(1,1000.0);

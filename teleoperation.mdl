@@ -1,0 +1,41 @@
+# Example MDL file for Synth-A-Modeler
+#
+# NOTE:  This model does not produce any useful audio output.  The
+#        model is for checking the communication with a haptic device.
+#
+# Edgar Berdahl, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+faustcode:stiffness=hslider("Stiffness", 50.0, 10.0, 120.0, 10.0);
+
+
+# mass-like objects
+port(),dev1;
+port(),dev2;
+
+
+# link-like objects
+link(stiffness,0.00,0.0),l1,dev1,dev2;
+
+
+
+audioout,a1,0.0;
+audioout,a2,0.0;

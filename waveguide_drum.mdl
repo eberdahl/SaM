@@ -1,0 +1,52 @@
+# To do:  Make the GUI elements hierarchical
+
+faustcode:frequencyScaler = 0.3;
+faustcode:outputDSP=highpass(4,20.0);
+faustcode:vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
+faustcode:fc1=hslider("Term cutoff freq 1 [Hz]",3000.0,1000.0,fs,10.0);
+faustcode:fc2=hslider("Term cutoff freq 2 [Hz]",5000.0,1000.0,fs,10.0);
+faustcode:fc3=hslider("Term cutoff freq 3 [Hz]",10000.0,1000.0,fs,10.0);
+faustcode:fc4=hslider("Term cutoff freq 4 [Hz]",20000.0,1000.0,fs,10.0);
+faustcode:fcALL=hslider("Term cutoff freq SCALE ALL",1.0,0.01,1.0,0.001);
+
+faustcode:t1reflCoef=(10.0, (hslider("Term reflection loss 1 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(-1.0);
+faustcode:t2reflCoef=(10.0, (hslider("Term reflection loss 2 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(1.0);
+faustcode:t3reflCoef=(10.0, (hslider("Term reflection loss 3 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(-1.0);
+faustcode:t4reflCoef=(10.0, (hslider("Term reflection loss 4 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(1.0);
+#faustcode:t1reflCoef=(10.0, (hslider("Term reflection loss 1 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(checkbox("Term 1 positive gain"):*(2):-(1));
+#faustcode:t2reflCoef=(10.0, (hslider("Term reflection loss 2 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(checkbox("Term 2 positive gain"):*(2):-(1));
+#faustcode:t3reflCoef=(10.0, (hslider("Term reflection loss 3 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(checkbox("Term 3 positive gain"):*(2):-(1));
+#faustcode:t4reflCoef=(10.0, (hslider("Term reflection loss 4 [dB]",-60.0,-100.0,-1.0,1.0):/(20.0):float)):pow:-(1.0):*(checkbox("Term 4 positive gain"):*(2):-(1));
+
+faustcode:maxDelTime=0.05;
+faustcode:delTime1=0.001*delTimeSc*hslider("Waveguide delay 1 [ms]", 5.0, 0.01, maxDelTime*1000.0, 0.01);
+faustcode:delTime2=0.001*delTimeSc*hslider("Waveguide delay 2 [ms]", 5.0, 0.01, maxDelTime*1000.0, 0.01);
+faustcode:delTime3=0.001*delTimeSc*hslider("Waveguide delay 3 [ms]", 5.0, 0.01, maxDelTime*1000.0, 0.01);
+faustcode:delTime4=0.001*delTimeSc*hslider("Waveguide delay 4 [ms]", 5.0, 0.01, maxDelTime*1000.0, 0.01);
+faustcode:delTimeSc=hslider("Waveguide delay SCALE ALL", 1.0, 0.001, 1.0, 0.001);
+
+faustcode:wiSc=hslider("Waveguide impedance SCALE ALL", 1.0, 0.001, 1.0, 0.001);
+
+termination(simpleStringTerm(t1reflCoef,fc1*fcALL)),t1 ;
+waveguide(0.5*wiSc, simpleString(maxDelTime, delTime1)),w1,t1 ,junct1;
+
+termination(simpleStringTerm(t2reflCoef,fc2*fcALL)), t2;
+waveguide(0.5*wiSc,simpleString(maxDelTime, delTime2)),w2,t2, junct1;
+
+termination(simpleStringTerm(t3reflCoef,fc3*fcALL) ),t3 ;
+waveguide(0.5*wiSc, simpleString(maxDelTime, delTime3)),w3,t3 ,junct1;
+
+termination(simpleStringTerm(t4reflCoef,fc4*fcALL)), t4;
+waveguide(0.5*wiSc,simpleString(maxDelTime, delTime4)),w4,t4, junct1;
+
+junction(0.0),junct1;  # we can have comments after lines as well
+
+faustcode: k=hslider("Pluck stiffness [N/m]",250.0,50.0,1000.0,50.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.1,0.0,2.5,0.01);
+pluck(k, R, 0.006, 0.0),touch1 ,junct1, dev1;
+
+port( ),dev1;
+port( ),dev2;
+
+audioout,a1,t1:outputDSP:*(vol);
+audioout,a2,t2:outputDSP:*(vol);
