@@ -26,29 +26,34 @@ port(),dev0; # pos 869,78
 port(),dev1; # pos 817,371
 
 
-pluck(k*1.0,R*1.0,maxdisp*1.0,0.025*moveStrings),p0,junct0,dev0;
-pluck(k*1.0,R*1.0,maxdisp*1.0,0.015*moveStrings),p1,junct0cpy2,dev0;
-pluck(k*1.0,R*1.0,maxdisp*1.0,0.005*moveStrings),p2,junct0cpy3,dev0;
-pluck(k*1.0,R*1.0,maxdisp*1.0,-0.005*moveStrings),p3,junct0cpy4,dev0;
-pluck(k*1.0,R*1.0,maxdisp*1.0,-0.015*moveStrings),p4,junct0cpy5,dev0;
-pluck(k*1.0,R*1.0,maxdisp*1.0,-0.025*moveStrings),p5,junct0cpy6,dev0;
+pluck(k*plSc,R*plSc,maxdisp,0.025*moveStrings),p0,junct0,dev0;
+pluck(k*plSc,R*plSc,maxdisp,0.015*moveStrings),p1,junct0cpy2,dev0;
+pluck(k*plSc,R*plSc,maxdisp,0.005*moveStrings),p2,junct0cpy3,dev0;
+pluck(k*plSc,R*plSc,maxdisp,-0.005*moveStrings),p3,junct0cpy4,dev0;
+pluck(k*plSc,R*plSc,maxdisp,-0.015*moveStrings),p4,junct0cpy5,dev0;
+pluck(k*plSc,R*plSc,maxdisp,-0.025*moveStrings),p5,junct0cpy6,dev0;
 
+# Calculate bridge cutoff frequencies by linearly interpolating between bridgeFcLow and bridgeFcHigh as a function of the frequency
+faustcode: bridgeFc1 = (maxFreq-freq1)/(maxFreq-minFreq)*bridgeFcLow + (freq1-minFreq)/(maxFreq-minFreq)*bridgeFcHigh;
+faustcode: bridgeFc2 = (maxFreq-freq2)/(maxFreq-minFreq)*bridgeFcLow + (freq2-minFreq)/(maxFreq-minFreq)*bridgeFcHigh;
+faustcode: bridgeFc3 = (maxFreq-freq3)/(maxFreq-minFreq)*bridgeFcLow + (freq3-minFreq)/(maxFreq-minFreq)*bridgeFcHigh;
+faustcode: bridgeFc4 = (maxFreq-freq4)/(maxFreq-minFreq)*bridgeFcLow + (freq4-minFreq)/(maxFreq-minFreq)*bridgeFcHigh;
+faustcode: bridgeFc5 = (maxFreq-freq5)/(maxFreq-minFreq)*bridgeFcLow + (freq5-minFreq)/(maxFreq-minFreq)*bridgeFcHigh;
+faustcode: bridgeFc6 = (maxFreq-freq6)/(maxFreq-minFreq)*bridgeFcLow + (freq6-minFreq)/(maxFreq-minFreq)*bridgeFcHigh;
 
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler1)),wg0,term0,junct0;
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler2)),wg0cpy2,term0cpy2,junct0cpy2;
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler3)),wg0cpy3,term0cpy3,junct0cpy3;
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler4)),wg0cpy4,term0cpy4,junct0cpy4;
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler5)),wg0cpy5,term0cpy5,junct0cpy5;
-waveguide(2.5,simpleString(0.017,0.017*frequencyScaler6)),wg0cpy6,term0cpy6,junct0cpy6;
+waveguide(waveImp,simpleString(1.0/minFreq/2.0,1.0/freq1/2.0-simpleStringTermDelay(bridgeFc1))),wg0,term0,junct0;
+waveguide(waveImp,simpleString(1.0/minFreq/2.0,1.0/freq2/2.0-simpleStringTermDelay(bridgeFc2))),wg0cpy2,term0cpy2,junct0cpy2;
+waveguide(waveImp,simpleString(1.0/minFreq/2.0,1.0/freq3/2.0-simpleStringTermDelay(bridgeFc3))),wg0cpy3,term0cpy3,junct0cpy3;
+waveguide(waveImp,simpleString(1.0/minFreq/2.0,1.0/freq4/2.0-simpleStringTermDelay(bridgeFc4))),wg0cpy4,term0cpy4,junct0cpy4;
+waveguide(waveImp,simpleString(1.0/minFreq/2.0,1.0/freq5/2.0-simpleStringTermDelay(bridgeFc5))),wg0cpy5,term0cpy5,junct0cpy5;
+waveguide(waveImp,simpleString(1.0/minFreq/2.0,1.0/freq6/2.0-simpleStringTermDelay(bridgeFc6))),wg0cpy6,term0cpy6,junct0cpy6;
 
-
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0; # pos 100,210
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy2; # pos 190,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy3; # pos 270,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy4; # pos 350,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy5; # pos 450,220
-termination(simpleStringTerm(-1.0*dampingTerm, 5000.0)),term0cpy6; # pos 550,220
-
+termination(simpleStringTerm(-1.0*pow(0.001,1.0/freq1/T60), bridgeFc1)),term0;
+termination(simpleStringTerm(-1.0*pow(0.001,1.0/freq2/T60), bridgeFc2)),term0cpy2;
+termination(simpleStringTerm(-1.0*pow(0.001,1.0/freq3/T60), bridgeFc3)),term0cpy3;
+termination(simpleStringTerm(-1.0*pow(0.001,1.0/freq4/T60), bridgeFc4)),term0cpy4;
+termination(simpleStringTerm(-1.0*pow(0.001,1.0/freq5/T60), bridgeFc5)),term0cpy5;
+termination(simpleStringTerm(-1.0*pow(0.001,1.0/freq6/T60), bridgeFc6)),term0cpy6;
 
 junction(0.0),junct0; # pos 313,156
 junction(0.0),junct0cpy2; # pos 403,166
@@ -58,19 +63,44 @@ junction(0.0),junct0cpy5; # pos 663,166
 junction(0.0),junct0cpy6; # pos 763,166
 
 
-faustcode: frequencyScaler1=hslider("Waveguide freq. scaler 1", 0.8, 0.1, 1.0, 0.01);
-faustcode: frequencyScaler2=hslider("Waveguide freq. scaler 2", 0.8, 0.1, 1.0, 0.01);
-faustcode: frequencyScaler3=hslider("Waveguide freq. scaler 3", 0.8, 0.1, 1.0, 0.01);
-faustcode: frequencyScaler4=hslider("Waveguide freq. scaler 4", 0.8, 0.1, 1.0, 0.01);
-faustcode: frequencyScaler5=hslider("Waveguide freq. scaler 5", 0.8, 0.1, 1.0, 0.01);
-faustcode: frequencyScaler6=hslider("Waveguide freq. scaler 6", 0.8, 0.1, 1.0, 0.01);
-faustcode: k=hslider("Pluck stiffness [N/m]",250.0,50.0,1000.0,50.0);
-faustcode: R=hslider("Pluck damping [N/(m/s)]",0.1,0.0,0.5,0.01);
-faustcode: maxdisp=hslider("Pluck half-width [m]",0.006,0.001,0.01,0.001);
-faustcode: dampingTerm=hslider("Termination damping",0.996,0.9,0.999,0.0001);
+faustcode: minNote = 16.0;
+faustcode: maxNote = 96.0;
+faustcode: mtof = _:-(69.0):/(12.0) <: (2.0,_) : pow : *(440.0) : _;
+faustcode: minFreq = mtof(minNote);
+faustcode: maxFreq = mtof(maxNote);
+faustcode: freq1 = hslider("Note1", 30.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq2 = hslider("Note2", 42.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq3 = hslider("Note3", 46.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq4 = hslider("Note4", 49.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq5 = hslider("Note5", 54.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq6 = hslider("Note6", 58.0, minNote, maxNote, 0.05):mtof;
+faustcode: avgFreq = (freq1+freq2+freq3+freq4+freq5+freq6)/6.0;
+
+
+
+faustcode: T60=hslider("T60 [sec]",35.0,0.1,50.0,0.05);
+faustcode: bridgeFcLow=hslider("Bridge cutoff freq for low notes [Hz]",2800.0,1000.0,fs,10.0);
+faustcode: bridgeFcHigh=hslider("Bridge cutoff freq for high notes [Hz]",30000.0,1000.0,fs,10.0);
+faustcode: k=hslider("Pluck stiffness [N/m]",150.0,0.0,1000.0,50.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.4,0.0,3.0,0.01);
+faustcode: maxdisp=hslider("Pluck half-width [m]",0.005,0.001,0.01,0.001);
 faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
 faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01);
+faustcode: waveImp=hslider("Wave impedance [N/(m/s)]",1.0,0.1,10.0,0.1);
+faustcode: plSc=hslider("Pluck impedance scaler",1.0,0.0,3.0,0.01);
 
 
-audioout,a0,term0*vol*1.0+term0cpy2*vol*1.0+term0cpy4*vol*1.0; # pos 117,334
-audioout,a1,term0cpy6*vol*1.0+term0cpy3*vol*1.0+term0cpy5*vol*1.0; # pos 572,327
+# This one causes the lower notes to be a little bit louder
+#faustcode: nlScaleOutput = sqrt;
+
+# This one causes the lower notes to be a lot louder
+#faustcode: nlScaleOutput = _;
+
+# This one causes no frequency-dependent scaling of note volumes
+faustcode: nlScaleOutput = *(0.0):+(1.0);
+
+
+
+
+audioout,a0,(term0*nlScaleOutput(avgFreq/freq1)+term0cpy2*nlScaleOutput(avgFreq/freq2)+term0cpy4*nlScaleOutput(avgFreq/freq4)):*(vol):highpass(4,80.0); # pos 117,334
+audioout,a1,(term0cpy6*nlScaleOutput(avgFreq/freq6)+term0cpy3*nlScaleOutput(avgFreq/freq3)+term0cpy5*nlScaleOutput(avgFreq/freq5)):*(vol):highpass(4,80.0); # pos 572,327

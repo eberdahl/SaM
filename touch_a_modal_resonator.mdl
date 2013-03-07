@@ -38,5 +38,5 @@ port( ),dev2;
 
 touch(interactionStiffness,interactionDamping,0.0),tt,r1,dev1;
 
-audioout,aLeft,r1*(1000.0);
-audioout,aRight,r1*(1000.0);
+audioout,aLeft,r1*(50000.0);
+audioout,aRight,r1*(50000.0);

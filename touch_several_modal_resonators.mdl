@@ -52,5 +52,5 @@ port( ),dev2;
 
 touch(interactionStiffness,interactionDamping,0.0),tt,reson1,dev1;
 
-audioout,aLeft,reson1*(1000.0)*vol:outputDSP;
-audioout,aRight,reson1*(1000.0)*vol:outputDSP;
+audioout,aLeft,reson1*(100000.0)*vol:outputDSP;
+audioout,aRight,reson1*(100000.0)*vol:outputDSP;

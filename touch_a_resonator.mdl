@@ -39,5 +39,5 @@ port( ),dev2;
 link(stiffnessOfResonator,0.001,0.0),ll,m1,g;
 touch(interactionStiffness,interactionDamping,0.0),tt,m1,dev1;
 
-audioout,aLeft,m1*(1000.0);
+audioout,aLeft,m1*(1000.0)+2.2*ll;
 audioout,aRight,m1*(1000.0);
