@@ -1,0 +1,26 @@
+#N canvas 991 378 554 517 10;
+#X obj 340 492 dac~;
+#X obj 252 36 hsl 128 15 -50 50 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 2000 1;
+#X floatatom 418 113 5 0 0 0 - - -;
+#N canvas 58 176 158 175 make-smooth-audio-signal~ 0;
+#X obj 19 13 inlet;
+#X obj 19 37 * 0.001;
+#X obj 19 86 line~;
+#X msg 19 64 \$1 20;
+#X obj 79 66 outlet;
+#X obj 19 135 outlet~;
+#X obj 19 110 lp2~ 10 0.707 200;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 0 4 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 6 0 5 0;
+#X restore 249 56 pd make-smooth-audio-signal~;
+#X obj 195 150 oud;
+#X connect 1 0 3 0;
+#X connect 3 0 4 1;
+#X connect 3 1 2 0;
+#X connect 4 3 0 0;
+#X connect 4 4 0 1;
