@@ -73,7 +73,7 @@ $(DEST)%.cpp: %.dsp
 	cp pdhelp/$(<:.dsp=*) $(DEST) &
 	
 $(DEST)%.pd: %.dsp
-	sed 's/samtargetdspname/waveguide_drum/g' PureDataFireFaderSimulator.pd > $(DEST)$(<:.dsp=-FireFaderSimulator.pd)
+	sed 's/samtargetdspname/$(<:.dsp=)/g' PureDataFireFaderSimulator.pd > $(DEST)$(<:.dsp=-FireFaderSimulator.pd)
 	faust -xml $< -o /dev/null
 	$(FAUST2PD) $(F2PDFLAGS) $<.xml
 	mv $(<:.dsp=.pd) $(DEST)
