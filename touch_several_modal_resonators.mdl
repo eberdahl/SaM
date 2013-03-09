@@ -1,7 +1,4 @@
-# Example MDL file for Synth-A-Modeler
-#
-# This is the same as touch_a_resonator.mdl, except that the resonator
-# is modeled using the resonator object.
+# MDL file for Synth-A-Modeler
 #
 # Edgar Berdahl, 2012
 # Audio Communication Group
@@ -24,33 +21,34 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-# Specify audio target GUI widgets
-faustcode:f=300;  // Reference frequency for the initial resonance frequency choices
-faustcode:f1=hslider("Resonance Frequency1", f, 40.0, 3000.0, 4.0);
-faustcode:f2=hslider("Resonance Frequency2", f*1.4142, 40.0, 3000.0, 4.0);
-faustcode:f3=hslider("Resonance Frequency3", f*1.7321, 40.0, 3000.0, 4.0);
-faustcode:f4=hslider("Resonance Frequency4", f*2.2361, 40.0, 3000.0, 4.0);
-faustcode:tau=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
-faustcode:m=hslider("Mass of Resonator", 0.01, 0.004, 0.08, 0.002);
-faustcode:interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
-faustcode:interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
-faustcode:outputDSP=highpass(4,20.0);
-faustcode:vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes 
 
-# e.g. for four resonance frequencies
-resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2,   f3,tau*0.8,m*f1*f1/f3/f3,    f4,tau*0.5,m*f1*f1/f4/f4),reson1;
+resonators(f1,tau,m*(440.0/f1)^3,f2,tau*1.4,m*(440.0/f2)^3,f3,tau*0.8,m*(440.0/f3)^3,f4,tau*0.5,m*(440.0/f4)^3),reson1; # pos 384,160
+#resonators(f1,tau,m,f2,tau*1.4,m,f3,tau*0.8,m,f4,tau*0.5,m),reson1; # pos 384,160
+port(),dev1; # pos 387,285
+port(),dev2; # pos 267,157
 
-# e.g. for two resonance frequencies
-#resonators(f1,tau,m,   f2,tau*1.4,m*f1*f1/f2/f2),reson1;
-
-# e.g. for one resonance frequency
-#resonators(f1,tau,m),reson1;
-
-
-port( ),dev1;
-port( ),dev2;
 
 touch(interactionStiffness,interactionDamping,0.0),tt,reson1,dev1;
 
-audioout,aLeft,reson1*(100000.0)*vol:outputDSP;
-audioout,aRight,reson1*(100000.0)*vol:outputDSP;
+
+
+
+
+
+
+
+faustcode: f=300;  // Reference frequency for the initial resonance frequency choices
+faustcode: f1=hslider("Resonance Frequency1", f, 40.0, 3000.0, 4.0);
+faustcode: f2=hslider("Resonance Frequency2", f*1.4142, 40.0, 3000.0, 4.0);
+faustcode: f3=hslider("Resonance Frequency3", f*1.7321, 40.0, 3000.0, 4.0);
+faustcode: f4=hslider("Resonance Frequency4", f*2.2361, 40.0, 3000.0, 4.0);
+faustcode: tau=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
+faustcode: m=hslider("Mass of Resonator", 0.01, 0.004, 0.08, 0.002);
+faustcode: interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
+faustcode: interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
+faustcode: outputDSP=highpass(4,20.0);
+faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes
+
+
+audioout,aLeft,reson1*100000.0:*(vol):outputDSP; # pos 355,40
+audioout,aRight,reson1*100000.0:*(vol):outputDSP; # pos 555,96
