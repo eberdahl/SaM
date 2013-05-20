@@ -2,7 +2,7 @@
 
 faustcode:frequencyScaler = 0.3;
 faustcode:outputDSP=highpass(4,20.0);
-faustcode:vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
+faustcode:vol=0.1*hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
 faustcode:fc1=hslider("Term cutoff freq 1 [Hz]",3000.0,1000.0,fs,10.0);
 faustcode:fc2=hslider("Term cutoff freq 2 [Hz]",5000.0,1000.0,fs,10.0);
 faustcode:fc3=hslider("Term cutoff freq 3 [Hz]",10000.0,1000.0,fs,10.0);

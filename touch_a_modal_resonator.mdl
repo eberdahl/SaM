@@ -25,11 +25,16 @@
 
 
 # Specify audio target GUI widgets
-faustcode:resonanceFrequency=hslider("Resonance Frequency", 326.0, 40.0, 3000.0, 4.0);
+faustcode:resonanceFrequency=hslider("Resonance Frequency", 326.0, 40.0, 800.0, 4.0);
 faustcode:decayTimeOfResonator=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
-faustcode:massOfResonator=hslider("Mass of Resonator", 0.001, 0.0004, 0.008, 0.0002);
+faustcode:massOfResonator=hslider("Mass of Resonator", 0.0003, 0.0002, 0.002, 0.0002);
 faustcode:interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
 faustcode:interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
+
+
+faustcode: outputDSP=highpass(4,30.0);
+faustcode: vol=0.05*hslider("Ze volume",100.0,50.0,10000.0,10.0);
+
 
 # Model itself
 resonators(resonanceFrequency, decayTimeOfResonator, massOfResonator),r1;
@@ -38,5 +43,5 @@ port( ),dev2;
 
 touch(interactionStiffness,interactionDamping,0.0),tt,r1,dev1;
 
-audioout,aLeft,r1*(50000.0);
-audioout,aRight,r1*(50000.0);
+audioout,aLeft,r1:*(vol):outputDSP;
+audioout,aRight,r1:*(vol):outputDSP;

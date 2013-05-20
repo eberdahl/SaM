@@ -40,6 +40,7 @@ faustcode: maxdisp=hslider("Pluck half-width [m]",0.006,0.001,0.01,0.001);
 faustcode: bridgeAtten=hslider("Bridge attenuation",2.5,0.5,7.0,0.01);
 faustcode: bridgeFc=hslider("Bridge cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
 faustcode: fretAtten=hslider("Fret attenuation",2.5,0.5,7.0,0.01);
+faustcode: R0=hslider("String wave impedance",2.5,0.25,7.5,0.1);
 faustcode: fretFc=hslider("Fret cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
 faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
 faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
@@ -57,12 +58,12 @@ pluck(k,R,maxdisp,0.0),p0,junct0,dev0;
 
 
 # These waveguide delay lengths are NOT compensated by the delay introduced by the terminations:
-# waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos)),wg0,bridge,junct0;
-# waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos))),wg1,fret,junct0;
+# waveguide(R0,simpleString(0.027,(1.0/freq)*relPos)),wg0,bridge,junct0;
+# waveguide(R0,simpleString(0.027,(1.0/freq)*(1.0-relPos))),wg1,fret,junct0;
 
 # These waveguide delay lengths are compensated by the delay introduced by the terminations:
-waveguide(2.5,simpleString(0.027,(1.0/freq)*relPos-simpleStringTermDelay(bridgeFc))),wg0,bridge,junct0;
-waveguide(2.5,simpleString(0.027,(1.0/freq)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1,fret,junct0;
+waveguide(R0,simpleString(0.027,(1.0/freq)*relPos-simpleStringTermDelay(bridgeFc))),wg0,bridge,junct0;
+waveguide(R0,simpleString(0.027,(1.0/freq)*(1.0-relPos)-simpleStringTermDelay(fretFc))),wg1,fret,junct0;
 
 
 

@@ -24,7 +24,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-faustcode:stiffness=hslider("Stiffness", 50.0, 10.0, 500.0, 10.0);
+faustcode:stiffness=hslider("Stiffness", 50.0, 10.0, 2000.0, 10.0);
 
 
 # mass-like objects
