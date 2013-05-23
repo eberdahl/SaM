@@ -1,0 +1,54 @@
+# MDL file for Synth-A-Modeler
+#
+# Kaap Pascal, 2012
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+
+faustcode: f0=hslider("Resonance Frequency 0",890, 40.0, 3000.0, 4.0);
+faustcode: tau=hslider("Decay Time of Resonator",1.9632, 0.01, 5.0, 0.01);
+
+resonators(f0*1,tau*1,m*1,f0*1.8315,tau*0.97297,m*0.69187,f0*2.8315,tau*0.89189,m*0.13873,f0*3.382,tau*0.54054,m*0.28468,f0*4.3708,tau*0.45946,m*0.76812,f0*5.3596,tau*0.35135,m*0.31639,f0*7.7528,tau*0.13514,m*0.06071,f0*8.1011,tau*0.13514,m*0.21944,f0*9.236,tau*0.10811,m*0.1121,f0*10.382,tau*0.13514,m*0.13839,f0*12.2247,tau*0.081081,m*0.11011,f0*15.7865,tau*0.081081,m*0.097149),reson1; # pos 384,160
+
+
+
+port(),dev1; # pos 387,285
+port(),dev2; # pos 267,157
+
+mass(md,0.0,0.0),mdrumstick;
+link(holdingStiffness,holdingDamping,0.0),ll,dev1,mdrumstick;
+touch(interactionStiffness,interactionDamping,0.0),tt,reson1,mdrumstick;
+
+
+
+faustcode: m=hslider("Mass of Resonator", 0.0043, 0.0005, 0.03, 0.0002);
+faustcode: md=hslider("Mass of Drumstick", 0.006, 0.001, 0.01, 0.0002);
+faustcode: holdingStiffness=hslider("Holding Stiffness", 60.0, 10.0, 150.0, 5.0);
+faustcode: holdingDamping=hslider("Holding Damping", 0.1, 0.002, 0.1, 0.002);
+faustcode: interactionStiffness=hslider("Touch Interaction Stiffness", 200.0, 50.0, 2500.0, 50.0);
+faustcode: interactionDamping=hslider("Touch Interaction Damping", 0.082, 0.002, 0.1, 0.002);
+faustcode: outputDSP=highpass(4,20.0);
+faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes
+
+
+
+audioout,aLeft,reson1*100000.0:*(vol):outputDSP; # pos 355,40
+audioout,aRight,reson1*100000.0:*(vol):outputDSP; # pos 555,96

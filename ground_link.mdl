@@ -1,7 +1,4 @@
-# Example MDL file for Synth-A-Modeler
-#
-# NOTE:  This model does not produce any useful audio output.  The
-#        model is for checking the communication with a haptic device.
+# MDL file for Synth-A-Modeler
 #
 # Edgar Berdahl, 2012
 # Audio Communication Group
@@ -24,18 +21,24 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-faustcode:stiffness=hslider("Stiffness", 50.0, 10.0, 120.0, 10.0);
+
+port(),dev0; # pos 187,61
+ground(0.0),g0; # pos 45,46
+port(),dev1; # pos 299,61
 
 
-# mass-like objects
-port(),dev1;
-port(),dev2;
-
-
-# link-like objects
-link(stiffness,0.00,0.0),l1,dev1,dev2;
+link(k,R,positionOffset),t0,dev0,g0;
 
 
 
-audioout,a1,0.0;
-audioout,a2,0.0;
+
+
+
+
+
+faustcode: k=hslider("Stiffness [N/m]",50.0,0.0,350.0,2.5);
+faustcode: R=hslider("Damping [N/(m/s)]",0.1,0.0,3.5,0.001);
+faustcode: positionOffset=hslider("Position offset [m]",0.0,-0.035,0.035,0.001);
+
+audioout,a0,0.0; # pos 43,160
+audioout,a1,0.0; # pos 187,160

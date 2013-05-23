@@ -1,63 +1,0 @@
-# This model is just for testing the compiler, so it should look
-# similar to the graphical specification document.  However, this
-# model probably isn't very musical.
-
-
-# Example MDL file for Synth-A-Modeler
-#
-# Edgar Berdahl, 2012
-# Audio Communication Group
-# Technical University of Berlin
-#
-# -------------------------------------------------------------------
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
-
-# Note that each Synth-A-Modeler object specified in an MDL file must have its own # unique identifier, which is specified in this file. This is because each identifier corresponds# to a unique variable in the output Faust DSP file.
-
-
-# Mass-like objects# ---------------------# format [type]([default parameters]),[identifier],([label1],[label2],É)## For instance, for a one-dimensional mass we have# mass([mass in kg],[optional initial position in m (defaults to zero)],[optional initial velocity in m/s (defaults to zero)]),[identifier],([label1],[label2],...)## Or for a port to the real world, which corresponds to one position input and one force output, we have# port( ),[identifier],([label1],[label2],...)## Finally ground object is like an infinite mass that never moves. It always stays at the same position.# ground([optional initial position in m]),[identifier],([label1],[label2],...)
-mass(0.01,0.0,0.0),m1;
-mass(1e-2,0.0,0.0),m2;
-mass(0.03,0.0,0.0),m3;
-port(),dev1;
-ground(0.0),g;
-
-
-
-# Link-like objects# ---------------------# Link-type objects connect from one mass-like object to another mass-like object. For that # reason, each of the links must specify the two mass-like objects that it connects. ## format:# [type]([default parameters]),[identifying_name],[starting_vertex],[ending_vertex],([label1],[label2],...)## For instance for a linear link we have# link([stiffness in N/m],[damping in N/(m/s)],[optional center position offset in m (defaults to zero)]),[unique_linkname],[starting_vertex],[ending_vertex],([label1],[label2],...)## Or for a nonlinear, switching "BUT" contact link, we have# contact([stiffness in N/m],[damping in N/(m/s)],[optional offset for engagement in m] (defaults to zero)),[unique_linkname],[starting_vertex],[ending_vertex],([label1],[label2],...)## Or for a nonlinear plucking link, we have# pluck([stiffness in N/m],[damping in N/(m/s)],[optional minimum displacement difference for contact in m (defaults to zero)]),[unique_linkname],[starting_vertex],[ending_vertex],([label1],[label2],...)# In this model, we have just three simple linear links. The stiffness parameter is written as a mathematical expression in terms of the identifier ("variable") adjStiffness (see faustcode below for definition of adjStiffness).
-link(2.0*adjStiffness,0.003,0.0),l1,m1,m2;
-link(2.0*adjStiffness,0.004,0.0),l2,m2,m3;
-link(2.0*adjStiffness,0.005,0.0),l3,m2,dev1;
-
-
-
-
-# We show how to assign a value from a horizontal slider to the first parameter of any object with the label thisl
-# First a line of Faust code is specified, which will be copied into the top of the output .DSP file.
-# For example, we assign the value of a horizontal slider with name stiffness, initial value 2200.0,
-# minimum value 500.0, GUI adjustment step 100.0, and maximum value 4000.0 to the unique identifier adjStiffness.
-faustcode: adjStiffness=hslider("stiffness", 2200.0, 500.0, 4000.0, 100.0);
-
-
-
-
-# Then a list of audio-only outputs
-# audioout,[identifier],[linear combination of source identifier names specifies the mix]
-# Here is a stereo audio output example:
-audioout,a1,m1*(1000.0)+l1*(100.0);
-audioout,a2,l2*(1000.0)+l3*(-50.0)+l1*(0.01);

@@ -1,0 +1,180 @@
+# MDL file for Synth-A-Modeler
+#
+# Edgar Berdahl, 2013
+# Audio Communication Group
+# Technical University of Berlin
+#
+# -------------------------------------------------------------------
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+
+
+
+faustcode:m1Mass=hslider("Maximum mass [kg]", 0.01865,0.0002,0.075,0.0001);
+faustcode:m2Mass=m1Mass*0.1;
+faustcode:m3Mass=m1Mass*0.15;
+faustcode:m4Mass=m1Mass*0.2;
+faustcode:m5Mass=m1Mass*0.25;
+faustcode:m6Mass=m1Mass*0.3;
+faustcode:m7Mass=m1Mass*0.35;
+faustcode:m8Mass=m1Mass*0.4;
+faustcode:m9Mass=m1Mass*0.45;
+faustcode:m10Mass=m1Mass*0.5;
+faustcode:m11Mass=m1Mass*0.55;
+faustcode:m12Mass=m1Mass*0.6;
+faustcode:m13Mass=m1Mass*0.65;
+faustcode:m14Mass=m1Mass*0.7;
+faustcode:m15Mass=m1Mass*0.75;
+faustcode:m16Mass=m1Mass*0.8;
+faustcode:m17Mass=m1Mass*0.85;
+faustcode:m18Mass=m1Mass*0.9;
+faustcode:m19Mass=m1Mass*0.95;
+faustcode:m20Mass=m1Mass*1.05;
+
+
+faustcode:touchm1Stiffness=hslider("Touch stiffness [N/(m)]", 130.0,1.0,500.0,1.0);
+faustcode:touchm1Damping=hslider("Touch damping [N/(m/s)]", 0.01,0.0,0.2,0.001);
+faustcode:trickDamping=hslider("Damping to ground [N/(m/s)]", 0.01,0.0,0.5,0.001);
+faustcode:fc=hslider("Ze Highpass cutoff frequency [Hz]", 200.0,20.0,2000.0,10.0) : onePoleBLT(1.0);
+faustcode:vol=hslider("Ze Volume",0.0,-40.0,40.0,1.0) : db2linear : *(100000.0) :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
+
+
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm1,dev1,m1;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm2,dev1,m2;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm3,dev1,m3;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm4,dev1,m4;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm5,dev1,m5;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm6,dev1,m6;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm7,dev1,m7;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm8,dev1,m8;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm9,dev1,m9;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm10,dev1,m10;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm11,dev1,m11;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm12,dev1,m12;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm13,dev1,m13;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm14,dev1,m14;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm15,dev1,m15;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm16,dev1,m16;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm17,dev1,m17;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm18,dev1,m18;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm19,dev1,m19;
+touch(touchm1Stiffness,touchm1Damping,0.0),touchm20,dev1,m20;
+
+link(0.0,trickDamping,0.0),l1,grnd,m1;
+link(0.0,trickDamping,0.0),l2,grnd,m2;
+link(0.0,trickDamping,0.0),l3,grnd,m3;
+link(0.0,trickDamping,0.0),l4,grnd,m4;
+link(0.0,trickDamping,0.0),l5,grnd,m5;
+link(0.0,trickDamping,0.0),l6,grnd,m6;
+link(0.0,trickDamping,0.0),l7,grnd,m7;
+link(0.0,trickDamping,0.0),l8,grnd,m8;
+link(0.0,trickDamping,0.0),l9,grnd,m9;
+link(0.0,trickDamping,0.0),l10,grnd,m10;
+link(0.0,trickDamping,0.0),l11,grnd,m11;
+link(0.0,trickDamping,0.0),l12,grnd,m12;
+link(0.0,trickDamping,0.0),l13,grnd,m13;
+link(0.0,trickDamping,0.0),l14,grnd,m14;
+link(0.0,trickDamping,0.0),l15,grnd,m15;
+link(0.0,trickDamping,0.0),l16,grnd,m16;
+link(0.0,trickDamping,0.0),l17,grnd,m17;
+link(0.0,trickDamping,0.0),l18,grnd,m18;
+link(0.0,trickDamping,0.0),l19,grnd,m19;
+link(0.0,trickDamping,0.0),l20,grnd,m20;
+
+mass(m1Mass,0.0,0.0),m1;
+mass(m2Mass,0.0,0.0),m2;
+mass(m3Mass,0.0,0.0),m3;
+mass(m4Mass,0.0,0.0),m4;
+mass(m5Mass,0.0,0.0),m5;
+mass(m6Mass,0.0,0.0),m6;
+mass(m7Mass,0.0,0.0),m7;
+mass(m8Mass,0.0,0.0),m8;
+mass(m9Mass,0.0,0.0),m9;
+mass(m10Mass,0.0,0.0),m10;
+mass(m11Mass,0.0,0.0),m11;
+mass(m12Mass,0.0,0.0),m12;
+mass(m13Mass,0.0,0.0),m13;
+mass(m14Mass,0.0,0.0),m14;
+mass(m15Mass,0.0,0.0),m15;
+mass(m16Mass,0.0,0.0),m16;
+mass(m17Mass,0.0,0.0),m17;
+mass(m18Mass,0.0,0.0),m18;
+mass(m19Mass,0.0,0.0),m19;
+mass(m20Mass,0.0,0.0),m20;
+
+# To emulate the force of gravity on the m1, we use a spring with small spring constant k_g
+# to a far-away location x_g so that the "force" of gravity is roughly constant
+# F=mg=(kg)(xg)
+# So xg=10m is sufficiently far away
+# kg = mg/xg = (0.1865 kg)(9.8 m/s^2)/10m = 0.18277 N/m
+ground(-10.0),xg;
+faustcode:kg1 = m1Mass*9.8/10.0/10.0;
+link(kg1,0.0,0.0),gravitym1,m1,xg;
+faustcode:kg2 = m2Mass*9.8/10.0/10.0;
+link(kg2,0.0,0.0),gravitym2,m2,xg;
+faustcode:kg3 = m3Mass*9.8/10.0/10.0;
+link(kg3,0.0,0.0),gravitym3,m3,xg;
+
+faustcode:kg4 = m4Mass*9.8/10.0/10.0;
+faustcode:kg5 = m5Mass*9.8/10.0/10.0;
+faustcode:kg6 = m6Mass*9.8/10.0/10.0;
+faustcode:kg7 = m7Mass*9.8/10.0/10.0;
+faustcode:kg8 = m8Mass*9.8/10.0/10.0;
+faustcode:kg9 = m9Mass*9.8/10.0/10.0;
+faustcode:kg10 = m10Mass*9.8/10.0/10.0;
+faustcode:kg11 = m11Mass*9.8/10.0/10.0;
+faustcode:kg12 = m12Mass*9.8/10.0/10.0;
+faustcode:kg13 = m13Mass*9.8/10.0/10.0;
+faustcode:kg14 = m14Mass*9.8/10.0/10.0;
+faustcode:kg15 = m15Mass*9.8/10.0/10.0;
+faustcode:kg16 = m16Mass*9.8/10.0/10.0;
+faustcode:kg17 = m17Mass*9.8/10.0/10.0;
+faustcode:kg18 = m18Mass*9.8/10.0/10.0;
+faustcode:kg19 = m19Mass*9.8/10.0/10.0;
+faustcode:kg20 = m20Mass*9.8/10.0/10.0;
+
+link(kg4,0.0,0.0),gravitym4,m4,xg;
+link(kg5,0.0,0.0),gravitym5,m5,xg;
+link(kg6,0.0,0.0),gravitym6,m6,xg;
+link(kg7,0.0,0.0),gravitym7,m7,xg;
+link(kg8,0.0,0.0),gravitym8,m8,xg;
+link(kg9,0.0,0.0),gravitym9,m9,xg;
+link(kg10,0.0,0.0),gravitym10,m10,xg;
+link(kg11,0.0,0.0),gravitym11,m11,xg;
+link(kg12,0.0,0.0),gravitym12,m12,xg;
+link(kg13,0.0,0.0),gravitym13,m13,xg;
+link(kg14,0.0,0.0),gravitym14,m14,xg;
+link(kg15,0.0,0.0),gravitym15,m15,xg;
+link(kg16,0.0,0.0),gravitym16,m16,xg;
+link(kg17,0.0,0.0),gravitym17,m17,xg;
+link(kg18,0.0,0.0),gravitym18,m18,xg;
+link(kg19,0.0,0.0),gravitym19,m19,xg;
+link(kg20,0.0,0.0),gravitym20,m20,xg;
+
+
+
+# It might be a good idea to differentiate the audio output or pass it through some sort of audio resonator ...
+faustcode: outputDSP=highpass(3,fc);
+
+
+port( ),dev1; # pos 200,200
+port( ),dev2; # pos 300,300
+
+ground(0.0),grnd; # pos 40,40
+
+audioout,a0,((m1+m3+m5+m7+m9+m11+m13+m15+m17+m19):outputDSP)*vol; # pos 43,160
+audioout,a1,((m2+m4+m6+m8+m10+m12+m14+m16+m18+m20):outputDSP)*vol; # pos 187,160
