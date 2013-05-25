@@ -37,10 +37,11 @@ faustcode:decayTimeMembrane =hslider("decayTimeMembrane", 0.08, 0.01, 1.0, 0.01)
 faustcode:freqMembrane=hslider("freqMembrane",170.0, 30.0, 2000.0, 10.0);
 faustcode:touchDamp=hslider("touchDamp",0.01,0.00,0.5,0.01);
 faustcode:gravParam=hslider("gravParam",30.0,1.0,100.0,1.0);
+faustcode:vol=hslider("Ze Volume",0.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
 
 
-	mass(massL,0.0,0.0),msnr1;
-	mass(massR,0.0,0.0),msnr2;
+mass(massL,0.0,0.0),msnr1;
+mass(massR,0.0,0.0),msnr2;
 resonators(freqMembrane, decayTimeMembrane, massMembrane),r1;
 ground(0.0),g;
 #ground(-0.1),gunder;
@@ -61,5 +62,9 @@ link(50.0,0.001,0.0),ldev2,dev2,g;
 touch(100.0,touchDamp,0.0),tt,dev1,r1;
 
 # Actually for this particular model, the highpass filter isn't necessary ...
-audioout,a1,(r1*(0.0)+msnr1*(1000.0)):highpass(6,50);
-audioout,a2,(r1*(0.0)+msnr2*(1000.0)):highpass(6,50);
+#audioout,a1,((r1*(0.0)+msnr1*(1000.0)):*(vol));
+#audioout,a2,(r1*(0.0)+msnr2*(1000.0));
+#audioout,a1,(r1*(0.0)+msnr1*(1000.0)):*(vol);
+#audioout,a2,(r1*(0.0)+msnr2*(1000.0)):*(vol);
+audioout,a1,(r1*(0.0)+msnr1*(1000.0)):*(vol):defaultOutputDSP;
+audioout,a2,(r1*(0.0)+msnr2*(1000.0)):*(vol):defaultOutputDSP;
