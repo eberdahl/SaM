@@ -59,10 +59,18 @@
 //#define PATH_TO_SERIAL  "/dev/tty.usbserial-11IP1690"
 
 
+
+// This is the name of the file that should contain the path to the device.
+#define PATH_FOR_DEVICE_FILE "PathToDevice.txt"
+char path_for_device_file[256];
+char pathPrefix[128];
+char devicePath[256];
+
+
+
 // Cut-off frequency in Hz of lowpass filter position estimator
 //#define CUTOFF_FREQ     100.0   // The response is faster for this one ...
 #define CUTOFF_FREQ     30.0
-
 
 
 
@@ -235,18 +243,44 @@ class hapticdsp : public mydsp {
 		positionEstimator *posA;
 		positionEstimator *posB;
 
-	
+
 	public:
 	
 	int open_port(void)
 	{
-	        fd = open(PATH_TO_SERIAL, O_RDWR | O_NOCTTY | O_NDELAY);  // non-blocking reads
+	       FILE *path_file_fd;
+	       int cnt=10;
+	       path_for_device_file[0]='\0';
+	       pathPrefix[0] = '\0';
+	       while (cnt>0) {
+		    strcpy(path_for_device_file,pathPrefix);
+		    strcat(path_for_device_file,PATH_FOR_DEVICE_FILE);
+		    printf("Looking for %s to indicate path to the device.\n", path_for_device_file);
+	            path_file_fd = fopen(path_for_device_file, "r"); // read only 
+ 		    if (path_file_fd == NULL) {
+		        printf("Couldn't open file %s", path_for_device_file);
+		    } else {
+		        break;
+		    }
+		    path_for_device_file[0]='\0';
+		    strcat(pathPrefix,"../");
+		    cnt--;
+	       }
+	       // If it doesn't find the file, then it will wind up segfaulting on the next line
+	       // which is one way to stop the program from running!!
+	       fscanf(path_file_fd, "%s", devicePath);
+	       close(path_file_fd);
+
+
+
+
+	       printf("Opening the device %s...\n", devicePath);
+	        fd = open(devicePath, O_RDWR | O_NOCTTY | O_NDELAY);  // non-blocking reads
 		if (fd == -1)
 		{
 			/*
 			 * Could not open the port.
 			 */
-			
 			perror("open_port: Unable to open serial port - ");
 			return(1);
 		}
