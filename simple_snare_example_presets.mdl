@@ -1,4 +1,4 @@
-faustcode:volAgain=hslider("Ze Volume",0.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
+faustcode:volAgain=hslider("Ze Volume",-12.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
 faustcode:massScaler=hslider("Scale the masses",1.0,0.25,8.0,0.01);
 
 

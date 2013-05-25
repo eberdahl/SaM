@@ -68,25 +68,25 @@ faustcode: maxNote = 96.0;
 faustcode: mtof = _:-(69.0):/(12.0) <: (2.0,_) : pow : *(440.0) : _;
 faustcode: minFreq = mtof(minNote);
 faustcode: maxFreq = mtof(maxNote);
-faustcode: freq1 = hslider("Note1", 30.0, minNote, maxNote, 0.05):mtof;
-faustcode: freq2 = hslider("Note2", 42.0, minNote, maxNote, 0.05):mtof;
-faustcode: freq3 = hslider("Note3", 46.0, minNote, maxNote, 0.05):mtof;
-faustcode: freq4 = hslider("Note4", 49.0, minNote, maxNote, 0.05):mtof;
-faustcode: freq5 = hslider("Note5", 54.0, minNote, maxNote, 0.05):mtof;
-faustcode: freq6 = hslider("Note6", 58.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq1 = hslider("Note1", 50.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq2 = hslider("Note2", 52.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq3 = hslider("Note3", 55.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq4 = hslider("Note4", 59.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq5 = hslider("Note5", 64.0, minNote, maxNote, 0.05):mtof;
+faustcode: freq6 = hslider("Note6", 76.0, minNote, maxNote, 0.05):mtof;
 faustcode: avgFreq = (freq1+freq2+freq3+freq4+freq5+freq6)/6.0;
 
 
 
-faustcode: T60=hslider("T60 [sec]",35.0,0.1,50.0,0.05);
-faustcode: bridgeFcLow=hslider("Bridge cutoff freq for low notes [Hz]",2800.0,1000.0,fs,10.0);
-faustcode: bridgeFcHigh=hslider("Bridge cutoff freq for high notes [Hz]",30000.0,1000.0,fs,10.0);
-faustcode: k=hslider("Pluck stiffness [N/m]",150.0,0.0,1000.0,50.0);
-faustcode: R=hslider("Pluck damping [N/(m/s)]",0.4,0.0,3.0,0.01);
-faustcode: maxdisp=hslider("Pluck half-width [m]",0.005,0.001,0.01,0.001);
+faustcode: T60=hslider("T60 [sec]",16.0,0.1,50.0,0.05);
+faustcode: bridgeFcLow=hslider("Bridge cutoff freq for low notes [Hz]",6500.0,1000.0,fs,10.0);
+faustcode: bridgeFcHigh=hslider("Bridge cutoff freq for high notes [Hz]",13000.0,1000.0,fs,10.0);
+faustcode: k=hslider("Pluck stiffness [N/m]",250.0,0.0,1000.0,50.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.02,0.0,3.0,0.01);
+faustcode: maxdisp=hslider("Pluck half-width [m]",0.004,0.001,0.01,0.001);
 faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
-faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01);
-faustcode: waveImp=hslider("Wave impedance [N/(m/s)]",1.0,0.1,10.0,0.1);
+faustcode: vol=hslider("Z Volume",0.15,0.01,1.0,0.01);
+faustcode: waveImp=hslider("Wave impedance [N/(m/s)]",0.8,0.1,10.0,0.1);
 faustcode: plSc=hslider("Pluck impedance scaler",1.0,0.0,3.0,0.01);
 
 

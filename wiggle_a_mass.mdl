@@ -37,10 +37,10 @@ link(0.0,mR,0.0),l2,m1,g;
 
 
 
-faustcode: k=hslider("Link stiffness [N/m]",100.0,0.0,400.0,10.0);
-faustcode: R=hslider("Link Damping [N/(m/s)]",0.1,0.0,5.0,0.001);
-faustcode: mR=hslider("Mass Damping [N/(m/s)]",0.1,0.0,5.0,0.001);
-faustcode: massVal=hslider("Mass [kg]",0.1,0.02,2.5,0.01);
+faustcode: k=hslider("Link stiffness [N/m]",50.0,0.0,400.0,10.0);
+faustcode: R=hslider("Link Damping [N/(m/s)]",0.2,0.0,5.0,0.001);
+faustcode: mR=hslider("Mass Damping [N/(m/s)]",0.123,0.0,5.0,0.001);
+faustcode: massVal=hslider("Mass [kg]",0.5,0.02,2.5,0.01);
 faustcode: outputDSP=highpass(4,20.0);
 
 

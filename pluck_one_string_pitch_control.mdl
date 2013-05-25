@@ -30,20 +30,20 @@
 # faustcode: freq=hslider("Frequency [Hz]", 80.0, 20.0, 1000.0, 5.0);
 
 # To specify frequency using MIDI note numbers 
-faustcode: freqMIDI=hslider("Frequency [MIDI]", 27.0, 20.0, 84.0, 0.05);
+faustcode: freqMIDI=hslider("Frequency [MIDI]", 28.0, 20.0, 84.0, 0.05);
 faustcode: freq = 440.0*pow(2.0,(freqMIDI-69.0)/12.0);
 
-faustcode: k=hslider("Pluck stiffness [N/m]",250.0,50.0,1000.0,50.0);
-faustcode: R=hslider("Pluck damping [N/(m/s)]",0.1,0.0,2.5,0.01);
-faustcode: relPos=hslider("Pluck position along length",0.29,0.01,0.99,0.01);
+faustcode: k=hslider("Pluck stiffness [N/m]",750.0,50.0,1000.0,50.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.4,0.0,2.5,0.01);
+faustcode: relPos=hslider("Pluck position along length",0.4,0.01,0.99,0.01);
 faustcode: maxdisp=hslider("Pluck half-width [m]",0.006,0.001,0.01,0.001);
-faustcode: bridgeAtten=hslider("Bridge attenuation",2.5,0.5,7.0,0.01);
-faustcode: bridgeFc=hslider("Bridge cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
-faustcode: fretAtten=hslider("Fret attenuation",2.5,0.5,7.0,0.01);
-faustcode: R0=hslider("String wave impedance",2.5,0.25,7.5,0.1);
-faustcode: fretFc=hslider("Fret cutoff freq [Hz]",5000.0,1000.0,fs,10.0);
+faustcode: bridgeAtten=hslider("Bridge attenuation",5.5,0.5,7.0,0.01);
+faustcode: bridgeFc=hslider("Bridge cutoff freq [Hz]",5200.0,1000.0,fs,10.0);
+faustcode: fretAtten=hslider("Fret attenuation",3.46,0.5,7.0,0.01);
+faustcode: R0=hslider("String wave impedance",1.6,0.25,7.5,0.1);
+faustcode: fretFc=hslider("Fret cutoff freq [Hz]",4180.0,1000.0,fs,10.0);
 faustcode: moveStrings=hslider("Waveguides position adjustment",1.0,0.1,1.4,0.01);
-faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
+faustcode: vol=hslider("Z Volume",0.22,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes volume control signal
 faustcode: outputDSP=highpass(4,20.0);
 
 

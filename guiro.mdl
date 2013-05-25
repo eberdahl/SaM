@@ -46,11 +46,11 @@ pluck(k*1.0,R*1.0,maxdist*1.0,-0.02),p5,dev0,r0cpy;
 
 
 
-faustcode: k=hslider("Pluck stiffness [N/m]",200.0,50.0,800.0,10.0);
-faustcode: R=hslider("Pluck damping [N/(m/s)]",0.1,0.0,0.5,0.01);
+faustcode: k=hslider("Pluck stiffness [N/m]",140.0,50.0,800.0,10.0);
+faustcode: R=hslider("Pluck damping [N/(m/s)]",0.35,0.0,0.5,0.01);
 faustcode: maxdist=hslider("Pluck width [m]",0.005,0.001,0.01,0.001);
-faustcode: vol=hslider("Volume",100.0,5.0,1000.0,5.0);
-faustcode: decayTime=hslider("Resonator decay time [s]",0.1,0.01,3.0,0.01);
+faustcode: vol=hslider("Volume",75.0,5.0,1000.0,5.0);
+faustcode: decayTime=hslider("Resonator decay time [s]",0.29,0.01,3.0,0.01);
 
 
 audioout,a0,r0*vol*2.0+r2*vol*6.0+r0cpy*vol*2.0; # pos 275,480

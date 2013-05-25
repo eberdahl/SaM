@@ -37,7 +37,7 @@ faustcode:decayTimeMembrane =hslider("decayTimeMembrane", 0.08, 0.01, 1.0, 0.01)
 faustcode:freqMembrane=hslider("freqMembrane",170.0, 30.0, 2000.0, 10.0);
 faustcode:touchDamp=hslider("touchDamp",0.01,0.00,0.5,0.01);
 faustcode:gravParam=hslider("gravParam",30.0,1.0,100.0,1.0);
-faustcode:vol=hslider("Ze Volume",0.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
+faustcode:vol=hslider("Ze Volume",27.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
 
 
 mass(massL,0.0,0.0),msnr1;

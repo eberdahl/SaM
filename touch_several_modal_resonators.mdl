@@ -43,11 +43,11 @@ faustcode: f2=hslider("Resonance Frequency2", f*1.4142, 40.0, 3000.0, 4.0);
 faustcode: f3=hslider("Resonance Frequency3", f*1.7321, 40.0, 3000.0, 4.0);
 faustcode: f4=hslider("Resonance Frequency4", f*2.2361, 40.0, 3000.0, 4.0);
 faustcode: tau=hslider("Decay Time of Resonator", 1.0, 0.01, 5.0, 0.01);
-faustcode: m=hslider("Mass of Resonator", 0.01, 0.004, 0.08, 0.002);
-faustcode: interactionStiffness=hslider("Touch Interaction Stiffness", 100.0, 50.0, 500.0, 50.0);
-faustcode: interactionDamping=hslider("Touch Interaction Damping", 0.03, 0.002, 0.1, 0.002);
-faustcode: outputDSP=highpass(4,20.0);
-faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes
+faustcode: m=hslider("Mass of Resonator", 0.003, 0.0004, 0.008, 0.0002);
+faustcode: interactionStiffness=hslider("Touch Interaction Stiffness", 250.0, 0.0, 500.0, 50.0);
+faustcode: interactionDamping=hslider("Touch Interaction Damping", 0.09, 0.002, 0.3, 0.002);
+faustcode: outputDSP=highpass(4,30.0);
+faustcode: vol=hslider("Z Volume",0.03,0.001,0.10,0.001) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes
 
 
 audioout,aLeft,reson1*100000.0:*(vol):outputDSP; # pos 355,40

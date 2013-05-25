@@ -332,12 +332,12 @@ mass(pointMass,0.0,0.0),m150; # pos 9040,100
 
 
 faustcode:stiffnessLinear=hslider("Linear stiffness [N/m]", 8639.0,100.0,10000.0,100.0);
-faustcode:dampingLinear=hslider("Linear damping [N/(m/s)]", 0.001,0.0001,0.1,0.0001);
-faustcode:stiffnessTouch=hslider("Touch stiffness [N/m]", 8094.0,100.0,10000.0,100.0);
-faustcode:dampingTouch=hslider("Touch damping [N/(m/s)]", 0.034,0.0001,0.1,0.0001);
-faustcode:stiffnessDev=hslider("Device stiffness [N/m]", 8094.0,100.0,10000.0,100.0);
-faustcode:dampingDev=hslider("Device damping [N/(m/s)]", 0.034,0.0001,0.1,0.0001);
-faustcode:pointMass=hslider("Mass for string point [kg]", 0.0002, 0.00001, 0.008, 0.00001);
+faustcode:dampingLinear=hslider("Linear damping [N/(m/s)]", 0.0016,0.0001,0.1,0.0001);
+faustcode:stiffnessTouch=hslider("Touch stiffness [N/m]", 5600.0,100.0,10000.0,100.0);
+faustcode:dampingTouch=hslider("Touch damping [N/(m/s)]", 0.0001,0.0001,0.1,0.0001);
+faustcode:stiffnessDev=hslider("Device stiffness [N/m]", 3300.0,100.0,10000.0,100.0);
+faustcode:dampingDev=hslider("Device damping [N/(m/s)]", 0.027,0.0001,0.1,0.0001);
+faustcode:pointMass=hslider("Mass for string point [kg]", 0.00014, 0.00001, 0.008, 0.00001);
 
 ground(0.0),grnd; # pos 40,40
 port( ),dev1; # pos 200,200

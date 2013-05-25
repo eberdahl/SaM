@@ -45,7 +45,7 @@ faustcode: holdingStiffness=hslider("Holding Stiffness", 60.0, 10.0, 150.0, 5.0)
 faustcode: holdingDamping=hslider("Holding Damping", 0.1, 0.002, 0.1, 0.002);
 faustcode: interactionStiffness=hslider("Touch Interaction Stiffness", 200.0, 50.0, 2500.0, 50.0);
 faustcode: interactionDamping=hslider("Touch Interaction Damping", 0.082, 0.002, 0.1, 0.002);
-faustcode: outputDSP=highpass(4,20.0);
+faustcode: outputDSP=highpass(4,50.0);
 faustcode: vol=hslider("Z Volume",0.3,0.01,1.0,0.01) : onePoleBLT(10.0); // LP filter with cutoff frequency at 10Hz smoothes
 
 

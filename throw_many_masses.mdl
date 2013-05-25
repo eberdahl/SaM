@@ -50,7 +50,7 @@ faustcode:touchm1Stiffness=hslider("Touch stiffness [N/(m)]", 130.0,1.0,500.0,1.
 faustcode:touchm1Damping=hslider("Touch damping [N/(m/s)]", 0.01,0.0,0.2,0.001);
 faustcode:trickDamping=hslider("Damping to ground [N/(m/s)]", 0.01,0.0,0.5,0.001);
 faustcode:fc=hslider("Ze Highpass cutoff frequency [Hz]", 200.0,20.0,2000.0,10.0) : onePoleBLT(1.0);
-faustcode:vol=hslider("Ze Volume",0.0,-40.0,40.0,1.0) : db2linear : *(100000.0) :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
+faustcode:vol=hslider("Ze Volume",-16.0,-40.0,40.0,1.0) : db2linear : *(100000.0) :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
 
 
 touch(touchm1Stiffness,touchm1Damping,0.0),touchm1,dev1,m1;

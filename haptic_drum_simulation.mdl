@@ -1,12 +1,12 @@
-faustcode:volAgain=hslider("Ze Volume",0.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
-faustcode:massScaler=hslider("Scale the masses",1.0,0.25,8.0,0.01);
+faustcode:volAgain=hslider("Ze Volume",-22.0,-40.0,40.0,1.0) : db2linear :  onePoleBLT(2.0); // LP filter with cutoff frequency at 2Hz helps eliminate zipper noise
+faustcode:massScaler=hslider("Scale the masses",0.6,0.25,8.0,0.01);
 
 
-faustcode:pulseMultiplier=hslider("Pulse strength", 0.5, 0.0, 5.0, 0.01);
-faustcode:pulseLength=hslider("Pulse length [sec]", 0.012, 0.001, 0.1, 0.001);
+faustcode:pulseMultiplier=hslider("Pulse strength", 4.0, 0.0, 5.0, 0.01);
+faustcode:pulseLength=hslider("Pulse length [sec]", 0.006, 0.001, 0.1, 0.001);
 
-faustcode:stiffness=hslider("*Link stiffness [N/m]", 0.0, 0.0, 50.0, 0.1);
-faustcode:damping=hslider("*Link damping [N/(m/s)]", 0.0, 0.0, 0.5, 0.01);
+faustcode:stiffness=hslider("Link stiffness [N/m]", 0.0, 0.0, 250.0, 0.1);
+faustcode:damping=hslider("Link damping [N/(m/s)]", 0.0, 0.0, 0.5, 0.01);
 
 
 pulseTouch(stiffness,damping,0.0,pulseMultiplier,pulseLength*2.0,pulseLength),l1pos,dev1,thegrnd;
@@ -23,7 +23,7 @@ ground(0.0),thegrnd;
 # You need to have the following definitions per numerical entry (nentry) box that you want to have
 # for your model.  In this case, there is just one nentry box, and it is named "Preset number."
 faustcode:numOfPresets = 24;
-faustcode:presetNum = int(nentry("Preset number",0,0,23,1));
+faustcode:presetNum = int(nentry("Preset number",10,0,23,1));
 faustcode:setupMyPresets(theParams)=rdtable(numOfPresets, mytake(presetInitIndex,numOfPresets,theParams),presetNum);
 
 # Of course, when you start developing some presets, you should start with a smaller number such as 2 or 3 instead of
