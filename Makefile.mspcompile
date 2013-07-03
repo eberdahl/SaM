@@ -4,9 +4,11 @@
 #-------------------------------------------------------------------------------
 
 # Lists dsp file we have to compile
-dspsrc  := $(wildcard *.dsp)
-cppsrc  := $(addprefix $(DEST), $(dspsrc:.dsp=.cpp))
-appl 	:= $(addprefix $(DEST), $(dspsrc:.dsp=~.mxo))
+dspsrc  := $(wildcard *.mdl)
+cppsrc  := $(addprefix $(DEST), $(dspsrc:.mdl=.cpp))
+appl 	:= $(addprefix $(DEST), $(dspsrc:.mdl=~.mxo))
+dspfile	:= $(dspsrc:.mdl=.dsp)
+mdxfile	:= $(dspsrc:.mdl=.mdx)
 processor := $(shell uname -p)
 
 # Path to Max/MSP SDK
@@ -26,7 +28,13 @@ CC=g++
 #CC=/Developer/usr/bin/llvm-g++
 
 
-all :  $(appl)
+all : $(mdxfile) $(dspfile) $(appl)
+
+%.mdx : %.mdl
+	perl SAM-preprocessor $< $@
+
+%.dsp : %.mdx
+	perl Synth-A-Modeler $< $@
 
 $(DEST)%~.mxo : %.dsp Info.plist.template
 	install -d $@/Contents/MacOS
