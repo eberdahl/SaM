@@ -27,10 +27,15 @@ https://ccrma.stanford.edu/wiki/SynthAModelerFireFaderLab
 
 
 
-
-
-
-
+After you install git, you can just run
+git clone https://github.com/eberdahl/SaM.git
+to download Synth-A-Modeler into a new directory.  Then go into that directory by typing
+cd SaM
+Then try to use the Make command as if you were using Faust to build the Synth-A-Modeler modules.  Currently the following targets are supported:
+make puredata
+make map
+make jackqt
+otherwise you will have to create your own Makefiles from the Faust examples (see Makefile.HOWTO.txt).
 
 
 

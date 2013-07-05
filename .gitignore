@@ -1,0 +1,6 @@
+*.mdx
+*.dsp
+*.ps
+jackqtdir/
+puredatadir/
+SAM-debug-compilation.txt
