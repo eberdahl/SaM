@@ -28,7 +28,7 @@
 
 
 
-termination(simpleStringTerm(-0.996, 20)),term0,(); # pos 112,202
+termination(simpleStringTerm(-0.996, 20)),term0; # pos 112,202
 
 
 

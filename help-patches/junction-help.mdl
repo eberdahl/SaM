@@ -30,7 +30,7 @@
 
 
 
-junction(0.0),junct0,(); # pos 80,184
+junction(0.0),junct0; # pos 80,184
 
 
 faustcode: outputDSP=highpass(4,20.0);

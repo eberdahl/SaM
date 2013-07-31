@@ -26,13 +26,13 @@
 
 
 
-waveguide(1.0,simpleString(0.033,0.017)),wg0,junct0,term0,();
+waveguide(1.0,simpleString(0.033,0.017)),wg0,junct0,term0;
 
 
-termination(simpleStringTerm(-0.996, 20)),term0,(); # pos 192,210
+termination(simpleStringTerm(-0.996, 20)),term0; # pos 192,210
 
 
-junction(0.0),junct0,(); # pos 48,200
+junction(0.0),junct0; # pos 48,200
 
 
 faustcode: outputDSP=highpass(4,20.0);
