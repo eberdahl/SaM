@@ -116,5 +116,5 @@ faustcode: noteG=392.0;
 faustcode: noteC=523.25;
 
 
-audioout,a0,(bridge+bridgecpy+bridgecpy1+bridgecpy2+bridgecpy3+bridgecpy4+bridgecpy5+bridgecpy6+bridgecpy7+bridgecpy8)*vol:outputDSP:bodyResp1:SAMfreereverb; # pos 59,336
-audioout,a1,(fret+fretcpy+fretcpy1+fretcpy2+fretcpy3+fretcpy4+fretcpy5+fretcpy6+fretcpy7+fretcpy8)*vol:outputDSP:bodyResp2:SAMfreereverb; # pos 851,336
+audioout,a0,(bridge*1.0+bridgecpy*1.0+bridgecpy1*1.0+bridgecpy2*1.0+bridgecpy3*1.0+bridgecpy4*1.0+bridgecpy5*1.0+bridgecpy6*1.0+bridgecpy7*1.0+bridgecpy8*1.0):outputDSP:bodyResp1:SAMfreereverb; # pos 59,336
+audioout,a1,(fret*vol+fretcpy*vol+fretcpy1*vol+fretcpy2*vol+fretcpy3*vol+fretcpy4*vol+fretcpy5*vol+fretcpy6*vol+fretcpy7*vol+fretcpy8*vol):outputDSP:bodyResp2:SAMfreereverb; # pos 851,336
