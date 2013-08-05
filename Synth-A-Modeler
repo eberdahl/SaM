@@ -80,6 +80,18 @@ my $indx = 0;              # index variable used over and over again
 open my $fh_compilation, '>', "SAM-debug-compilation.txt"
     or die "Error: Cannot open SAM-debug-compilation.txt for storing comilation result!";
 
+# Insert timestamp and input file name into SAM-debug-compilation.txt
+my ($sec,$min,$hour,$day,$month,$yr19,@rest) = localtime(time);
+my $date = ($yr19+1900)."-".sprintf("%02d",++$month)."-".sprintf("%02d",$day);
+my $time = sprintf("%02d",$hour).":".sprintf("%02d",$min).":".sprintf("%02d",$sec);
+say $fh_compilation $date." ".$time;
+say $fh_compilation "Inputfile: ".$filename;
+say $fh_compilation "----------";
+
+
+
+
+
 # Handle when the compiler fails
 sub diegracefully($) { 
     my $error_line = "The Synth-A-Modeler Perl script returned an ERROR while working on " . $filenameout . "!  Verbose compilation details follow:\n";
