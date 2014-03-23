@@ -44,7 +44,7 @@ all : $(mdxfile) $(dspfile) $(appls)
 $(DEST)%.app : %.dsp
 	install -d $(TMP)
 	faust -double -a $(ARCH) $(VEC) $< -o $(TMP)/$<.cpp
-	cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/include/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/lib/faust/gui/faustqt.h" 
+	cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/include/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/include/faust/gui/faustqt.h" 
 	cd $(TMP); qmake $(SPEC)
 	make -C $(TMP)
 	rm -rf $@

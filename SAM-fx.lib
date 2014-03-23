@@ -1,5 +1,12 @@
 
 
+
+// Low-pass filter smoothes out parameter changes to help suppress clicking sounds 
+// when adjusting models; however, it is quite expensive if there are a lot of params.
+//paramSmooth = onePoleBLT(10.0);
+paramSmooth = _;   // to bypass this functionality instead
+
+
 SAMlimiter = compressor_mono(10e10,-6,0.0008,0.1);
 // syntax: compressor_mono(ratio,thresh,att,rel)
 // compression ratio of 10e10 means it is a very hard limiter (it is hard to make a model explode faster than this, but it is certainly possible to do so)
@@ -87,9 +94,15 @@ allpasstuningL4 = 225;
 // Dry : original signal
 // Wet : reverberated signal
 
-dampSlider      = hslider("Damp",0.5, 0, 1, 0.025)*scaledamp;
-roomsizeSlider  = hslider("RoomSize", 0.5, 0, 1, 0.025)*scaleroom + offsetroom;
-wetSlider       = hslider("Wet", 0.3333, 0, 1, 0.025);
+//dampSlider      = hslider("Damp",0.5, 0, 1, 0.025)*scaledamp;
+//roomsizeSlider  = hslider("RoomSize", 0.3, 0, 1, 0.025)*scaleroom + offsetroom;
+//wetSlider       = hslider("Wet", 0.3333, 0, 1, 0.025);
+reverbParams = hgroup("Reverb", hslider("Damp",0.5, 0, 1, 0.025)*scaledamp, hslider("RoomSize", 0.5, 0, 1, 0.025)*scaleroom + offsetroom, hslider("Wet", 0.3333, 0, 1, 0.025));
+dampSlider      = reverbParams:(_,!,!);
+roomsizeSlider  = reverbParams:(!,_,!);
+wetSlider       = reverbParams:(!,!,_);
+
+
 combfeed        = roomsizeSlider;
 
 
