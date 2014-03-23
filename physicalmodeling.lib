@@ -261,28 +261,31 @@ singleResonator(f,T60,m) = mainStuff:chooseOutputs
 with {
   tau = T60/6.9078;   // Convert T60 into exponential decay time
   
+  // Basic parameters for state-space resonator
   PI = 3.1415926535897932384626;
   decayParam = exp(-1.0/tau/fs);
   x1 = decayParam*cos(2.0*PI*f/fs);
   y1 = decayParam*sin(2.0*PI*f/fs);
 
-  // This is what you get using the impulse invariance method (also need to change the mainStuff definition
-  // below to incorporate prefilter).  Sound of aliasing may be different due to extra zero.
-  prefilter = _:*(0.5/m/fs/fs)<:(_,*(2.0*x1),*(-1.0*(x1*x1+y1*y1))):(_,+):+:_;
-  b1 = 1.0;
-  
-  // Here is how to implement b1 as adapted from CA.  It's more efficient.
-  //b1 = 1.0/m/fs/fs;                                 
+  // This is what you get using the impulse invariance method to
+  // tune the input and output from the state-space model.
+  G0 = 1/m/2.0/PI/f;
+  b1 = y1*G0/fs;
+  b2 = -b1*x1/y1;                          
 
-  b2 = -1.0*b1*cos(2.0*PI*f/fs)/sin(2.0*PI*f/fs);   // This choice minimizes the latency of the resonator for the given implementation method
 
   mainBox(w,u,Fext) = (x1*w - y1*u + b1*Fext,   y1*w + x1*u + b2*Fext);
-  mainStuff = ((_,_,prefilter):mainBox)~(chooseFeedbacks);
-  //mainStuff = (mainBox)~(chooseFeedbacks);
+  mainStuff = (mainBox)~(chooseFeedbacks);
 
   chooseFeedbacks = (_,_);
   chooseOutputs = (_,!);
 };
+
+
+// If a desired gain is desired for an impulse (one sample long with height of fs), then
+// use this function to determine the equivalent mass.
+gainToMass(gain,f0) = 1/gain/2/PI/f0;
+
 
 
 
