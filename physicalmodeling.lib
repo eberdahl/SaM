@@ -158,12 +158,12 @@ with {
 //integratorPoleWGJunctions = 0.99999;
 integratorPoleWGJunctions = 0.999;
 
-cross = _,_<:!,_,_,!; // standard line interchanger from Julius
+cross_sig = _,_<:!,_,_,!; // standard line interchanger from Julius
 
 
 // I passed along all three inputs in case they were useful in the denominator (for instance in 
 // alternate versions of this object), but the Faust compiler prunes away the unused ones.
-junctionlink(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionLink(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (cross,_,_) : ((_ <: (_,_)),_,_,_) : (_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     );
+junctionlink(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionLink(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (cross_sig,_,_) : ((_ <: (_,_)),_,_,_) : (_,     ((_,(-:+(o):*(k)),_) : (cross_sig,_) : (_,(-:*(R))) : + )     );
 junctionlinkUnderneath = junctionlink;  // Interaction is symmetrical, so we can define the opposite connection direction this way
 
 calculateXJandVJjunctionLink(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,+(k/fs + R))) : (((+,_):+),_) : / <: (_,_) : (junctionIntegrator(integratorPoleWGJunctions, waveguideHeight),_)) ~ (_,!);
@@ -177,10 +177,10 @@ calculateXJandVJjunctionLink(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),
 
 
 
-//junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*); // was pushing the haptic device in the wrong direction
-junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
+//junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross_sig,_,_) : (cross_sig,_,_,_) : (_,cross_sig,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross_sig,_) : (_,(-:*(-R))) : + )     ) : (cross_sig,_) : (_,*); // was pushing the haptic device in the wrong direction
+junctiontouch(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouch(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross_sig,_,_) : (cross_sig,_,_,_) : (_,cross_sig,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross_sig,_) : (_,(-:*(R))) : + )     ) : (cross_sig,_) : (_,*);
 
-calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
+calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross_sig) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross_sig : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
 // Or use this dummy version instead in order that PS output from Faust isn't corrupt for junctionTouch:
 // calculateXJandVJjunctionTouch(waveguideHeight, k, R, o) = (_,_,_);
 
@@ -203,9 +203,9 @@ with {
 
 // The following are the same as for junctionTouch, calculateXJandVJjunctionTouch, and touchLogic, except that the logic is switched by flipping the inequality
 // in touchUnderneathLogic so that the mass-like object is "beneath" the waveguide junction.
-//junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross,_) : (_,(-:*(-R))) : + )     ) : (cross,_) : (_,*); // was pushing the haptic device in the wrong direction
-junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
-calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchUnderneathLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);
+//junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross_sig,_,_) : (cross_sig,_,_,_) : (_,cross_sig,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(-k)),_) : (cross_sig,_) : (_,(-:*(-R))) : + )     ) : (cross_sig,_) : (_,*); // was pushing the haptic device in the wrong direction
+junctiontouchUnderneath(waveguideHeight, k, R, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o)), (_ <: (_,differentiator))) : (_,cross_sig,_,_) : (cross_sig,_,_,_) : (_,cross_sig,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross_sig,_) : (_,(-:*(R))) : + )     ) : (cross_sig,_) : (_,*);
+calculateXJandVJjunctionTouchUnderneath(waveguideHeight, k, R, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross_sig) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross_sig : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight)  : (touchUnderneathLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);
 
 
 touchUnderneathLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset) = (XJoutput, VJoutput, inContact)
@@ -227,10 +227,10 @@ with {
 
 
 
-junctionpluck(waveguideHeight, k, R, pluckDistance, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionPluck(waveguideHeight, k, R, pluckDistance, o)), (_ <: (_,differentiator))) : (_,cross,_,_) : (cross,_,_,_) : (_,cross,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross,_) : (_,(-:*(R))) : + )     ) : (cross,_) : (_,*);
+junctionpluck(waveguideHeight, k, R, pluckDistance, o) = (_,_,_) <: ((_,_,_),(_,!,!)) : ((calculateXJandVJjunctionPluck(waveguideHeight, k, R, pluckDistance, o)), (_ <: (_,differentiator))) : (_,cross_sig,_,_) : (cross_sig,_,_,_) : (_,cross_sig,_,_) : (_,(_ <: (_,_)),_,_,_) : (_,_,     ((_,(-:+(o):*(k)),_) : (cross_sig,_) : (_,(-:*(R))) : + )     ) : (cross_sig,_) : (_,*);
 junctionpluckUnderneath = junctionpluck;  // Interaction is symmetrical, so we can define the opposite connection direction this way
 
-calculateXJandVJjunctionPluck(waveguideHeight, k, R, pluckDistance, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight,pluckDistance)  : (pluckLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
+calculateXJandVJjunctionPluck(waveguideHeight, k, R, pluckDistance, o) = (-(o),_,_) <: ((_,_,_),(_,_,_),(_,_,_)) : ((((*(-integratorPoleWGJunctions),(_ <: (_,_) : (_, differentiator)),  (_,_)) : ((+, _),  (_,_)) : (*(k), *(R), *(2.0), !)), (!,!,(_<:(+(k/fs + R),_))), ((_,*(2.0),!)  : cross_sig) ) :   (((((+,_):+),_) : /),  ((_,_,_) : ((cross_sig : /), _))  )   : (_,_,_) : (_,_,_,integratorPoleWGJunctions,waveguideHeight,pluckDistance)  : (pluckLogic ~ (_,!,!)) ) ~ (_,!,!) : (_,_,_);   
 
 pluckLogic(prevXJ, VJlinked, VJnotlinked, X, integratorPole, outputOffset, pluckDistance) = (XJoutput, VJoutput, inContact)
 with {
@@ -313,10 +313,10 @@ stringTermination = *(-1.0) : twoZeros(0.33333333333,0.33333333333,0.33333333333
 fs = 44100.0;
 
 
-log2(theval) = log(theval) * 1.442695041;  // like dividing by 0.69 = log_e(2)
+log2deprecated(theval) = log(theval) * 1.442695041;  // like dividing by 0.69 = log_e(2)
 // The following works around what is (in my opinion) effectively a bug in Faust -- 
 // delay times are calculated incorrectly unless the delay line length is a power of 2.
-simpleString(maxTime,currentTime) = fdelay1((2,ceil(log2(fs*0.5*maxTime))):pow:int, (fs*0.5*currentTime-1.0));
+simpleString(maxTime,currentTime) = fdelay1((2,ceil(log2deprecated(fs*0.5*maxTime))):pow:int, (fs*0.5*currentTime-1.0));
 
 
 
