@@ -79,19 +79,14 @@ char devicePath[256];
 #include <libgen.h>
 #include <stdlib.h>
 #include <iostream>
-#include <list>
 
-#include "faust/gui/FUI.h"
-#include "faust/misc.h"
-#include "faust/gui/faustqt.h"
-#include "faust/audio/jack-dsp.h"
+#include "gui/FUI.h"
+#include "misc.h"
+#include "gui/faustqt.h"
+#include "audio/jack-dsp.h"
 
 #ifdef OSCCTRL
-#include "faust/gui/OSCUI.h"
-#endif
-
-#ifdef HTTPCTRL
-#include "faust/gui/httpdUI.h"
+#include "gui/OSCUI.h"
 #endif
 
 /**************************BEGIN USER SECTION **************************/
@@ -274,7 +269,7 @@ class hapticdsp : public mydsp {
 	       // If it doesn't find the file, then it will wind up segfaulting on the next line
 	       // which is one way to stop the program from running!!
 	       fscanf(path_file_fd, "%s", devicePath);
-	       fclose(path_file_fd);
+	       close(path_file_fd);
 
 
 
@@ -492,11 +487,9 @@ class hapticdsp : public mydsp {
 };
 
 
+hapticdsp	DSP;
 
-//mydsp*	DSP;
-hapticdsp*	DSP;
-
-std::list<GUI*>               GUI::fGuiList;
+list<GUI*>               GUI::fGuiList;
 
 //-------------------------------------------------------------------------
 // 									MAIN
@@ -510,51 +503,26 @@ int main(int argc, char *argv[])
 	snprintf(appname, 255, "%s", basename(argv[0]));
 	snprintf(rcfilename, 255, "%s/.%src", home, appname);
 
-	DSP = new hapticdsp();
-	if (DSP==0) {
-        std::cerr << "Unable to allocate Faust DSP object" << std::endl;
-		exit(1);
-	}
-
-	QApplication myApp(argc, argv);
-
-	QTGUI* interface = new QTGUI();
+	GUI* interface = new QTGUI(argc, argv);
 	FUI* finterface	= new FUI();
-	DSP->buildUserInterface(interface);
-	DSP->buildUserInterface(finterface);
-
-#ifdef HTTPCTRL
-	httpdUI*	httpdinterface = new httpdUI(appname, argc, argv);
-	DSP->buildUserInterface(httpdinterface);
-    std::cout << "HTTPD is on" << std::endl;
-#endif
+	DSP.buildUserInterface(interface);
+	DSP.buildUserInterface(finterface);
 
 #ifdef OSCCTRL
 	GUI*	oscinterface = new OSCUI(appname, argc, argv);
-	DSP->buildUserInterface(oscinterface);
+	DSP.buildUserInterface(oscinterface);
 #endif
 	
 	jackaudio audio;
-	audio.init(appname, DSP);
+	audio.init(appname, &DSP);
 	finterface->recallState(rcfilename);	
 	audio.start();
-	
-#ifdef HTTPCTRL
-	httpdinterface->run();
-#ifdef QRCODECTRL
-    interface->displayQRCode( httpdinterface->getTCPPort() );
-#endif
-#endif
 	
 #ifdef OSCCTRL
 	oscinterface->run();
 #endif
 	interface->run();
 	
-    myApp.setStyleSheet(STYLESHEET);
-    myApp.exec();
-    interface->stop();
-    
 	audio.stop();
 	finterface->saveState(rcfilename);
   	return 0;
