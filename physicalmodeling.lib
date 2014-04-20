@@ -316,8 +316,9 @@ fs = 44100.0;
 log2deprecated(theval) = log(theval) * 1.442695041;  // like dividing by 0.69 = log_e(2)
 // The following works around what is (in my opinion) effectively a bug in Faust -- 
 // delay times are calculated incorrectly unless the delay line length is a power of 2.
-simpleString(maxTime,currentTime) = fdelay1((2,ceil(log2deprecated(fs*0.5*maxTime))):pow:int, (fs*0.5*currentTime-1.0));
-
+//simpleString(maxTime,currentTime) = fdelay1((2,ceil(log2deprecated(fs*0.5*maxTime))):pow:int, (fs*0.5*currentTime-1.0));
+// Using fdelay1 was causing higher notes to decay too quickly
+simpleString(maxTime,currentTime) = fdelay3((2,ceil(log2deprecated(fs*0.5*maxTime))):pow:int, (fs*0.5*currentTime-1.0));
 
 
 // This is essentially the simplest possible string termination.  It has no memory.
@@ -328,10 +329,13 @@ memorylessStringTerm(reflectionCoefficient) = _ : *(reflectionCoefficient) : _;
 // first zero in the magnitude response of the boxcar window filter.  The signal is also multiplied by
 // the reflectionCoeffient.  For a string, the reflection coefficient for velocity waves could for example be -0.995.
 simpleStringTerm(reflectionCoefficient, fc) = _ : *(reflectionCoefficient) : constantFilterTIIR(fc);
-constantFilterTIIR(fc) = _ <: (_,_) : (_,delay(256,M)) : - : /(M:float) : (+~(_)) with {  M = (fs/fc):int;  };
+maxTIIRdelay = 256;
+constantFilterTIIR(fc) = _ <: (_,_) : (_,delay(maxTIIRdelay,M)) : - : /(max(1,M):float) : (+~(_)) with {  M = (fs/fc):int:-(1);  };
 
-// To make it easier to compensate for the "termination delay" introduced by the termination, we also include the following:
-simpleStringTermDelay(fc) = (M:float)/2.0/(fs:float) with {  M = (fs/fc):int;  };
+// To make it easier to compensate for the "termination delay" introduced by the termination, we also include the following.
+// However, it can be seen that the effect of this has been removed by multiplying the output value by 0.0.
+// I found that in practice the tuning was much better like this.
+simpleStringTermDelay(fc) = (min(maxTIIRdelay,(M-1)):float)/2.0/(fs:float):*(1.0) with {  M = (fs/fc):int:-(1);  };
 
 
 
