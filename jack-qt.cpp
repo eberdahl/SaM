@@ -310,6 +310,24 @@ class hapticdsp : public mydsp {
 		/* Enable the receiver and set local mode... */
 		options.c_cflag |= (CLOCAL | CREAD);
 		
+		// Turn off hardware flow control
+		options.c_cflag &= ~CRTSCTS;
+
+		// turn off software flow control
+		options.c_iflag &= ~(IXON | IXOFF | IXANY); 
+
+		// Make sure that it isn't buffering inputs and outputs, which
+		// shouldn't happen anyway because reads and writes are set
+		// to be non-blocking, but it doesn't hurt.
+		options.c_cc[VMIN] = 0;
+		options.c_cc[VTIME] = 0;
+
+		// Make sure that it isn't changing certain characters (in a way
+		// that would make a nicer interface via TTY but totally screwed
+		// up the serial driver when running /dev/tty in Linux).
+		options.c_oflag &= ~OPOST;
+		options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+
 		/* Set the new options for the port...  */
 		if (tcsetattr(fd, TCSANOW, &options) < -1) {
 			perror("init_serialport: Couldn't set term attributes");
@@ -324,8 +342,10 @@ class hapticdsp : public mydsp {
 		char sentinel = 127;
 		
 		// First write the sentinel character of 127
+		//printf("Trying to write");
 		returnVal = write(fd, &sentinel, 1);
-		if (returnVal<1) { perror("Couldn't write sentinel"); }
+		//printf("FINISHED!\n");
+		//if (returnVal<1) { perror("Couldn't write sentinel"); }
 		
 		// Max. motor force is 1.3N at 10V
 		// So max. motor force is 1.56N at 12V.
@@ -338,12 +358,12 @@ class hapticdsp : public mydsp {
 		// Write the forces out to the serial
 		ch = (signed char)forceA;
 		returnVal = write(fd, &ch, 1);
-		if (returnVal < 1) { printf("Couldn't write char returnVal=%d!\n", returnVal); }
+		//if (returnVal < 1) { printf("Couldn't write char returnVal=%d!\n", returnVal); }
 		if (debug) { printf("Writing force chars: %d   ", (int)ch); }
 		
 		ch = (signed char)forceB;
 		returnVal = write(fd, &ch, 1);
-		if (returnVal < 1) { printf("Couldn't write char returnVal=%d!\n", returnVal); }
+		//if (returnVal < 1) { printf("Couldn't write char returnVal=%d!\n", returnVal); }
 		if (debug) { printf("and %d with returnval %d\n\n", (int)ch, returnVal); }
 		
 		return(returnVal);
@@ -441,7 +461,9 @@ class hapticdsp : public mydsp {
 		
 		
 		// If serial input is available, read it in from serial until input buffer is empty
+		//printf("TRYING TO READ -- ");
 		while ((nChar=read(fd, &buf, 1)) > 0) {
+		  //printf("got char %d\n",buf);
 			nReads++;
 
 			if (buf == 255) { // Received Sentinel character
