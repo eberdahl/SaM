@@ -19,6 +19,7 @@ mdxfile	:= $(dspsrc:.mdl=.mdx)
 ifeq ($(system), Darwin)
 appls	:= $(addprefix $(DEST),  $(dspsrc:.mdl=.app))
 SPEC	:= -spec macx-g++ QMAKE_CXXFLAGS=-fpermissive
+#SPEC   := -spec macx-g++ QMAKE_CXXFLAGS="-fpermissive -fbracket-depth=2048"
 else
 appls	:= $(addprefix $(DEST),  $(dspsrc:.mdl=))
 SPEC	:= 
@@ -44,7 +45,8 @@ all : $(mdxfile) $(dspfile) $(appls)
 $(DEST)%.app : %.dsp
 	install -d $(TMP)
 	faust -double -a $(ARCH) $(VEC) $< -o $(TMP)/$<.cpp
-	cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/include/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/include/faust/gui/faustqt.h" 
+	#cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/include/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/include/faust/gui/faustqt.h" "CXXFLAGS+=-fbracket-depth=2048" 
+	cd $(TMP); qmake -project "$(DEFS)" "INCLUDEPATH+=/usr/local/lib/faust/" "INCLUDEPATH+=/usr/local/include/faust/" "INCLUDEPATH+=/usr/local/lib/faust/osclib" "LIBS+=$(LIB)" "HEADERS+=/usr/local/include/faust/gui/faustqt.h"
 	cd $(TMP); qmake $(SPEC)
 	make -C $(TMP)
 	rm -rf $@
@@ -53,7 +55,8 @@ $(DEST)%.app : %.dsp
 
 
 ### Linux
-hdir1 := $(wildcard /usr/local/lib/faust/gui/faustqt.h)
+hdir1 := $(wildcard /usr/local/include/faust/gui/faustqt.h)
+#hdir1 := $(wildcard /usr/local/lib/faust/gui/faustqt.h)
 hdir2 := $(wildcard /usr/share/faust/faustqt.h)
 hdir3 := $(wildcard /usr/local/lib/faust/faustqt.h)
 hdir23 := $(if $(hdir2),$(dir $(hdir2)),$(dir $(hdir3)))
